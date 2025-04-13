@@ -1,5 +1,6 @@
 package com.restaurant.restaurant_management_project.model;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 /**
@@ -13,12 +14,12 @@ public class Employee {
     private String SDT;
     private String Email;
     private String ChucVu;
-    private int Luong;
+    private BigDecimal Luong;
 
     public Employee() {
     }
 
-    public Employee(String MaNV, String TenNV, Date NgaySinh, String SDT, String Email, String ChucVu, int Luong) {
+    public Employee(String MaNV, String TenNV, Date NgaySinh, String SDT, String Email, String ChucVu, BigDecimal Luong) {
         this.MaNV = MaNV;
         this.TenNV = TenNV;
         this.NgaySinh = NgaySinh;
@@ -76,11 +77,11 @@ public class Employee {
         this.ChucVu = ChucVu;
     }
 
-    public int getLuong() {
+    public BigDecimal getLuong() {
         return Luong;
     }
 
-    public void setLuong(int Luong) {
+    public void setLuong(BigDecimal Luong) {
         this.Luong = Luong;
     }
     
