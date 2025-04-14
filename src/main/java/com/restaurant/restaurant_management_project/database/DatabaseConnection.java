@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * @author admin
  */
 public class DatabaseConnection {
-    private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=RM_Db;username=sa;password=123456;integratedSecurity=true;encrypt=true;trustServerCertificate=true";
+    private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=RM_Db;integratedSecurity=true;encrypt=true;trustServerCertificate=true";
     private static Connection connection = null;
     
     public static Connection GetConnection() throws SQLException{
