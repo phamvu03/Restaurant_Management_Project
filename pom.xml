@@ -10,7 +10,9 @@
         <maven.compiler.target>11</maven.compiler.target>
         <junit.version>5.10.2</junit.version>
     </properties>
+
     <dependencies>
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
