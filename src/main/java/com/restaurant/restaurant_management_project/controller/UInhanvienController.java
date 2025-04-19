@@ -11,6 +11,8 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class UInhanvienController {
 
     @FXML
@@ -48,8 +50,40 @@ public class UInhanvienController {
 
     @FXML
     private void initialize() {
+        // Xử lý sự kiện khi nhấn nút Thêm
+        themBtn.setOnAction(event -> {
+            openForm("/fxml/FormThemNhanvien.fxml", "Thêm Nhân Viên");
+        });
+
+        // Xử lý sự kiện khi nhấn nút Sửa
+        suaBtn.setOnAction(event -> {
+            openForm("/fxml/FormSuaNhanvien.fxml", "Sửa Nhân Viên");
+        });
+
+        // Xử lý sự kiện khi nhấn nút Xóa
+        xoaBtn.setOnAction(event -> {
+            openForm("/fxml/FormXoaNhanvien.fxml", "Xác Nhận Xóa");
+        });
+
     }
-    @FXML
+    // Phương thức chung để mở form
+    private void openForm(String fxmlPath, String title) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle(title);
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL); // chặn cửa sổ chính khi form đang mở
+            stage.showAndWait(); //
+
+        } catch ( IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+        @FXML
     void addEmployeeSelect(MouseEvent event) {
         // Xử lý khi chọn nhân viên trong bảng
         // Có thể enable/disable nút Sửa và Xóa tùy theo selection

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+			minWidth="-Infinity" prefHeight="283.0" prefWidth="600.0"
+			stylesheets="@../css/Nhanvien.css"
+			xmlns="http://javafx.com/javafx/23.0.1"
+			xmlns:fx="http://javafx.com/fxml/1"
+			fx:controller="com.restaurant.restaurant_management_project.controller.FormSuaNhanvienController">
+	<children>
+		<Label layoutX="264.0" layoutY="14.0" text="SỬA NHÂN VIÊN" />
+		<VBox layoutX="69.0" layoutY="56.0" prefHeight="110.0" prefWidth="90.0" spacing="30.0">
+			<children>
+				<Label text="Mã nhân viên" />
+				<Label text="Họ và tên" />
+				<Label text="Ngày sinh" />
+				<Label text="Lương" />
+			</children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+		</VBox>
+		<VBox layoutX="164.0" layoutY="56.0" prefHeight="110.0" prefWidth="132.0" spacing="10.0">
+			<children>
+				<TextField fx:id="nhapManhanvien" prefHeight="26.0" prefWidth="65.0" />
+				<TextField fx:id="nhapTennhanvien" />
+				<DatePicker fx:id="nhapNgaysinh" />
+				<TextField fx:id="nhapLuong" prefHeight="26.0" prefWidth="106.0" />
+			</children>
+		</VBox>
+		<VBox layoutX="360.0" layoutY="56.0" prefHeight="110.0" prefWidth="90.0" spacing="30.0">
+			<children>
+				<Label text="Số điện thoại" />
+				<Label text="Chức vụ" />
+				<Label text="Email" />
+			</children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+		</VBox>
+		<VBox layoutX="463.0" layoutY="56.0" prefHeight="110.0" prefWidth="100.0" spacing="10.0">
+			<children>
+				<TextField fx:id="nhapSdt" />
+				<ChoiceBox fx:id="nhapChucvu" prefWidth="150.0" />
+				<TextField fx:id="nhapEmail" />
+			</children>
+		</VBox>
+		<Button fx:id="suaBtn" layoutX="483.0" layoutY="211.0" mnemonicParsing="false" text="Sửa" />
+		<Button fx:id="lamMoiBtn" layoutX="336.0" layoutY="211.0" mnemonicParsing="false" text="Làm mới" />
+	</children>
+</AnchorPane>
