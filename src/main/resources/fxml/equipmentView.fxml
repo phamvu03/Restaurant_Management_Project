@@ -1,14 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.EquipmentController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.EquipmentController">
     <stylesheets>
-        <URL value="@/css/equipment.css"/>
+        <URL value="@/css/equipment.css" />
     </stylesheets>
+   <children>
+      <StackPane />
+      <BorderPane layoutY="6.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <left>
+            <VBox prefHeight="200.0" prefWidth="270.0" stylesheets="@../css/equipment.css" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="TOP" text="Restaurant Management">
+                           <font>
+                              <Font name="Cambria Bold" size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="286.0" text="Thiết bị">
+                     <font>
+                        <Font name="Cambria Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </left>
+         <center>
+            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                     <children>
+                        <Label text="Thiết bị nhà hàng">
+                           <font>
+                              <Font name="Cambria Bold" size="36.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <TableView prefHeight="400.0" prefWidth="609.0">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="Mã dụng cụ" />
+                      <TableColumn prefWidth="129.59999084472656" text="Tên dụng cụ" />
+                        <TableColumn minWidth="0.0" prefWidth="82.39999389648438" text="Loại" />
+                        <TableColumn prefWidth="79.199951171875" text="Số lượng" />
+                        <TableColumn prefWidth="91.9998779296875" text="Tình trạng" />
+                        <TableColumn minWidth="0.0" prefWidth="151.20013427734375" text="Ngày thống kê" />
+                    </columns>
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin>
+                  </TableView>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
 </AnchorPane>

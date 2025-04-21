@@ -8,7 +8,6 @@ import java.sql.Date;
  */
 public class Equipment {
     String MaDungCu;
-    String MaNV;
     String TenDungCu;
     String Loai;
     int SoLuong;
@@ -18,9 +17,8 @@ public class Equipment {
     public Equipment() {
     }
 
-    public Equipment(String MaDungCu, String MaNV, String TenDungCu, String Loai, int SoLuong, String TinhTrang, Date NgayThongKe) {
+    public Equipment(String MaDungCu, String TenDungCu, String Loai, int SoLuong, String TinhTrang, Date NgayThongKe) {
         this.MaDungCu = MaDungCu;
-        this.MaNV = MaNV;
         this.TenDungCu = TenDungCu;
         this.Loai = Loai;
         this.SoLuong = SoLuong;
@@ -34,14 +32,6 @@ public class Equipment {
 
     public void setMaDungCu(String MaDungCu) {
         this.MaDungCu = MaDungCu;
-    }
-
-    public String getMaNV() {
-        return MaNV;
-    }
-
-    public void setMaNV(String MaNV) {
-        this.MaNV = MaNV;
     }
 
     public String getTenDungCu() {
@@ -86,7 +76,7 @@ public class Equipment {
 
     @Override
     public String toString() {
-        return "equipment{" + "MaDungCu=" + MaDungCu + ", MaNV=" + MaNV + ", TenDungCu=" + TenDungCu + ", Loai=" + Loai + ", SoLuong=" + SoLuong + ", TinhTrang=" + TinhTrang + ", NgayThongKe=" + NgayThongKe + '}';
+        return "equipment{" + "MaDungCu=" + MaDungCu + ", TenDungCu=" + TenDungCu + ", Loai=" + Loai + ", SoLuong=" + SoLuong + ", TinhTrang=" + TinhTrang + ", NgayThongKe=" + NgayThongKe + '}';
     }
     
 }

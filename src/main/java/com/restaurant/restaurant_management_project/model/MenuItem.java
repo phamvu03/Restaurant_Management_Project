@@ -16,6 +16,21 @@ public class MenuItem {
     private MenuItem sideDish;
     private boolean status;
 
+    public MenuItem() {
+    }
+
+    public MenuItem(String code, String name, Image image, BigDecimal price, float vat, String unit, String category, MenuItem sideDish, boolean status) {
+        this.code = code;
+        this.name = name;
+        this.image = image;
+        this.price = price;
+        this.vat = vat;
+        this.unit = unit;
+        this.category = category;
+        this.sideDish = sideDish;
+        this.status = status;
+    }
+
     public String getCode() {
         return code;
     }
