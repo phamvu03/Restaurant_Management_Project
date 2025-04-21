@@ -9,6 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.image.Image?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="@../css/sidebar-style.css"
@@ -17,17 +18,41 @@
       fx:id="sideBar"
 >
     <HBox>
-        <ImageView fx:id="logo" styleClass="logo"/>
-        <Text fx:id="name" text="Ten cua hang"/>
+        <ImageView fx:id="logo" styleClass="logo" />
+        <Text fx:id="name" styleClass="name" text="The Golden Fork" />
+        <Region HBox.hgrow="ALWAYS"/>
+        <FontIcon iconLiteral="fas-lock" iconSize="20"/>
     </HBox>
     <VBox fx:id="navMenu" styleClass="nav-menu">
-        <Button styleClass="nav-button" >
+        <Button fx:id="button1" styleClass="nav-button">
             <graphic>
-                <HBox>
-                    <ImageView fitWidth="16" fitHeight="16">
-                        <Image url="@../image/em.png"/>
-                    </ImageView>
-                    <Text text="Quản lý thực đơn" styleClass="button-text"/>
+                <HBox styleClass="btn-content">
+                    <FontIcon iconLiteral="fas-users" iconSize="20"/>
+                    <Text styleClass="button-text" text="Quản lý nhân sự"/>
+                </HBox>
+            </graphic>
+        </Button>
+        <Button fx:id="button2" styleClass="nav-button">
+            <graphic>
+                <HBox styleClass="btn-content">
+                    <FontIcon iconLiteral="fas-list-alt" iconSize="20"/>
+                    <Text styleClass="button-text" text="Quản lý thực đơn"/>
+                </HBox>
+            </graphic>
+        </Button>
+        <Button fx:id="button3" styleClass="nav-button">
+            <graphic>
+                <HBox styleClass="btn-content">
+                    <FontIcon iconLiteral="fas-money-check-alt" iconSize="20"/>
+                    <Text styleClass="button-text" text="Thống kê doanh thu"/>
+                </HBox>
+            </graphic>
+        </Button>
+        <Button fx:id="button4" styleClass="nav-button">
+            <graphic>
+                <HBox styleClass="btn-content">
+                    <FontIcon iconLiteral="fas-table" iconSize="20"/>
+                    <Text styleClass="button-text" text="Danh sách bàn ăn"/>
                 </HBox>
             </graphic>
         </Button>

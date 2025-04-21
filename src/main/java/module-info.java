@@ -1,9 +1,12 @@
 module com.restaurant.restaurant_management_project {
-    requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
     requires annotations;
-    requires java.base;
+    // add icon pack modules
+    requires org.kordamp.ikonli.fontawesome5;
+    requires org.kordamp.ikonli.bootstrapicons;
+    requires org.controlsfx.controls;
+    requires org.kordamp.ikonli.javafx;
 
     exports com.restaurant.restaurant_management_project;
     exports com.restaurant.restaurant_management_project.controller to javafx.fxml;

@@ -2,6 +2,7 @@ package com.restaurant.restaurant_management_project.model;
 
 import javafx.scene.image.Image;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 
@@ -13,8 +14,21 @@ public class MenuItem {
     private float vat;
     private String unit;
     private String category;
+    @Nullable
     private MenuItem sideDish;
     private boolean status;
+
+    public MenuItem(String code, String name, Image image, BigDecimal price, float vat, String unit, String category, @Nullable MenuItem sideDish, boolean status) {
+        this.code = code;
+        this.name = name;
+        this.image = image;
+        this.price = price;
+        this.vat = vat;
+        this.unit = unit;
+        this.category = category;
+        this.sideDish = sideDish;
+        this.status = status;
+    }
 
     public String getCode() {
         return code;
@@ -72,11 +86,12 @@ public class MenuItem {
         this.category = category;
     }
 
+    @Nullable
     public MenuItem getSideDish() {
         return sideDish;
     }
 
-    public void setSideDish(MenuItem sideDish) {
+    public void setSideDish(@Nullable MenuItem sideDish) {
         this.sideDish = sideDish;
     }
 

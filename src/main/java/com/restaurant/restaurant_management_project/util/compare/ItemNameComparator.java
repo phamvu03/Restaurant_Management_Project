@@ -1,4 +1,4 @@
-package com.restaurant.restaurant_management_project.compare;
+package com.restaurant.restaurant_management_project.util.compare;
 
 import com.restaurant.restaurant_management_project.model.MenuItem;
 

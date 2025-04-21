@@ -27,7 +27,7 @@ public class Equipment {
         this.TinhTrang = TinhTrang;
         this.NgayThongKe = NgayThongKe;
     }
-    
+
     public String getMaDungCu() {
         return MaDungCu;
     }
@@ -88,5 +88,5 @@ public class Equipment {
     public String toString() {
         return "equipment{" + "MaDungCu=" + MaDungCu + ", MaNV=" + MaNV + ", TenDungCu=" + TenDungCu + ", Loai=" + Loai + ", SoLuong=" + SoLuong + ", TinhTrang=" + TinhTrang + ", NgayThongKe=" + NgayThongKe + '}';
     }
-    
+
 }
