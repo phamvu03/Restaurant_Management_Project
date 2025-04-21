@@ -6,8 +6,8 @@
     <version>1.0-SNAPSHOT</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <junit.version>5.10.2</junit.version>
     </properties>
     <dependencies>
@@ -112,6 +112,11 @@
             <artifactId>ikonli-fontawesome5-pack</artifactId>
             <version>12.3.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-bootstrapicons-pack</artifactId>
+            <version>12.3.1</version>
+        </dependency>
 <!--        <dependency>
             <groupId>com.mycrosoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
@@ -121,6 +126,11 @@
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
             <version>12.10.0.jre8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>11.2.2</version>
         </dependency>
     </dependencies>
     
@@ -132,6 +142,9 @@
                 <version>3.8.0</version>
                 <configuration>
                     <release>11</release>
+                    <source>16</source>
+                    <target>16</target>
+                    <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
             </plugin>
             <plugin>

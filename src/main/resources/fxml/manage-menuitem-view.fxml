@@ -9,69 +9,72 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.GridView?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.restaurant.restaurant_management_project.controller.ManageMenuItemView"
       stylesheets="@../css/manage-menuitem-style.css"
 >
     <fx:include source="side-bar.fxml" fx:id="sideBar"/>
-<StackPane fx:id="content">
-<!--    Chức năng nôỉ lên trên -->
-    <AnchorPane>
-        <Button fx:id="addItemBtn" styleClass="plus-btn" AnchorPane.bottomAnchor="50" AnchorPane.rightAnchor="50">
-            <graphic>
-                <ImageView fitHeight="16" fitWidth="16" >
-                    <Image url="@../image/plus.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-    </AnchorPane>
-<!--Các chức năng khác bên dưới-->
-    <VBox>
-<!--        Khu vực cho chức năng tìm kiếm và lọc-->
-        <HBox spacing="5" alignment="CENTER_LEFT">
-            <TextField fx:id="searchField" styleClass="search-field" promptText="Nhập tên món ăn" />
-            <Button styleClass="search-btn" fx:id="searchBtn">
+    <StackPane fx:id="content">
+        <!--    Chức năng nổi lên trên -->
+        <AnchorPane>
+            <Button fx:id="addItemBtn" styleClass="plus-btn" AnchorPane.bottomAnchor="50" AnchorPane.rightAnchor="50">
                 <graphic>
-                    <ImageView fitHeight="16" fitWidth="16">
-                        <Image url="@../image/search.png"/>
-                    </ImageView>
+                    <FontIcon iconLiteral="fas-plus" iconSize="24"/>
                 </graphic>
             </Button>
-            <Button fx:id="filterBtn" styleClass="search-btn" >
-                <graphic>
-                    <ImageView fitHeight="16" fitWidth="16">
-                        <Image url="@../image/filter.png"/>
-                    </ImageView>
-                </graphic>
-            </Button>
-<!--            <Region HBox.hgrow="ALWAYS"/>-->
-<!--            <HBox>-->
-<!--                <Button>-->
-<!--                    <graphic>-->
-<!--                        <ImageView>-->
-<!--                            <Image/>-->
-<!--                        </ImageView>-->
-<!--                    </graphic>-->
-<!--                </Button>-->
-<!--                <Button>-->
-<!--                    <graphic>-->
-<!--                        <ImageView>-->
-<!--                            <Image/>-->
-<!--                        </ImageView>-->
-<!--                    </graphic>-->
-<!--                </Button>-->
-<!--            </HBox>-->
-        </HBox>
-<!--        Khu vực cho chức năng sắp xếp-->
-        <HBox>
-            <Text text="Sắp xếp theo: "/>
-            <ToggleButton fx:id="nameSort" styleClass="name-sort"/>
-            <ToggleButton fx:id="priceSort" styleClass="price-sort"/>
-        </HBox>
-<!--        Khu vực hiển thị các item-->
-        <TableView fx:id="listItem">
-        </TableView>
-    </VBox>
-</StackPane>
+        </AnchorPane>
+        <!--Các chức năng khác bên dưới-->
+        <VBox>
+            <!--        Khu vực cho chức năng tìm kiếm và lọc-->
+            <HBox spacing="5" alignment="CENTER_LEFT">
+                <TextField fx:id="searchField" styleClass="search-field" promptText="Nhập tên món ăn" />
+                <Button styleClass="search-btn" fx:id="searchBtn">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-search" iconSize="20"/>
+                    </graphic>
+                </Button>
+                <Button fx:id="filterBtn" styleClass="search-btn" onAction="#showFilterPopup">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-filter" iconSize="20"/>
+                    </graphic>
+                </Button>
+                <!--            <Region HBox.hgrow="ALWAYS"/>-->
+                <!--            <HBox>-->
+                <!--                <Button>-->
+                <!--                    <graphic>-->
+                <!--                        <ImageView>-->
+                <!--                            <Image/>-->
+                <!--                        </ImageView>-->
+                <!--                    </graphic>-->
+                <!--                </Button>-->
+                <!--                <Button>-->
+                <!--                    <graphic>-->
+                <!--                        <ImageView>-->
+                <!--                            <Image/>-->
+                <!--                        </ImageView>-->
+                <!--                    </graphic>-->
+                <!--                </Button>-->
+                <!--            </HBox>-->
+            </HBox>
+            <!--        Khu vực cho chức năng sắp xếp-->
+            <HBox>
+                <Text text="Sắp xếp theo: "/>
+                <Button fx:id="nameSort" styleClass="name-sort" text="Tên" onAction="#sort" contentDisplay="RIGHT">
+                    <graphic>
+                        <FontIcon iconLiteral="bi-chevron-expand" iconSize="20"/>
+                    </graphic>
+                </Button>
+                <Button fx:id="priceSort" styleClass="price-sort" text="Giá" onAction="#sort" contentDisplay="RIGHT">
+                    <graphic>
+                        <FontIcon iconLiteral="bi-chevron-expand" iconSize="20"/>
+                    </graphic>
+                </Button>
+            </HBox>
+            <!--        Khu vực hiển thị các item-->
+            <GridView fx:id="itemList"/>
+        </VBox>
+    </StackPane>
 </HBox>

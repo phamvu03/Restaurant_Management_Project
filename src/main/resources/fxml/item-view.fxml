@@ -8,14 +8,34 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
+      prefWidth="300"
       fx:controller="com.restaurant.restaurant_management_project.controller.ItemView"
       fx:id="itemContainer"
 >
-    <ImageView fx:id="itemImage"/>
-    <Text fx:id="itemName"/>
-    <Text fx:id="itemCata"/>
-    <Text fx:id="itemPrice"/>
-    <Text fx:id="itemStatus"/>
+    <ImageView fx:id="itemImage" fitHeight="200"/>
+    <VBox >
+        <VBox.margin>
+            <Insets left="10" />
+        </VBox.margin>
+        <Text fx:id="itemName">
+            <font>
+                <Font size="25.0" />
+            </font></Text>
+        <Text fx:id="itemCata">
+            <font>
+                <Font size="20.0" />
+            </font></Text>
+        <Text fx:id="itemPrice">
+            <font>
+                <Font size="20.0" />
+            </font></Text>
+        <Text fx:id="itemStatus">
+            <font>
+                <Font size="20.0" />
+            </font></Text>
+    </VBox>
 </VBox>
