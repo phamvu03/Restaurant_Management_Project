@@ -25,7 +25,6 @@ public class EquipmentDAO {
             while(rs.next()){
                 Equipment equip = new Equipment();
                 equip.setMaDungCu(rs.getString("MaDungCu"));
-                equip.setMaNV(rs.getString("MaNV"));
                 equip.setTenDungCu(rs.getString("TenDungCu"));
                 equip.setLoai(rs.getString("Loai"));
                 equip.setSoLuong(rs.getInt("SoLuong"));
@@ -42,7 +41,7 @@ public class EquipmentDAO {
     }
     public boolean addEquipment(Equipment equip){
         String sql = "INSERT INTO DungCu (MaDungCu, TenDungCu, Loai, SoLuong, TinhTrang,"
-                + "NgayThongKe, MaNV) VALUES (?,?,?,?,?,?,?)";
+                + "NgayThongKe) VALUES (?,?,?,?,?,?)";
         try(Connection connection = DatabaseConnection.GetConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)){
             stmt.setString(1, equip.getMaDungCu());
@@ -51,7 +50,6 @@ public class EquipmentDAO {
             stmt.setInt(4, equip.getSoLuong());
             stmt.setString(5, equip.getTinhTrang());
             stmt.setDate(6, equip.getNgayThongKe());
-            stmt.setString(7, equip.getMaNV());
             
             int rowsInserted = stmt.executeUpdate();
             return rowsInserted > 0;
@@ -62,7 +60,7 @@ public class EquipmentDAO {
     }
     public boolean updateEquipment(Equipment equip){
         String sql = "UPDATE DungCu SET TenDungCu = ?, Loai = ?, SoLuong = ?,"
-                + "TinhTrang = ?, NgayThongKe = ?, MaNV = ? WHERE MaDungCu = ?";
+                + "TinhTrang = ?, NgayThongKe = ? WHERE MaDungCu = ?";
         try(Connection connection = DatabaseConnection.GetConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)){
             stmt.setString(1, equip.getTenDungCu());
