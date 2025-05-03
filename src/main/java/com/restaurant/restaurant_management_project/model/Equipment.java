@@ -78,5 +78,11 @@ public class Equipment {
     public String toString() {
         return "equipment{" + "MaDungCu=" + MaDungCu + ", TenDungCu=" + TenDungCu + ", Loai=" + Loai + ", SoLuong=" + SoLuong + ", TinhTrang=" + TinhTrang + ", NgayThongKe=" + NgayThongKe + '}';
     }
+    
+    public void inThongTin() {
+        System.out.printf("%-10s %-20s %-15s %-10d %-15s %-20s\n",
+            MaDungCu, TenDungCu, Loai, SoLuong, TinhTrang, NgayThongKe.toString());
+    }
+
 
 }
