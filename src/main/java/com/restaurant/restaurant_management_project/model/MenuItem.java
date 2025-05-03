@@ -18,6 +18,9 @@ public class MenuItem {
     private MenuItem sideDish;
     private boolean status;
 
+    public MenuItem() {
+    }
+
     public MenuItem(String code, String name, Image image, BigDecimal price, float vat, String unit, String category, @Nullable MenuItem sideDish, boolean status) {
         this.code = code;
         this.name = name;

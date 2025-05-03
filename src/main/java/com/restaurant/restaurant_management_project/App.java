@@ -1,5 +1,7 @@
 package com.restaurant.restaurant_management_project;
 
+import com.restaurant.restaurant_management_project.dao.EquipmentDAO;
+import com.restaurant.restaurant_management_project.model.Equipment;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -8,6 +10,8 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.util.List;
 
 
 /**
@@ -28,6 +32,17 @@ public class App extends Application {
 
     public static void main(String[] args) {
         launch();
+        
+        List<Equipment> equipmentList;
+        
+//        Equipment newE = new Equipment("DC002", "A", "Loai 1", 100, "Tot", Date.valueOf("2025-4-30"));
+        EquipmentDAO equipDAO = new EquipmentDAO();
+//        equipDAO.addEquipment(newE);
+        equipmentList = equipDAO.GetAllEquipment();
+        for(Equipment e : equipmentList){
+            e.inThongTin();
+        }
+//        System.out.println();
     }
 
 }
