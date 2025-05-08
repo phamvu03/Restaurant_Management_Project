@@ -5,3 +5,27 @@
 .mainFxmlClass {
 
 }
+.search-box{
+    -fx-background-color: #cccccc;
+    -fx-background-radius: 100;
+}
+
+.search-btn{
+    -fx-background-color: #666666;
+    -fx-background-radius: 100;
+}
+
+.transparent{
+    -fx-background-color: rgba(0,0,0,0); 
+}
+
+.data-table{
+    -fx-background-color: #cccccc;
+    -fx-text-fill: #000000;
+    -fx-font-family: "Cambria";
+    -fx-font-size: 18px;
+}
+
+.func-btn{
+
+}

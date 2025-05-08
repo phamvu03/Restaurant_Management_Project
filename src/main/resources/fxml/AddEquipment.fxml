@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.restaurant.restaurant_management_project.controller.AddEquipmentController">
+    <stylesheets>
+        <URL value="@/css/addequipment.css" />
+    </stylesheets>
+   <children>
+      <TextField fx:id="tenDungCuTxt" layoutX="57.0" layoutY="91.0" prefHeight="26.0" prefWidth="363.0" promptText="Tên dụng cụ" />
+      <TextField layoutX="54.0" layoutY="143.0" promptText="Số lượng" />
+      <TextField layoutX="252.0" layoutY="143.0" promptText="Loại" />
+      <ComboBox layoutX="53.0" layoutY="200.0" prefHeight="26.0" prefWidth="223.0" />
+      <Button layoutX="156.0" layoutY="327.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="134.0" text="Thêm" />
+      <Label layoutX="56.0" layoutY="27.0" text="Thêm dụng cụ">
+         <font>
+            <Font name="Cambria" size="36.0" />
+         </font>
+      </Label>
+      <Button layoutX="327.0" layoutY="327.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="134.0" text="Hủy" />
+   </children>
+</AnchorPane>

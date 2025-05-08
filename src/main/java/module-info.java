@@ -7,8 +7,10 @@ module com.restaurant.restaurant_management_project {
     requires org.kordamp.ikonli.bootstrapicons;
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;
+    requires java.base;
 
     exports com.restaurant.restaurant_management_project;
     exports com.restaurant.restaurant_management_project.controller to javafx.fxml;
     opens com.restaurant.restaurant_management_project.controller to  javafx.fxml;
+    opens com.restaurant.restaurant_management_project.model to javafx.base;
 }
