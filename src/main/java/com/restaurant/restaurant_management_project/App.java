@@ -30,11 +30,8 @@ public class App extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
-        launch();
-        
+    public void connectionTest(){
         List<Equipment> equipmentList;
-        
 //        Equipment newE = new Equipment("DC002", "A", "Loai 1", 100, "Tot", Date.valueOf("2025-4-30"));
         EquipmentDAO equipDAO = new EquipmentDAO();
 //        equipDAO.addEquipment(newE);
@@ -42,7 +39,10 @@ public class App extends Application {
         for(Equipment e : equipmentList){
             e.inThongTin();
         }
-//        System.out.println();
+    }
+    
+    public static void main(String[] args) {
+        launch();
     }
 
 }
