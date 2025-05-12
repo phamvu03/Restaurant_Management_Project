@@ -71,6 +71,7 @@ public class ManageMenuItemView {
 
     public void initialize() {
         menuItemDao = new MenuItemDaoImpl();
+        System.out.println("Loaded");
         //Lấy dữ liệu
         loadData();
 
@@ -254,7 +255,7 @@ public class ManageMenuItemView {
         if(filterPopup == null)
         {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/app/nguyenhungthanh_2022601002/fxml/item-fillter-popup.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/item-fillter-popup.fxml"));
                 Parent popupContent = loader.load();
                 ItemFilterPopup popupController = loader.getController();
 
@@ -431,7 +432,7 @@ public class ManageMenuItemView {
     private void showInformationPopup()
     {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/app/nguyenhungthanh_2022601002/fxml/item-information-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/item-information-view.fxml"));
             Parent popupContent = loader.load();
             popupController = loader.getController();
 
@@ -456,7 +457,7 @@ public class ManageMenuItemView {
     public void backToHome(ActionEvent event) {
         Scene thisScene = content.getScene();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/app/nguyenhungthanh_2022601002/fxml/home-screen-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home-screen-view.fxml"));
         try {
             thisScene.setRoot(loader.load());
         } catch (IOException e) {

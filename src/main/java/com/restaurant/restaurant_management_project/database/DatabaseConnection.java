@@ -15,14 +15,13 @@ import java.util.logging.Logger;
  * @author admin
  */
 public class DatabaseConnection {
-    private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=RM_Db;integratedSecurity=true;encrypt=true;trustServerCertificate=true";
+    private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=RM_Db;encrypt=true;trustServerCertificate=true";
     private static Connection connection = null;
     
     public static Connection GetConnection() throws SQLException{
-        if(connection == null || connection.isClosed()){
             try{
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                connection = DriverManager.getConnection(URL);
+                connection = DriverManager.getConnection(URL,"nhahang_admin","abc123!@#");
                 System.out.println("Successfully access to SQL Server! :D");
             } catch (ClassNotFoundException ex) {
                 System.err.println("Cannot found SQL Server JDBC Driver:: " + ex.getMessage());
@@ -31,7 +30,6 @@ public class DatabaseConnection {
                 System.err.println("Connection error to SQL Server:: " + e.getMessage());
                 throw e;
             }
-        }
         return connection;
     }
     public static void closeConnection(){

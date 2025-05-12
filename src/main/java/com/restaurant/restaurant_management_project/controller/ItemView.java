@@ -33,7 +33,7 @@ public class ItemView extends GridCell<RMenuItem> {
     // --- State for the cell ---
     private boolean fxmlLoaded = false;
     private static final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-    private static final Image PLACEHOLDER_IMAGE = new Image(ItemView.class.getResource("/com/app/nguyenhungthanh_2022601002/image/em.png").toExternalForm());
+    private static final Image PLACEHOLDER_IMAGE = new Image(ItemView.class.getResource("/image/em.png").toExternalForm());
     private final Consumer<RMenuItem> clickConsumer;
     private CompletableFuture<?> currentImageLoadTask;
     private static final int MAX_CACHE_SIZE = 100;
@@ -133,7 +133,7 @@ public class ItemView extends GridCell<RMenuItem> {
         }
         try {
             FXMLLoader loader = new FXMLLoader();
-            URL fxmlUrl = getClass().getResource("/com/app/nguyenhungthanh_2022601002/fxml/item-view.fxml");
+            URL fxmlUrl = getClass().getResource("/fxml/item-view.fxml");
 
             if (fxmlUrl == null) {
                 System.err.println("CRITICAL ERROR: Cannot find FXML file: /com/app/nguyenhungthanh_2022601002/fxml/item-view.fxml");

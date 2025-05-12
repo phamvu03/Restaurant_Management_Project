@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.restaurant.restaurant_management_project.database.DatabaseConnection.GetConnection;
-import static com.restaurant.restaurant_management_project.database.DatabaseConnection.closeConnection;
 
 public class MenuItemDaoImpl implements MenuItemDao {
 
@@ -37,7 +36,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
     @Override
     public List<RMenuItem> getAll(int offset, int limit) {
         List<RMenuItem> menuItems = new ArrayList<>();
-        String sql = "SELECT Id, Item_id, Item_name, Item_status, Item_price, Item_category, Item_unit, Side_item, Item_image FROM MenuItem ORDER BY Id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT id, MaMon, TenMon, HinhAnh, Gia, DonVi, Nhom, MonAnKem, TrangThai FROM MonAn ORDER BY Id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         
         try (Connection conn = GetConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -48,16 +47,16 @@ public class MenuItemDaoImpl implements MenuItemDao {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     RMenuItem menuItem = new RMenuItem(
-                        rs.getString("Item_name"),
-                        rs.getBoolean("Item_status"),
-                        rs.getBigDecimal("Item_price"),
-                        rs.getString("Item_category"),
-                        rs.getBytes("Item_image"),
-                        rs.getString("Item_unit"),
-                        rs.getInt("Side_item") != 0 ? rs.getInt("Side_item") : null
+                        rs.getString("TenMon"),
+                        rs.getBoolean("TrangThai"),
+                        rs.getBigDecimal("Gia"),
+                        rs.getString("Nhom"),
+                        rs.getBytes("HinhAnh"),
+                        rs.getString("DonVi"),
+                        rs.getInt("MonAnKem") != 0 ? rs.getInt("MonAnKem") : null
                     );
-                    menuItem.setId(rs.getInt("Id"));
-                    menuItem.setItemId(rs.getString("Item_id"));
+                    menuItem.setId(rs.getInt("id"));
+                    menuItem.setItemId(rs.getString("MaMon"));
                     menuItems.add(menuItem);
                 }
             }
@@ -68,7 +67,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
     }
 
     public int getTotalCount() {
-        String sql = "SELECT COUNT(*) FROM MenuItem";
+        String sql = "SELECT COUNT(*) FROM MonAn";
         try (Connection connection = GetConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql);
              ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -83,8 +82,8 @@ public class MenuItemDaoImpl implements MenuItemDao {
 
     @Override
     public boolean add(RMenuItem item) {
-        String sql = "INSERT INTO menuItem (Item_id,Item_name,Item_status,Item_price,Item_category,Item_image,Item_unit,Side_item,Item_quantity_sold)" +
-                "VALUES (?, ?, ?,?,?,?,?,?,?);";
+        String sql = "INSERT INTO MonAn (MaMon,TenMon,TrangThai,Gia,Nhom,HinhAnh,DonVi,MonAnKem)" +
+                "VALUES (?, ?, ?,?,?,?,?,?);";
         int result;
         Connection connection;
         PreparedStatement preparedStatement;
@@ -116,7 +115,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
                     item.setId(id);
                 }
             }
-            closeConnection();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -125,8 +124,8 @@ public class MenuItemDaoImpl implements MenuItemDao {
 
     @Override
     public boolean update(RMenuItem item) {
-        String sql = "UPDATE menuItem " +
-                "SET Item_name = ?, Item_status = ?, Item_price = ?, Item_category = ?, Item_image = ?, Item_unit = ?, Side_item = ?, Item_quantity_sold = ? " +
+        String sql = "UPDATE MonAn " +
+                "SET TenMon = ?, TrangThai = ?, Gia = ?, Nhom = ?, HinhAnh = ?, DonVi = ?, MonAnKem = ? " +
                 "WHERE Id = ?;";
         Connection connection;
         PreparedStatement preparedStatement;
@@ -144,7 +143,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
                 preparedStatement.setNull(7, Types.INTEGER);
             }
             else preparedStatement.setInt(7, item.getSideItem());
-            preparedStatement.setInt(9, item.getId());
+            preparedStatement.setInt(8, item.getId());
 
             return exeUpdate(preparedStatement,connection);
         } catch (SQLException e) {
@@ -154,8 +153,8 @@ public class MenuItemDaoImpl implements MenuItemDao {
 
     @Override
     public boolean delete(RMenuItem item) {
-        String sql = "DELETE FROM menuItem WHERE Id=?";
-        String sqlUpdate = "UPDATE dbo.menuItem SET Side_item = NULL WHERE Side_item = ?";
+        String sql = "DELETE FROM MonAn WHERE Id=?";
+        String sqlUpdate = "UPDATE dbo.MonAn SET MonAnKem = NULL WHERE MonAnKem = ?";
         Connection connection;
         PreparedStatement preparedStatement;
         try {
@@ -194,9 +193,6 @@ public class MenuItemDaoImpl implements MenuItemDao {
                 throw new RuntimeException(ex);
             }
             throw new RuntimeException(e);
-        }
-        finally {
-            closeConnection();
         }
     }
 

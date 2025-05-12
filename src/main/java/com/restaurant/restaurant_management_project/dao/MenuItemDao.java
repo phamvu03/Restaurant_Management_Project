@@ -2,8 +2,6 @@ package com.restaurant.restaurant_management_project.dao;
 
 
 
-
-
 import com.restaurant.restaurant_management_project.model.RMenuItem;
 
 import java.util.List;

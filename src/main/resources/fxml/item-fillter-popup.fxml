@@ -7,7 +7,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.app.nguyenhungthanh_2022601002.controller.ItemFilterPopup"
+      fx:controller="com.restaurant.restaurant_management_project.controller.ItemFilterPopup"
       prefHeight="400.0" prefWidth="350.0"
       styleClass="filter-popup"
       stylesheets="@../css/item_filter_popup.css">
