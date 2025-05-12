@@ -1,19 +1,270 @@
-.plus-btn
-{
-    -fx-fit-width: 100px;
-    -fx-fit-height: 100px;
-    -fx-background-fill: white;
-    -fx-border-radius: 10px;
-}
-.search-field{
-    -fx-min-width:500px;
-    -fx-min-height:30px;
-    -fx-pref-width:700px;
-    -fx-pref-height:40px;
-    -fx-border-radius:24px;
-    -fx-background-radius: 24px;
-}
-.search-btn
-{
+/* === Base Color Variables === */
+* {
+    -primary-color: #1a73e8;
+    -primary-light: #e8f0fe;
+    -primary-hover: #d2e3fc;
+    -text-color: #3c4043;
+    -text-secondary: #5f6368;
+    -background-color: #ffffff;
+    -border-color: #dadce0;
+    -hover-color: #f1f3f4;
+    -focus-color: #e8f0fe;
+    -selected-color: #e8f0fe;
+    -shadow-color: rgba(60, 64, 67, 0.3);
 
+    /* Custom app colors */
+    -success-color: #34a853;
+    -warning-color: #fbbc04;
+    -error-color: #ea4335;
+    -disabled-color: #dadce0;
+
+        -scrollbar-track-color: transparent;
+        -scrollbar-thumb-color: #616161;
+        -scrollbar-thumb-hover-color: #424242;
+}
+
+/* === Root Container === */
+.root {
+    -fx-background-color: -background-color;
+    -fx-font-family: 'Roboto', 'Segoe UI', sans-serif;
+    -fx-font-size: 14px;
+}
+
+#content {
+    -fx-background-color: -background-color;
+}
+
+/* === Search Bar === */
+.search-container {
+    -fx-background-color: -background-color;
+    -fx-background-radius: 24px;
+    -fx-border-radius: 24px;
+    -fx-border-color: -border-color;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 4, 0, 0, 1px);
+    -fx-min-height: 48px;
+    -fx-pref-height: 48px;
+    -fx-max-height: 48px;
+    -fx-min-width: 300px;
+    -fx-max-width: 800px;
+    -fx-alignment: center-left;
+}
+.typing-search-container{
+    -fx-border-radius: 24px 24px 0px 0px;
+    -fx-background-radius: 24px 24px 0px 0px;
+}
+.search-container:focused-within {
+    -fx-border-color: -primary-color;
+    -fx-effect: dropshadow(gaussian, derive(-primary-color, 80%), 8, 0, 0, 2px);
+}
+
+.search-field {
+    -fx-background-color: transparent;
+    -fx-border-width: 0px;
+    -fx-padding: 0px 8px;
+    -fx-font-size: 14px;
+    -fx-text-fill: -text-color;
+    -fx-prompt-text-fill: -text-secondary;
+}
+
+.search-field:focused {
+    -fx-background-color: transparent;
+    -fx-border-width: 0px;
+    -fx-effect: none;
+}
+
+.search-icon {
+    -fx-icon-color: -text-secondary;
+    -fx-padding: 0px 8px 0px 8px;
+}
+
+.clear-button, .search-btn {
+    -fx-background-color: transparent;
+    -fx-background-radius: 50%;
+    -fx-min-width: 36px;
+    -fx-min-height: 36px;
+    -fx-max-width: 36px;
+    -fx-max-height: 36px;
+    -fx-padding: 0px;
+    -fx-cursor: hand;
+}
+
+.clear-button:hover, .search-btn:hover {
+    -fx-background-color: -hover-color;
+}
+
+.clear-button:pressed, .search-btn:pressed {
+    -fx-background-color: derive(-hover-color, -5%);
+}
+
+.clear-button .ikonli-font-icon, .search-btn .ikonli-font-icon {
+    -fx-icon-color: -text-secondary;
+}
+
+/* === Sort Buttons === */
+.name-sort, .price-sort {
+    -fx-background-color: -background-color;
+    -fx-text-fill: -text-color;
+    -fx-border-color: -border-color;
+    -fx-border-radius: 18px;
+    -fx-background-radius: 18px;
+    -fx-padding: 5px 12px;
+    -fx-cursor: hand;
+}
+
+.name-sort:hover, .price-sort:hover {
+    -fx-background-color: -hover-color;
+}
+
+.name-sort:pressed, .price-sort:pressed {
+    -fx-background-color: derive(-hover-color, -5%);
+}
+
+.name-sort .ikonli-font-icon, .price-sort .ikonli-font-icon {
+    -fx-icon-color: -text-secondary;
+}
+
+.name-sort.asc .ikonli-font-icon, .price-sort.asc .ikonli-font-icon {
+    -fx-icon-literal: "bi-chevron-up";
+    -fx-icon-color: -primary-color;
+}
+
+.name-sort.desc .ikonli-font-icon, .price-sort.desc .ikonli-font-icon {
+    -fx-icon-literal: "bi-chevron-down";
+    -fx-icon-color: -primary-color;
+}
+
+/* Nút sắp xếp được chọn */
+.name-sort.active, .price-sort.active {
+    -fx-background-color: -primary-light;
+    -fx-border-color: -primary-color;
+    -fx-text-fill: -primary-color;
+    -fx-font-weight: bold;
+}
+
+/* === GridView của các Item === */
+.grid-view {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+}
+
+.grid-cell {
+    -fx-background-color: -background-color;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-border-color: -border-color;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 1px);
+    -fx-cursor: hand;
+}
+
+.grid-cell:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 2px);
+    -fx-border-color: -primary-light;
+}
+
+.grid-cell:pressed {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 1px);
+}
+
+.grid-cell:selected {
+    -fx-border-color: -primary-color;
+    -fx-border-width: 2px;
+    -fx-background-color: derive(-primary-light, 40%);
+}
+
+/* === Floating Add Button === */
+.plus-btn {
+    -fx-background-color: -primary-color;
+    -fx-background-radius: 28px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-min-width: 110px;
+    -fx-min-height: 56px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 3px);
+    -fx-cursor: hand;
+    -fx-padding: 0px 20px 0px 16px;
+}
+
+.plus-btn .ikonli-font-icon {
+    -fx-icon-color: white;
+    -fx-fill: white;
+}
+
+.plus-btn:hover {
+    -fx-background-color: derive(-primary-color, -10%);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 12, 0, 0, 4px);
+}
+
+.plus-btn:pressed {
+    -fx-background-color: derive(-primary-color, -15%);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 2px);
+    -fx-translate-y: 1px;
+}
+
+#suggestName {
+    -fx-background-color: -background-color;
+    -fx-background-radius: 0px 0px 24px 24px;
+    -fx-border-radius: 0px 0px 24px 24px;
+    -fx-border-color: -border-color;
+    -fx-border-width: 1px;
+    -fx-padding: 8px 0px;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 8, 0, 0, 2px);
+    -fx-max-height: 500px;
+    -fx-cursor: hand;
+    -fx-focus-traversable: false;
+    -fx-view-order: -1;
+}
+
+//thanh cuộn
+
+/* Scrollbar container */
+.scroll-bar {
+    -fx-background-color: -scrollbar-track-color;
+    -fx-background-radius: 0;
+}
+
+/* Scrollbar track */
+.scroll-bar .track {
+    -fx-background-color: -scrollbar-track-color;
+    -fx-background-radius: 0;
+}
+
+/* Scrollbar thumb */
+.scroll-bar .thumb {
+    -fx-background-color: -scrollbar-thumb-color;
+    -fx-background-radius: 0;
+    -fx-opacity: 0.5;
+}
+
+/* Hiệu ứng hover cho thumb */
+.scroll-bar .thumb:hover,
+.scroll-bar .thumb:pressed {
+    -fx-background-color: -scrollbar-thumb-hover-color;
+    -fx-opacity: 0.7;
+}
+
+/* Tùy chỉnh kích thước thanh cuộn */
+.scroll-bar:vertical {
+    -fx-pref-width: 8px;
+}
+
+.scroll-bar:horizontal {
+    -fx-pref-height: 8px;
+}
+
+/* Ẩn các nút tăng/giảm */
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-opacity: 0;
+    -fx-padding: 0;
+}
+
+/* Ẩn các mũi tên tăng/giảm */
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0;
 }

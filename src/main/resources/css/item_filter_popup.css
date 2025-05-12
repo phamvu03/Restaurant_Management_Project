@@ -1,0 +1,203 @@
+
+/* ===== ROOT VARIABLES ===== */
+* {
+    /* Màu sắc chính */
+    -primary-color: #2196F3;      /* Xanh dương */
+    -primary-light: #E3F2FD;
+    -primary-dark: #1976D2;
+
+    /* Màu trung tính */
+    -background-color: white;
+    -surface-color: #FFFFFF;
+    -border-color: #E0E0E0;
+    -hover-color: #F5F5F5;
+
+    /* Màu văn bản */
+    -text-primary: #212121;
+    -text-secondary: #757575;
+    -text-hint: #9E9E9E;
+
+    /* Shadow */
+    -shadow-color: rgba(0,0,0,0.1);
+    -shadow-light: rgba(0,0,0,0.05);
+}
+
+/* ===== BASE STYLES ===== */
+.root {
+    -fx-font-family: 'Roboto', sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: -background-color;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 10, 0, 0, 3px);
+}
+
+/* ===== POPUP CONTAINER ===== */
+.filter-popup {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-border-color: -border-color;
+    -fx-border-radius: 8px;
+    -fx-border-width: 2px;
+}
+
+/* ===== LABELS ===== */
+Label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -text-primary;
+    -fx-padding: 10 0 5 0;
+}
+
+/* Tiêu đề nhóm lọc */
+Label[style*="font-weight: bold"] {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-primary;
+    -fx-border-color: transparent transparent -border-color transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 15 0 8 0;
+}
+
+/* ===== MENU BUTTON ===== */
+.menu-button {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-border-color: -border-color;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 12px;
+    -fx-effect: dropshadow(gaussian, -shadow-light, 4, 0, 0, 1px);
+    -fx-pref-width: 200px;
+}
+
+.menu-button:hover {
+    -fx-border-color: -primary-color;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 6, 0, 0, 2px);
+}
+
+.menu-button:showing {
+    -fx-border-color: -primary-color;
+    -fx-background-color: -primary-light;
+}
+
+.menu-button > .arrow-button > .arrow {
+    -fx-background-color: -text-primary;
+}
+
+/* ===== MENU ITEMS ===== */
+.menu-item {
+    -fx-padding: 8px 16px;
+}
+
+.menu-item:focused {
+    -fx-background-color: -primary-light;
+}
+
+.menu-item:hover {
+    -fx-background-color: -hover-color;
+}
+
+.menu-item .label {
+    -fx-font-weight: normal;
+    -fx-padding: 0;
+    -fx-text-fill: black;
+    -fx-border-width: 0;
+}
+
+/* ===== RANGE SLIDER (ControlsFX) ===== */
+.range-slider {
+    -fx-pref-height: 35px;
+    -fx-padding: 10 0 0 0;
+}
+
+.range-slider .track {
+    -fx-background-color: #E0E0E0;
+    -fx-background-radius: 3px;
+    -fx-padding: 2px;
+}
+
+.range-slider .range-bar {
+    -fx-background-color: -primary-color;
+    -fx-background-radius: 3px;
+}
+
+.range-slider .low-thumb, .range-slider .high-thumb {
+    -fx-background-color: white;
+    -fx-background-radius: 50%;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 4, 0, 0, 2px);
+    -fx-border-color: -primary-color;
+    -fx-border-radius: 50%;
+    -fx-border-width: 2px;
+}
+
+.range-slider .low-thumb:hover, .range-slider .high-thumb:hover {
+    -fx-background-color: -primary-light;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 8, 0, 0, 3px);
+}
+
+.range-slider .axis {
+    -fx-tick-label-fill: -text-secondary;
+    -fx-tick-label-font-size: 10px;
+    -fx-tick-length: 5px;
+}
+
+.range-slider .axis .axis-tick-mark {
+    -fx-stroke: #E0E0E0;
+    -fx-stroke-width: 1px;
+}
+
+.range-slider .axis .axis-minor-tick-mark {
+    -fx-stroke: #EEEEEE;
+    -fx-stroke-width: 0.5px;
+}
+
+/* ===== CHECKBOX CONTAINER ===== */
+#categoryVBox {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-border-color: -border-color;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, -shadow-light, 4, 0, 0, 1px);
+    -fx-max-height: 150px;
+}
+
+/* ===== CHECKBOXES ===== */
+.check-box {
+    -fx-font-size: 14px;
+    -fx-text-fill: -text-primary;
+    -fx-padding: 6px 0;
+}
+
+.check-box .box {
+    -fx-background-color: white;
+    -fx-background-radius: 4px;
+    -fx-border-color: -border-color;
+    -fx-border-radius: 4px;
+    -fx-border-width: 1px;
+    -fx-padding: 3px;
+}
+
+.check-box:hover .box {
+    -fx-border-color: -primary-color;
+}
+
+.check-box:selected .box {
+    -fx-background-color: -primary-color;
+    -fx-border-color: -primary-color;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+    -fx-shape: "M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z";
+}
+
+
+/* ===== PRICE LABEL FORMATTING ===== */
+.price-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: -text-secondary;
+    -fx-padding: 3 0 0 0;
+}

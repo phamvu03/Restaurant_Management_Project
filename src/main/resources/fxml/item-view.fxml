@@ -10,32 +10,30 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Font?>
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      prefWidth="300"
-      fx:controller="com.restaurant.restaurant_management_project.controller.ItemView"
-      fx:id="itemContainer"
+<VBox fx:id="itemContainer" prefHeight="300"
+      xmlns="http://javafx.com/javafx/11.0.14-internal"
+      xmlns:fx="http://javafx.com/fxml/1"
+      styleClass="container"
+      stylesheets="@../css/item-view-style.css"
 >
-    <ImageView fx:id="itemImage" fitHeight="200"/>
-    <VBox >
+    <StackPane styleClass="image-container">
+        <ImageView fx:id="itemImage" fitHeight="200" styleClass="item-img"/>
+    </StackPane>
+    <VBox VBox.vgrow="ALWAYS">
         <VBox.margin>
             <Insets left="10" />
         </VBox.margin>
-        <Text fx:id="itemName">
-            <font>
-                <Font size="25.0" />
-            </font></Text>
-        <Text fx:id="itemCata">
-            <font>
-                <Font size="20.0" />
-            </font></Text>
-        <Text fx:id="itemPrice">
-            <font>
-                <Font size="20.0" />
-            </font></Text>
-        <Text fx:id="itemStatus">
-            <font>
-                <Font size="20.0" />
-            </font></Text>
+        <Text fx:id="itemName" styleClass="item-name"/>
+        <Text fx:id="itemCate" styleClass="item-cate"/>
+        <Text fx:id="itemPrice" styleClass="item-price"/>
+        <Region VBox.vgrow="ALWAYS"/>
+        <HBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Text fx:id="itemStatus">
+                <HBox.margin>
+                    <Insets right="10" bottom="5"/>
+                </HBox.margin>
+            </Text>
+        </HBox>
     </VBox>
 </VBox>

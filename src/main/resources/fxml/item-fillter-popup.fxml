@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.RangeSlider?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.app.nguyenhungthanh_2022601002.controller.ItemFilterPopup"
+      prefHeight="400.0" prefWidth="350.0"
+      styleClass="filter-popup"
+      stylesheets="@../css/item_filter_popup.css">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <!-- Tiêu đề popup (tùy chọn) -->
+    <Label text="Lọc danh sách món ăn" styleClass="popup-title"/>
+    <!-- Trạng thái -->
+    <Label text="Trạng thái:" style="-fx-font-weight: bold;"/>
+    <MenuButton fx:id="statusMenuButton" text="Tất cả">
+        <items>
+            <MenuItem text="Tất cả" fx:id="all" onAction="#selectStatus"/>
+            <MenuItem text="Còn hàng" fx:id="available" onAction="#selectStatus"/>
+            <MenuItem text="Hết hàng" fx:id="unavailable" onAction="#selectStatus"/>
+        </items>
+    </MenuButton>
+
+    <Label text="Khoảng giá:" style="-fx-font-weight: bold;"/>
+    <RangeSlider fx:id="priceRangeSlider" min="0" max="800000" lowValue="10000" highValue="800000"
+                 showTickLabels="true" showTickMarks="true" majorTickUnit="20000" blockIncrement="10000"/>
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label fx:id="minPriceLabel" text="0đ" styleClass="price-label"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="maxPriceLabel" text="800,000đ" styleClass="price-label"/>
+    </HBox>
+    <Label text="Phân loại:" style="-fx-font-weight: bold;"/>
+        <VBox fx:id="categoryVBox" spacing="5"/>
+</VBox>

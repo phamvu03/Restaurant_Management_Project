@@ -6,9 +6,44 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.restaurant.restaurant_management_project.controller.HomeScreenView"
-            prefHeight="400.0" prefWidth="600.0">
-    <fx:include source="side-bar.fxml"/>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<HBox prefHeight="700.0" prefWidth="1000.0" stylesheets="@../css/home-screen-style.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.nguyenhungthanh_2022601002.controller.HomeScreen">
+
+    <VBox alignment="CENTER">
+        <Button fx:id="manageMenu" onAction="#loadManagementScreen" text="Quản lý thực đơn" VBox.vgrow="ALWAYS" />
+
+        <VBox alignment="CENTER" styleClass="metric-card" VBox.vgrow="ALWAYS">
+            <Label text="Tổng doanh thu" textAlignment="CENTER" />
+            <Text fx:id="totalBenefit" />
+        </VBox>
+
+        <VBox alignment="CENTER" styleClass="metric-card">
+            <Label alignment="CENTER" text="Món ăn bán chạy nhất" />
+            <Text fx:id="bestSellingItemName" />
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <ImageView fx:id="bestSellingItemImag" fitHeight="200" fitWidth="200" preserveRatio="true" />
+            </HBox>
+        </VBox>
+
+        <!-- Pie Chart -->
+        <PieChart fx:id="pieChart" title="Tỷ lệ Doanh thu theo danh mục" />
+    </VBox>
+
+
+    <VBox HBox.hgrow="ALWAYS">
+        <!-- Bar Chart -->
+        <BarChart fx:id="barChar1" legendVisible="false" title="Thống kê số lượng theo danh mục">
+            <xAxis>
+                <CategoryAxis label="Danh mục" side="BOTTOM" fx:id="xAxis1" minWidth="1000" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis fx:id="yAxis1" label="Số lượng bán" side="LEFT" />
+            </yAxis>
+        </BarChart>
+    </VBox>
 </HBox>

@@ -1,0 +1,285 @@
+
+
+/* ===== ROOT VARIABLES ===== */
+* {
+    /* Màu sắc chính */
+    -primary-color: #2196F3;      /* Xanh dương */
+    -primary-light: #E3F2FD;
+    -primary-dark: #1976D2;
+
+    /* Màu trung tính */
+    -background-color: white;
+    -surface-color: #FFFFFF;
+    -card-color: white;
+    -border-color: #E0E0E0;
+
+    /* Màu văn bản */
+    -text-primary: #212121;
+    -text-secondary: #757575;
+    -text-hint: #9E9E9E;
+
+    /* Màu trạng thái */
+    -success-color: #4CAF50;
+    -error-color: #F44336;
+    -warning-color: #FFC107;
+
+    /* Shadow */
+    -shadow-color: rgba(0,0,0,0.1);
+}
+
+/* ===== BASE STYLES ===== */
+.root {
+    -fx-font-family: 'Roboto', sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: -background-color;
+}
+
+/* ===== TITLE HEADER ===== */
+.title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -primary-color;
+}
+
+
+/* ===== SCROLL PANE STYLING ===== */
+.scroll-pane {
+    -fx-background-color: white;
+    -fx-padding: 0;
+    -fx-border-width: 0;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: white;
+}
+
+/* Scrollbar styling */
+.scroll-bar {
+    -fx-background-color: transparent;
+    -fx-background-radius: 2em;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+    -fx-background-radius: 2em;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #EEEEEE;
+    -fx-background-radius: 2em;
+}
+
+.scroll-bar .thumb:hover,
+.scroll-bar .thumb:pressed {
+    -fx-background-color: #DDDDDD;
+}
+
+.scroll-bar:vertical {
+    -fx-pref-width: 20px;
+    -fx-padding: 0 2px;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-opacity: 0;
+    -fx-padding: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0;
+}
+
+/* ===== FORM CONTAINER ===== */
+#form {
+    -fx-spacing: 12px;
+    -fx-background-color: white;
+}
+
+/* ===== IMAGE CONTAINER ===== */
+.item-img {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 8, 0, 0, 2px);
+    -fx-cursor: hand;
+    -fx-border-color: -border-color;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+}
+
+.item-img:hover {
+    -fx-effect: dropshadow(gaussian, -shadow-color, 12, 0, 0, 4px);
+    -fx-border-color: -primary-color;
+}
+
+Label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-primary;
+    -fx-padding: 2px 0px 2px 0px;
+}
+
+.text-field {
+
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-border-color: -border-color;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-padding: 10px 12px;
+    -fx-font-size: 14px;
+    -fx-text-fill: -text-primary;
+    -fx-prompt-text-fill: -text-hint;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 2, 0, 0, 1px);
+    -fx-opacity: 1.0 !important; /* Đảm bảo không bị ẩn */
+}
+
+.text-field:focused {
+    -fx-border-color: -primary-color;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 4, 0, 0, 2px);
+}
+
+.text-field:disabled {
+    -fx-opacity: 0.8 !important;
+    -fx-background-color: #F9F9F9;
+}
+
+/* ===== ERROR MESSAGES ===== */
+#errorNameMsg, #errorPriceMsg, #errorQuantityMsg {
+    -fx-fill: -error-color;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+}
+
+/* ===== MENU BUTTON ===== */
+.menu-button {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-border-color: -border-color;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-padding: 8px 12px;
+    -fx-font-size: 14px;
+    -fx-text-fill: -text-primary;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 2, 0, 0, 1px);
+    -fx-opacity: 1.0 !important; /* Đảm bảo không bị ẩn */
+}
+
+.menu-button > .arrow-button > .arrow {
+    -fx-background-color: -text-primary;
+}
+
+.menu-button:hover {
+    -fx-border-color: -primary-color;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 4, 0, 0, 2px);
+}
+
+.menu-button:showing {
+    -fx-border-color: -primary-color;
+    -fx-background-color: -primary-light;
+}
+
+/* Menu items */
+.menu-item {
+    -fx-padding: 8px 16px;
+}
+
+.menu-item:focused {
+    -fx-background-color: -primary-light;
+}
+
+.menu-item .label {
+    -fx-font-weight: normal;
+}
+
+
+/* ===== CHECKBOX ===== */
+.check-box {
+    -fx-font-size: 14px;
+    -fx-text-fill: -text-primary;
+    -fx-padding: 5px;
+}
+
+.check-box .box {
+    -fx-background-color: white;
+    -fx-background-radius: 4px;
+    -fx-border-color: -border-color;
+    -fx-border-radius: 4px;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 1, 0, 0, 1px);
+}
+
+.check-box:selected .box {
+    -fx-background-color: -primary-color;
+    -fx-border-color: -primary-color;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
+
+.check-box:hover .box {
+    -fx-border-color: -primary-color;
+}
+
+/* ===== BUTTONS ===== */
+.button {
+    -fx-background-color: white;
+    -fx-text-fill: -primary-color;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 24px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+    -fx-border-color: -primary-color;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 4, 0, 0, 2px);
+    -fx-opacity: 1.0 !important; /* Đảm bảo không bị ẩn */
+}
+
+.button:hover {
+    -fx-background-color: -primary-light;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 8, 0, 0, 3px);
+}
+
+.button:pressed {
+    -fx-background-color: -primary-light;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 2, 0, 0, 1px);
+    -fx-translate-y: 1px;
+}
+
+/* Button styles */
+#button1 {
+    -fx-background-color: white;
+    -fx-text-fill: -primary-color;
+    -fx-border-color: -primary-color;
+}
+
+#button1:hover {
+    -fx-background-color: -primary-light;
+}
+
+#button2 {
+    -fx-background-color: white;
+    -fx-text-fill: -error-color;
+    -fx-border-color: -error-color;
+}
+
+#button2:hover {
+    -fx-background-color: #FFEBEE;  /* Màu đỏ rất nhạt */
+}
+
+/* ===== CONTAINER ADJUSTMENTS ===== */
+VBox {
+    -fx-background-color: white;
+}
+
+/* HBox cuối cùng chứa các nút */
+HBox:last-child {
+    -fx-background-color: white;
+    -fx-border-color: -border-color;
+    -fx-border-width: 1px 0 0 0;
+    -fx-effect: dropshadow(gaussian, -shadow-color, 2, 0, 0, -1px);
+}

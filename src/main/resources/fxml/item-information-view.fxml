@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.restaurant.restaurant_management_project.controller.ItemInformationView"
+      prefHeight="600" prefWidth="400"
+      stylesheets="@../css/item_information_view.css"
+      style="-fx-background-color: white;"
+>
+    <HBox alignment="CENTER">
+        <Label text="Thông tin món ăn" styleClass="title"/>
+    </HBox>
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"
+    VBox.vgrow="ALWAYS"  style="-fx-background-color: white;"
+    >
+        <VBox spacing="8.0" style="-fx-padding: 20;" fx:id="form">
+            <StackPane onMouseClicked="#chooseImageFile" fx:id="imageChose">
+                <ImageView fx:id="itemImage" styleClass="item-img" fitHeight="150" fitWidth="150" />
+            </StackPane>
+            <TextField fx:id="itemID" editable="false" managed="${itemID.visible}"/>
+            <Label text="Tên: "/>
+            <TextField fx:id="itemName" editable="false" />
+            <Text fx:id="errorNameMsg" visible="false" managed="${errorNameMsg.visible}"/>
+            <Label text="Giá"/>
+            <TextField fx:id="itemPrice" editable="false" />
+            <Text fx:id="errorPriceMsg" visible="false" managed="${errorPriceMsg.visible}"/>
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Đơn vị tính: "/>
+                <MenuButton fx:id="itemUnit" text="Cái"/>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Phân loại: "/>
+                <MenuButton fx:id="itemCate" text="Món chính" />
+            </HBox>
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Món ăn kèm: "/>
+                <MenuButton text="Không có" fx:id="sideItem" styleClass="side"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Trạng thái: "/>
+                <CheckBox fx:id="itemStatus" text="Unavailable"/>
+            </HBox>
+        </VBox>
+    </ScrollPane>
+    <HBox spacing="100" style="-fx-padding: 10;" alignment="CENTER">
+        <Button fx:id="button1" text="Sửa"/>
+        <Button fx:id="button2" text="Xóa"/>
+    </HBox>
+</VBox>

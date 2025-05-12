@@ -1,6 +1,7 @@
 package com.restaurant.restaurant_management_project.controller;
 
 import com.restaurant.restaurant_management_project.util.ItemFillterData;
+import com.restaurant.restaurant_management_project.util.enums.ItemCategory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -36,8 +37,7 @@ public class ItemFilterPopup {
     private Consumer<ItemFillterData> dataConsumer;
 
     // Danh sách phân loại có thể có
-    private final List<String> CATEGORY_OPTIONS = List.of("an kem", "Gia dụng", "Thời trang", "Sách", "Thể thao", "Mẹ & Bé");
-
+    private final List<String> CATEGORY_OPTIONS = ItemCategory.getAllDisplayNames();
     private Boolean currentStatus = null;
     private final List<CheckBox> categoryCheckBoxes = new ArrayList<>(); // Giữ tham chiếu đến các checkbox
 
@@ -91,31 +91,24 @@ public class ItemFilterPopup {
     private void setupRangeSliderListeners() {
         // Cập nhật khi người dùng *thả chuột* ra khỏi slider (ít cập nhật hơn là khi kéo)
         priceRangeSlider.lowValueChangingProperty().addListener((obs, wasChanging, isChanging) -> {
-            if (!isChanging) { // Chỉ cập nhật khi isChanging == false (đã thả chuột)
+            if (!isChanging) {
                 notifyDataChanged();
             }
-//            updateSliderTooltip(); // Cập nhật tooltip ngay cả khi đang kéo
         });
         priceRangeSlider.highValueChangingProperty().addListener((obs, wasChanging, isChanging) -> {
             if (!isChanging) {
                 notifyDataChanged();
             }
-//            updateSliderTooltip();
         });
-        // Cập nhật tooltip ban đầu
-//        Platform.runLater(this::updateSliderTooltip); // Đảm bảo slider đã được vẽ
+
     }
 
-    /**
-     * Phương thức này được gọi từ MainViewController để truyền các tham chiếu cần thiết.
-     */
     public void initializeData(Popup ownerPopup, Consumer<ItemFillterData> dataConsumer) {
         this.ownerPopup = ownerPopup;
         this.dataConsumer = dataConsumer;
-        // Gửi trạng thái ban đầu khi popup được hiển thị
         notifyDataChanged();
     }
-    /** Thu thập dữ liệu hiện tại từ các control và gửi về MainViewController */
+
     private void notifyDataChanged() {
         if (dataConsumer == null) {
             System.err.println("Dữ liệu không có ");

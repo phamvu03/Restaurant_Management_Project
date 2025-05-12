@@ -1,0 +1,215 @@
+
+/* ===== COLOR VARIABLES ===== */
+* {
+    /* Color Palette */
+    -primary-color: #4c6ef5;
+    -primary-light: #e7ebfd;
+    -primary-dark: #3b5bdb;
+    -secondary-color: #74c0fc;
+    -success-color: #40c057;
+    -warning-color: #fab005;
+    -danger-color: #fa5252;
+
+    /* Neutrals */
+    -background-color: #f8f9fa;
+    -card-color: #ffffff;
+    -border-color: #e9ecef;
+
+    /* Text Colors */
+
+    -text-primary: #343a40;
+    -text-secondary: #6c757d;
+    -text-light: #adb5bd;
+    -text-accent: #4c6ef5;
+}
+
+/* ===== BASE STYLES ===== */
+.root {
+    -fx-font-family: "Inter", system-ui, sans-serif;
+    -fx-background-color: -background-color;
+    -fx-font-size: 13px;
+}
+
+/* ===== MAIN LAYOUT ===== */
+HBox {
+    -fx-background-color: -background-color;
+    -fx-spacing: 20;
+    -fx-padding: 20;
+    -fx-alignment: top-center;
+}
+
+#manageMenu {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 12px 20px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
+#manageMenu:hover {
+    -fx-background-color: derive(-primary-color, 10%);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 3);
+}
+
+#manageMenu:pressed {
+    -fx-background-color: derive(-primary-color, -10%);
+    -fx-translate-y: 1px;
+}
+
+/* ===== METRIC CARDS ===== */
+.metric-card {
+    -fx-background-color: -card-color;
+    -fx-background-radius: 12px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);
+    -fx-min-height: 100px;
+    -fx-alignment: center;
+    -fx-border-color: -border-color;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+}
+
+/* Metric values */
+#totalBenefit {
+    -fx-fill: -text-primary;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+/* Best selling item */
+#bestSellingItemName {
+    -fx-fill: -text-primary;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10px 0;
+}
+
+/* Best selling item image */
+#bestSellingItemImag {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-border-color: -border-color;
+    -fx-border-width: 1px;
+}
+
+/* ===== CHARTS ===== */
+/* Common chart styling */
+.chart {
+    -fx-padding: 10px;
+    -fx-background-color: -card-color;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);
+    -fx-border-color: -border-color;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+}
+
+.chart-title {
+    -fx-text-fill: -text-primary;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px 0 10px 0;
+}
+
+/* Pie Chart Styling */
+#pieChart {
+    -fx-padding: 15px;
+}
+
+.chart-pie {
+    -fx-border-color: white;
+    -fx-border-width: 1px;
+}
+
+.chart-pie-label {
+    -fx-fill: -text-primary;
+    -fx-font-size: 12px;
+}
+
+.chart-pie-label-line {
+    -fx-stroke: -text-light;
+    -fx-stroke-width: 1px;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+}
+
+.chart-legend-item {
+    -fx-text-fill: -text-primary;
+}
+
+/* Pie slices colors */
+.data0.chart-pie { -fx-pie-color: #4c6ef5; }
+.data1.chart-pie { -fx-pie-color: #74c0fc; }
+.data2.chart-pie { -fx-pie-color: #66d9e8; }
+.data3.chart-pie { -fx-pie-color: #63e6be; }
+.data4.chart-pie { -fx-pie-color: #a9e34b; }
+
+/* Bar Chart Styling */
+#barChar1 {
+    -fx-padding: 15px;
+    -fx-pref-height: 600px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);
+}
+
+.chart-bar {
+    -fx-bar-fill: -primary-color;
+    -fx-background-radius: 4px 4px 0 0;
+}
+
+.chart-bar:hover {
+    -fx-bar-fill: derive(-primary-color, 20%);
+    -fx-cursor: hand;
+}
+
+/* Bar Chart Axis */
+.axis {
+    -fx-tick-label-fill: -text-secondary;
+    -fx-font-size: 11px;
+}
+
+.axis-label {
+    -fx-text-fill: -text-primary;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.axis-tick-mark, .axis-minor-tick-mark {
+    -fx-stroke: -border-color;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.chart-vertical-grid-lines {
+    -fx-stroke: -border-color;
+    -fx-stroke-dash-array: 2 4;
+    -fx-stroke-width: 0.5;
+}
+
+.chart-horizontal-grid-lines {
+    -fx-stroke: -border-color;
+    -fx-stroke-dash-array: 2 4;
+    -fx-stroke-width: 0.5;
+}
+
+/* ===== TREND TEXT STYLING ===== */
+.trend-text {
+    -fx-font-size: 12px;
+    -fx-fill: -text-secondary;
+}
+
+.positive-trend {
+    -fx-fill: -success-color;
+}
+
+.negative-trend {
+    -fx-fill: -danger-color;
+}
