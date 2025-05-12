@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.AddEquipmentController">
+    <stylesheets>
+        <URL value="@/css/addequipment.css" />
+    </stylesheets>
+   <children>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Region layoutX="10.0" layoutY="54.0" prefHeight="44.0" prefWidth="600.0" />
+            <Label text="Thêm dụng cụ">
+               <font>
+                  <Font name="Cambria" size="36.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="70.0">
+               <children>
+                  <VBox alignment="CENTER_LEFT" prefHeight="86.0" prefWidth="130.0" spacing="10.0">
+                     <children>
+                        <Label text="Mã dụng cụ">
+                           <font>
+                              <Font name="Cambria" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="idTxt" prefHeight="37.0" prefWidth="158.0" promptText="Mã dụng cụ">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" prefHeight="94.0" prefWidth="300.0" spacing="10.0">
+                     <children>
+                        <Label text="Tên dụng cụ">
+                           <font>
+                              <Font name="Cambria" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="nameTxt" prefHeight="40.0" prefWidth="497.0" promptText="Tên dụng cụ">
+                           <font>
+                              <Font name="Cambria" size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="84.0" prefWidth="565.0" spacing="100.0">
+               <children>
+                  <VBox alignment="CENTER_LEFT" prefHeight="94.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <Label text="Số lượng">
+                           <font>
+                              <Font name="Cambria" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="quantityTxt" prefHeight="37.0" prefWidth="158.0" promptText="Số lượng">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" layoutX="60.0" layoutY="10.0" prefHeight="94.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <Label text="Loại">
+                           <font>
+                              <Font name="Cambria" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="typeTxt" promptText="Loại">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="236.0" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Region prefHeight="70.0" prefWidth="50.0" />
+                  <VBox alignment="CENTER_LEFT" prefHeight="85.0" prefWidth="375.0" spacing="10.0">
+                     <children>
+                        <Label text="Tình trạng">
+                           <font>
+                              <Font name="Cambria" size="16.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <TextField fx:id="statusTxt" prefHeight="40.0" prefWidth="446.0" promptText="Tình trạng">
+                                 <font>
+                                    <Font name="Cambria" size="16.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="92.0" prefHeight="94.0" prefWidth="509.0" spacing="10.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Region prefHeight="39.0" prefWidth="54.0" />
+                        <Label text="Ngày thống kê">
+                           <font>
+                              <Font name="Cambria" size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Region prefHeight="39.0" prefWidth="54.0" />
+                        <DatePicker fx:id="date" prefHeight="40.0" prefWidth="200.0" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0">
+               <children>
+                  <Button fx:id="addBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="130.0" text="Thêm">
+                     <font>
+                        <Font name="Cambria" size="16.0" />
+                     </font></Button>
+                  <Button fx:id="cancelBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="130.0" text="Hủy">
+                     <font>
+                        <Font name="Cambria" size="16.0" />
+                     </font></Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

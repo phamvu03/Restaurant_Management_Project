@@ -23,12 +23,12 @@ public class DatabaseConnection {
             try{
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                 connection = DriverManager.getConnection(URL);
-                System.out.println("Kết nối thành công tới SQL Server!");
+                System.out.println("Successfully access to SQL Server! :D");
             } catch (ClassNotFoundException ex) {
-                System.err.println("Không tìm thấy SQL Server JDBC Driver" + ex.getMessage());
-                throw new SQLException("Không tìm thấy SQL Server JDBC Driver", ex);
+                System.err.println("Cannot found SQL Server JDBC Driver:: " + ex.getMessage());
+                throw new SQLException("Cannot found SQL Server JDBC Driver:: ", ex);
             } catch(SQLException e){
-                System.err.println("Lỗi kết nối SQL Server: " + e.getMessage());
+                System.err.println("Connection error to SQL Server:: " + e.getMessage());
                 throw e;
             }
         }
