@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.restaurant.restaurant_management_project.controller;
 
 import com.restaurant.restaurant_management_project.dao.EquipmentDAO;
@@ -18,19 +14,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
- * FXML Controller class
  *
  * @author admin
  */
-public class AddEquipmentController implements Initializable {
-
-    /**
-     * Initializes the controller class.
-     */
-    
-    @FXML
-    private Button addBtn;
-
+public class UpdateEquipmentController implements Initializable {
     @FXML
     private Button cancelBtn;
 
@@ -39,7 +26,7 @@ public class AddEquipmentController implements Initializable {
 
     @FXML
     private TextField idTxt;
-    
+
     @FXML
     private TextField nameTxt;
 
@@ -51,29 +38,45 @@ public class AddEquipmentController implements Initializable {
 
     @FXML
     private TextField typeTxt;
+
+    @FXML
+    private Button updateBtn;
     
+    private Equipment currentEquipment;
     private EquipmentController equipmentController;
-
-    public void setEquipmentController(EquipmentController controller) {
-        this.equipmentController = controller;
-    }
-
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        addBtn.setOnAction(e -> handleAddBtnAction());
-        cancelBtn.setOnAction(e -> handleCancelBtnAction());
-    }   
+        updateBtn.setOnAction(e -> handleUpdate());
+        cancelBtn.setOnAction(e -> closeWindow());
+    }
     
-    private void handleAddBtnAction() {
-        String id = idTxt.getText();
+    public void setEquipment(Equipment equip) {
+        this.currentEquipment = equip;
+
+        // Gán dữ liệu vào các trường
+        idTxt.setText(equip.getMaDungCu());
+        idTxt.setDisable(true); // không cho sửa ID
+
+        nameTxt.setText(equip.getTenDungCu());
+        typeTxt.setText(equip.getLoai());
+        quantityTxt.setText(String.valueOf(equip.getSoLuong()));
+        statusTxt.setText(equip.getTinhTrang());
+        if (equip.getNgayThongKe() != null) {
+            date.setValue(equip.getNgayThongKe().toLocalDate());
+        }
+    }
+    public void setEquipmentController(EquipmentController controller) {
+        this.equipmentController = controller;
+    }
+    
+    private void handleUpdate() {
         String name = nameTxt.getText();
         String type = typeTxt.getText();
         String quantityStr = quantityTxt.getText();
         String status = statusTxt.getText();
-        Date reportDate = date.getValue() != null ? Date.valueOf(date.getValue()) : null;
+        Date reportDate = (date.getValue() != null) ? Date.valueOf(date.getValue()) : null;
 
-        // Kiểm tra ràng buộc
         if (name.isEmpty() || type.isEmpty() || quantityStr.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Thiếu thông tin", "Vui lòng nhập đầy đủ Tên, Loại và Số lượng.");
             return;
@@ -83,35 +86,32 @@ public class AddEquipmentController implements Initializable {
         try {
             quantity = Integer.parseInt(quantityStr);
         } catch (NumberFormatException ex) {
-            showAlert(Alert.AlertType.ERROR, "Số lượng không hợp lệ", "Số lượng phải là một số nguyên.");
+            showAlert(Alert.AlertType.ERROR, "Sai định dạng", "Số lượng phải là số nguyên.");
             return;
         }
 
-        Equipment equip = new Equipment();
-        equip.setMaDungCu(id);
-        equip.setTenDungCu(name);
-        equip.setLoai(type);
-        equip.setSoLuong(quantity);
-        equip.setTinhTrang(status);
-        equip.setNgayThongKe(reportDate);
+        // Cập nhật dữ liệu
+        Equipment updated = new Equipment();
+        updated.setMaDungCu(currentEquipment.getMaDungCu());
+        updated.setTenDungCu(name);
+        updated.setLoai(type);
+        updated.setSoLuong(quantity);
+        updated.setTinhTrang(status);
+        updated.setNgayThongKe(reportDate);
 
         EquipmentDAO dao = new EquipmentDAO();
-        boolean success = dao.addEquipment(equip);
+        boolean success = dao.updateEquipment(updated);
 
         if (success) {
-            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Thêm dụng cụ thành công!");
+            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Cập nhật thành công!");
             if (equipmentController != null) {
                 equipmentController.loadDataFromDatabase();
             }
             closeWindow();
         } else {
-            showAlert(Alert.AlertType.ERROR, "Thất bại", "Không thể thêm dụng cụ.");
+            showAlert(Alert.AlertType.ERROR, "Thất bại", "Không thể cập nhật dụng cụ.");
         }
     }
-    private void handleCancelBtnAction() {
-        closeWindow();
-    }
-
     private void closeWindow() {
         Stage stage = (Stage) cancelBtn.getScene().getWindow();
         stage.close();
@@ -123,5 +123,5 @@ public class AddEquipmentController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }    
+    }
 }

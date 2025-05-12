@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.gluonhq.charm.glisten.control.Icon?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -11,10 +10,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.EquipmentController">
     <stylesheets>
@@ -35,7 +34,7 @@
                         </Label>
                      </children>
                   </HBox>
-                  <Button mnemonicParsing="false" prefHeight="59.0" prefWidth="250.0" text="Thiết bị">
+                  <Button mnemonicParsing="false" prefHeight="59.0" prefWidth="250.0" text="Dụng cụ">
                      <font>
                         <Font name="Cambria Bold" size="18.0" />
                      </font>
@@ -61,24 +60,67 @@
                         </Label>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="630.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="630.0" stylesheets="@../css/equipment.css">
                      <children>
-                        <Icon content="ADD_CIRCLE_OUTLINE" prefHeight="40.0" prefWidth="40.0" />
-                        <Icon content="BUILD" layoutX="10.0" layoutY="10.0" prefHeight="50.0" prefWidth="40.0" />
-                        <Icon content="DELETE" layoutX="423.0" layoutY="10.0" prefHeight="50.0" prefWidth="40.0" />
-                        <Icon content="REFRESH" layoutX="79.0" layoutY="10.0" prefHeight="50.0" prefWidth="40.0" />
-                        <Region prefHeight="50.0" prefWidth="89.0" />
-                        <HBox alignment="CENTER_RIGHT" prefHeight="45.0" prefWidth="380.0" styleClass="search-box" stylesheets="@../css/equipment.css">
+                        <HBox alignment="CENTER_LEFT" layoutX="244.0" layoutY="10.0" prefHeight="50.0" prefWidth="242.0" stylesheets="@../css/equipment.css">
                            <children>
-                              <TextField prefHeight="41.0" prefWidth="246.0" promptText="Type here to search!" styleClass="search-text" stylesheets="@../css/equipment.css">
+                              <Button fx:id="addFormBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="func-btn" stylesheets="@../css/equipment.css">
+                                 <font>
+                                    <Font name="Cambria" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                                 <graphic>
+                                    <FontIcon iconLiteral="fas-plus-circle" iconSize="20" selectionEnd="0" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="updateFormBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="func-btn" stylesheets="@../css/equipment.css">
+                                 <font>
+                                    <Font name="Cambria" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                                 <graphic>
+                                    <FontIcon iconLiteral="fas-wrench" iconSize="20" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="deleteBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="func-btn" stylesheets="@../css/equipment.css">
+                                 <font>
+                                    <Font name="Cambria" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                                 <graphic>
+                                    <FontIcon iconLiteral="far-trash-alt" iconSize="20" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="refreshBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="func-btn" stylesheets="@../css/equipment.css">
+                                 <font>
+                                    <Font name="Cambria" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                                 <graphic>
+                                    <FontIcon iconLiteral="fas-redo" iconSize="20" />
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="380.0" styleClass="search-box" stylesheets="@../css/equipment.css">
+                           <children>
+                              <TextField fx:id="searchTxt" prefHeight="40.0" prefWidth="240.0" promptText="Type here to search!" styleClass="search-text" stylesheets="@../css/equipment.css">
                                  <font>
                                     <Font name="Cambria" size="18.0" />
                                  </font>
                                  <HBox.margin>
-                                    <Insets right="10.0" />
+                                    <Insets left="10.0" right="10.0" />
                                  </HBox.margin>
                               </TextField>
-                              <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="103.0" styleClass="search-btn" stylesheets="@../css/equipment.css" text="Search" textFill="WHITE">
+                              <Button fx:id="searchBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="103.0" styleClass="search-btn" stylesheets="@../css/equipment.css" text="Search" textFill="WHITE">
                                  <font>
                                     <Font name="Cambria" size="18.0" />
                                  </font>
@@ -96,7 +138,7 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <TableView fx:id="equipmentTableId" prefHeight="385.0" prefWidth="630.0" styleClass="data-table-background" stylesheets="@../css/equipment.css">
+                  <TableView fx:id="equipmentTableId" prefHeight="385.0" prefWidth="630.0" styleClass="data-table" stylesheets="@../css/equipment.css">
                     <columns>
                       <TableColumn fx:id="colId" prefWidth="75.0" text="Mã" />
                       <TableColumn fx:id="colName" prefWidth="144.79999542236328" text="Tên dụng cụ" />

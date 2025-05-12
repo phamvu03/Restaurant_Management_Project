@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -91,4 +89,33 @@ public class EquipmentDAO {
             return false;
         }
     }
+    public List<Equipment> searchEquipmentByName(String keyword) {
+        List<Equipment> equipments = new ArrayList<>();
+        String sql = "SELECT * FROM DungCu WHERE TenDungCu LIKE ?";
+
+        try (Connection connection = DatabaseConnection.GetConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + keyword + "%");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Equipment equip = new Equipment();
+                    equip.setMaDungCu(rs.getString("MaDungCu"));
+                    equip.setTenDungCu(rs.getString("TenDungCu"));
+                    equip.setLoai(rs.getString("Loai"));
+                    equip.setSoLuong(rs.getInt("SoLuong"));
+                    equip.setTinhTrang(rs.getString("TinhTrang"));
+                    equip.setNgayThongKe(rs.getDate("NgayThongKe"));
+                    equipments.add(equip);
+                }
+            }
+
+        } catch (SQLException ex) {
+            System.err.println("Lỗi khi tìm kiếm dụng cụ: " + ex.getMessage());
+        }
+
+        return equipments;
+    }
+
 }

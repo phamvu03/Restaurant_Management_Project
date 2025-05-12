@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.AddEquipmentController">
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.UpdateEquipmentController">
     <stylesheets>
         <URL value="@/css/addequipment.css" />
     </stylesheets>
@@ -20,7 +20,7 @@
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Region layoutX="10.0" layoutY="54.0" prefHeight="44.0" prefWidth="600.0" />
-            <Label text="Thêm dụng cụ">
+            <Label text="Sửa dụng cụ">
                <font>
                   <Font name="Cambria" size="36.0" />
                </font>
@@ -34,7 +34,7 @@
                               <Font name="Cambria" size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="idTxt" prefHeight="37.0" prefWidth="158.0" promptText="Mã dụng cụ">
+                        <TextField fx:id="idTxt" editable="false" prefHeight="37.0" prefWidth="158.0" promptText="Mã dụng cụ">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -123,7 +123,7 @@
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Region prefHeight="39.0" prefWidth="54.0" />
-                        <Label text="Ngày thống kê">
+                        <Label text="Ngày chỉnh sửa">
                            <font>
                               <Font name="Cambria" size="16.0" />
                            </font>
@@ -140,7 +140,7 @@
             </VBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0">
                <children>
-                  <Button fx:id="addBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="130.0" text="Thêm">
+                  <Button fx:id="updateBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="130.0" text="Sửa">
                      <font>
                         <Font name="Cambria" size="16.0" />
                      </font></Button>
