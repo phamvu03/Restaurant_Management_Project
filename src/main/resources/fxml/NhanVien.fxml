@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="775.0" prefWidth="1500.0"  xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.NhanVienController">
+	<children>
+		<TableView fx:id="tableNhanVien" layoutX="81.0" layoutY="49.0" prefHeight="435.0" prefWidth="1148.0">
+			<columns>
+				<TableColumn fx:id="colStt" prefWidth="94.39999085664749" text="Stt" />
+				<TableColumn fx:id="colMaNV" prefWidth="152.800048828125" text="Mã nhân viên" />
+				<TableColumn fx:id="colTenNV" prefWidth="215.9999542236328" text="Họ và tên" />
+				<TableColumn fx:id="colEmail" prefWidth="166.39996337890625" text="Email" />
+				<TableColumn fx:id="colLuong" prefWidth="152.00006103515625" text="Lương" />
+				<TableColumn fx:id="colSDT" prefWidth="144.79998779296875" text="Số điện thoại" />
+				<TableColumn fx:id="colChucVu" minWidth="0.0" prefWidth="117.60003662109375" text="Chức vụ" />
+				<TableColumn fx:id="colNgaySinh" prefWidth="106.4000244140625" text="Ngày sinh" />
+			</columns>
+		</TableView>
+		<Label contentDisplay="CENTER" layoutX="345.0" layoutY="14.0" text="QUẢN LÝ NHÂN VIÊN" textAlignment="CENTER">
+			<font>
+				<Font size="24.0" />
+			</font>
+		</Label>
+		<AnchorPane layoutX="2.0" layoutY="497.0" prefHeight="200.0" prefWidth="734.0">
+			<children>
+				<GridPane alignment="CENTER" cache="true" hgap="10.0" layoutX="21.0" layoutY="-1.0" prefHeight="200.0" prefWidth="774.0" vgap="5.0">
+					<columnConstraints>
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="442.199951171875" minWidth="10.0" prefWidth="106.19998168945312" />
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="722.2000274658203" minWidth="10.0" prefWidth="295.3999755859375" />
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="730.7999755859375" minWidth="10.0" prefWidth="92.80001220703127" />
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="730.7999755859375" minWidth="10.0" prefWidth="263.9999877929687" />
+					</columnConstraints>
+					<rowConstraints>
+						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+					</rowConstraints>
+					<children>
+						<Label text="Mã nhân viên" />
+						<Label text="Họ và tên" GridPane.rowIndex="1" />
+						<Label text="Email" GridPane.rowIndex="2" />
+						<Label text="Chức vụ" GridPane.columnIndex="2" />
+						<Label contentDisplay="CENTER" text="Số điện thoại" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+						<Label text="Ngày sinh" GridPane.rowIndex="3" />
+						<Label text="Lương" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+						<TextField fx:id="txtMaNV" maxWidth="-Infinity" prefHeight="26.0" prefWidth="130.0" GridPane.columnIndex="1" />
+						<TextField fx:id="txtTenNV" maxWidth="-Infinity" prefHeight="26.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+						<TextField fx:id="txtEmail" maxWidth="-Infinity" prefHeight="26.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+						<TextField fx:id="txtSDT" maxWidth="-Infinity" prefHeight="26.0" prefWidth="180.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+						<TextField fx:id="txtLuong" maxWidth="-Infinity" prefWidth="180.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+						<DatePicker fx:id="txtNgaySinh" prefHeight="26.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+						<ChoiceBox fx:id="txtChucVu" prefWidth="150.0" GridPane.columnIndex="3" />
+						<Button fx:id="btnLamTrong" mnemonicParsing="false" onAction="#lamTrongForm" text="Làm trống" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+					</children>
+				</GridPane>
+			</children>
+		</AnchorPane>
+		<AnchorPane layoutX="778.0" layoutY="484.0" prefHeight="200.0" prefWidth="141.0">
+			<children>
+				<GridPane layoutX="28.0" layoutY="14.0" prefHeight="152.0" prefWidth="89.0" vgap="10.0">
+					<columnConstraints>
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+					</columnConstraints>
+					<rowConstraints>
+						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+					</rowConstraints>
+					<children>
+						<Button fx:id="btnThem" mnemonicParsing="false" onAction="#themNhanVien" text="Thêm" />
+						<Button fx:id="btnSua" mnemonicParsing="false" onAction="#suaNhanVien" text="Sửa" GridPane.rowIndex="1" />
+						<Button fx:id="btnXoa" mnemonicParsing="false" onAction="#xoaNhanVien" text="Xóa" GridPane.rowIndex="2" />
+						<Button fx:id="btnTimKiem" mnemonicParsing="false" onAction="#timKiemNhanVien" text="Tìm kiếm" GridPane.rowIndex="3" />
+					</children>
+				</GridPane>
+			</children>
+		</AnchorPane>
+		<GridPane layoutX="1179.0" layoutY="49.0">
+			<columnConstraints>
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+			</rowConstraints>
+		</GridPane>
+				<Button fx:id="btnXemBieuDo" layoutX="1284.0" layoutY="48.0" mnemonicParsing="false" onAction="#xemBieuDoLuong" prefHeight="26.0" prefWidth="95.0" text="Xem biểu đồ" />
+	</children>
+</AnchorPane>
