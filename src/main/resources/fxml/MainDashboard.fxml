@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.restaurant.restaurant_management_project.controller.MainController" stylesheets="@/css/ban-style.css">
+
+    <left>
+        <VBox fx:id="sidebar" styleClass="sidebar">
+            <Button fx:id="btnDatBan" text="Đặt bàn" styleClass="sidebar-button" onAction="#loadDatBanView"/>
+            <Button fx:id="btnQLBan" text="Quản lý bàn" styleClass="sidebar-button" onAction="#loadQLBanView"/>
+            <Button fx:id="btnDSDatBan" text="Quản lý đặt bàn" styleClass="sidebar-button" onAction="#loadDSDatBanView"/>
+            <Button fx:id="btnThongKe" text="Thống kê" styleClass="sidebar-button" onAction="#loadThongKeView"/>
+            <Button fx:id="btnDangXuat" text="Đăng xuất" styleClass="sidebar-button" onAction="#handleDangXuat"/>
+        </VBox>
+    </left>
+
+    <center>
+        <StackPane fx:id="contentPane" />
+    </center>
+</BorderPane>
