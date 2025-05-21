@@ -217,8 +217,6 @@
     -fx-view-order: -1;
 }
 
-//thanh cuộn
-
 /* Scrollbar container */
 .scroll-bar {
     -fx-background-color: -scrollbar-track-color;

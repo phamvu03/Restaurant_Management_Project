@@ -21,8 +21,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -32,6 +30,8 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import static com.restaurant.restaurant_management_project.util.MenuItemValidatorUtils.validateForm;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 
 public class ItemInformationView {
