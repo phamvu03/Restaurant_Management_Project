@@ -1,55 +1,80 @@
+/* Base sidebar styling */
 .side-bar {
-    -fx-background-color: #fff;
-    -fx-padding: 20;
-    -fx-spacing: 20;
-    -fx-border-fill: black;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 0, 2, 0, 0);
+    -fx-background-color: white;
+    -fx-padding: 10px;
+    -fx-spacing: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-background-radius: 10;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1px;
 }
 
-.header {
+.side-bar > HBox {
     -fx-alignment: center-left;
-    -fx-spacing: 10;
-    -fx-padding: 10;
 }
 
 .logo {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);
+    -fx-image: url("../image/logo.png");
+    -fx-fit-height: 30;
+    -fx-fit-width: 30;
 }
 
-.restaurant-name {
-    -fx-fill: black;
-    -fx-font-size: 18px;
+.name {
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
+    -fx-fill: #333333;
 }
 
 .nav-menu {
-    -fx-spacing: 10;
+    -fx-spacing: 20;
+    -fx-padding: 10 0;
+    -fx-alignment: center;
+    -fx-fill-width: true;
 }
 
+/* Navigation buttons styling */
 .nav-button {
-     -fx-background-color: white;
-     -fx-background-radius: 4px;
-     -fx-border-radius: 4px;
-     -fx-border-color: #dddddd;
-     -fx-cursor: hand;
-     -fx-padding: 8px 15px;
-}
-
-.button-text {
-    -fx-fill: #666666; /* Gray text */
-    -fx-font-size: 14px;
+    -fx-max-width: 250px;
+    -fx-background-color: transparent;
+    -fx-padding: 10 15;
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
+    -fx-border-width: 0;
+    -fx-alignment: center-left;
+    -fx-text-fill: black;
+    -fx-min-height: 40px;
 }
 
 .nav-button:hover {
-    -fx-background-color: #6666CC;
+    -fx-background-color: #f0f2f5;
 }
 
-/* Hover state for text */
-.nav-button:hover .button-text {
+.nav-button:selected, .nav-button:focused {
+    -fx-background-color: #4285f4;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.ikonli-font-icon {
+    -fx-fill: #6c757d;
+}
+
+.nav-button:selected .ikonli-font-icon,
+.nav-button:focused  .ikonli-font-icon {
     -fx-fill: white;
 }
 
-/* Hover state for image */
-.nav-button:hover .image-view {
-    -fx-effect: dropshadow(gaussian, white, 0, 0, 0, 0); /* White icon when hovered */
+.side-bar.collapsed {
+    -fx-min-width: 70px;
+    -fx-pref-width: 70px;
+    -fx-max-width: 70px;
 }
+
+.side-bar.collapsed .nav-menu .nav-button {
+    -fx-content-display: graphic-only;
+}
+
+.side-bar.collapsed .name {
+    -fx-content-display: graphic-only;
+}
+

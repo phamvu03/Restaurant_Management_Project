@@ -163,7 +163,6 @@
     -fx-animation: fadeIn 0.5s ease-in forwards;
 }
 
-/* ===== SELECTION STYLES ===== */
 .container.selected {
     -fx-border-color: -primary-color;
     -fx-border-width: 2px;
