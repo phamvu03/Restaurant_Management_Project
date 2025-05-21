@@ -190,10 +190,6 @@ public class ManageMenuItemView {
     }
     public void bindSize()
     {
-        Scene scene = content.getScene();
-        content.prefWidthProperty().bind(
-                scene.widthProperty().multiply(0.1)
-        );
 //        scene.widthProperty().addListener((obs,old,newVa)->{
 //            System.out.println(scene.getWidth());
 //            System.out.println(content.getWidth());
@@ -229,8 +225,6 @@ public class ManageMenuItemView {
                 AnchorPane.setLeftAnchor(suggestName,suggestNameLeft);
             }
         }));
-
-
     }
 
     private void adjustGridViewColumns(double width) {
@@ -457,7 +451,7 @@ public class ManageMenuItemView {
     public void backToHome(ActionEvent event) {
         Scene thisScene = content.getScene();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home-screen-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/dashboard.fxml"));
         try {
             thisScene.setRoot(loader.load());
         } catch (IOException e) {
