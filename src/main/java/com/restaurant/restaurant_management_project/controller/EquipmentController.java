@@ -5,8 +5,11 @@ import com.restaurant.restaurant_management_project.model.Equipment;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -91,7 +94,13 @@ public class EquipmentController implements Initializable {
         refreshBtn.setOnAction(e -> {
             loadDataFromDatabase();
         });
-        searchBtn.setOnAction(e -> handleSearch());
+        searchBtn.setOnAction(e -> {
+            try {
+                handleSearch();
+            } catch (SQLException ex) {
+                Logger.getLogger(EquipmentController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }    
     
     public void loadDataFromDatabase(){
@@ -193,7 +202,8 @@ public class EquipmentController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    private void handleSearch(){
+    
+    private void handleSearch() throws SQLException{
         String keyword = searchTxt.getText().trim();
         if (keyword.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Tìm kiếm", "Vui lòng nhập tên dụng cụ cần tìm.");

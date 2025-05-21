@@ -8,9 +8,11 @@ module com.restaurant.restaurant_management_project {
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;
     requires java.base;
-
+    requires javafx.swing;
+    
     exports com.restaurant.restaurant_management_project;
     exports com.restaurant.restaurant_management_project.controller to javafx.fxml;
     opens com.restaurant.restaurant_management_project.controller to  javafx.fxml;
     opens com.restaurant.restaurant_management_project.model to javafx.base;
+    requires javafx.swingEmpty;
 }
