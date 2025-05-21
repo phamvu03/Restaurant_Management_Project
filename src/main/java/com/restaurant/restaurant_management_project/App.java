@@ -1,7 +1,7 @@
 package com.restaurant.restaurant_management_project;
 
 import com.restaurant.restaurant_management_project.dao.EquipmentDAO;
-import com.restaurant.restaurant_management_project.database.DatabaseConnection;
+import com.restaurant.restaurant_management_project.database.ConnectionPool;
 import com.restaurant.restaurant_management_project.model.Equipment;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +25,7 @@ public class App extends Application {
         
         stage.setOnCloseRequest(e -> {
             System.out.println("Closing all connection!! XD");
-            DatabaseConnection.shutdown();
+            ConnectionPool.shutdown();
         });
         stage.show();
     }

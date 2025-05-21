@@ -1,5 +1,5 @@
 package com.restaurant.restaurant_management_project.dao;
-import com.restaurant.restaurant_management_project.database.DatabaseConnection;
+import com.restaurant.restaurant_management_project.database.ConnectionPool;
 import com.restaurant.restaurant_management_project.model.Employee;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +18,7 @@ public class EmployeeDAO {
         String sql = "SELECT * FROM NHANVIEN";
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getConnection();
             try(
                 PreparedStatement stmt = connection.prepareStatement(sql);
                 ResultSet rs = stmt.executeQuery()){
@@ -38,7 +38,7 @@ public class EmployeeDAO {
         } catch (SQLException ex) {
             System.err.println("Lỗi khi lấy danh sách nhân viên: " + ex.getMessage());
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            ConnectionPool.releaseConnection(connection);
         }
         return employees;
     }
@@ -48,7 +48,7 @@ public class EmployeeDAO {
                 + "VALUES (?,?,?,?,?,?,?)";
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
                 stmt.setString(1, employ.getMaNV());
                 stmt.setString(2, employ.getTenNV());
@@ -65,7 +65,7 @@ public class EmployeeDAO {
             System.err.println("Lỗi khi thêm nhân viên: " + ex.getMessage());
             return false;
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            ConnectionPool.releaseConnection(connection);
         }
     }
     public boolean updateEmployee(Employee employ){
@@ -73,7 +73,7 @@ public class EmployeeDAO {
                 + "ChucVu = ?, Luong = ? WHERE MaNV = ?";
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
                 stmt.setString(1, employ.getTenNV());
                 stmt.setDate(2, employ.getNgaySinh());
@@ -90,14 +90,14 @@ public class EmployeeDAO {
             System.err.println("Lỗi khi cập nhật thông tin: " + ex.getMessage());
             return false;
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            ConnectionPool.releaseConnection(connection);
         }
     }
     public boolean deleteEmployee(String employId){
         String sql = "DELETE FROM NhanVien WHERE MaNV = ?";
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
                 stmt.setString(1, employId);
 
@@ -108,7 +108,7 @@ public class EmployeeDAO {
             System.err.println("Lỗi khi xóa dụng cụ: " + ex.getMessage());
             return false;
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            ConnectionPool.releaseConnection(connection);
         }
     }
 }

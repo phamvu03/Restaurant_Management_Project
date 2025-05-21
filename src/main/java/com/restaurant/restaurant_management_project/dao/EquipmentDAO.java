@@ -1,5 +1,5 @@
 package com.restaurant.restaurant_management_project.dao;
-import com.restaurant.restaurant_management_project.database.DatabaseConnection;
+import com.restaurant.restaurant_management_project.database.ConnectionPool;
 import com.restaurant.restaurant_management_project.model.Equipment;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +18,7 @@ public class EquipmentDAO {
         String sql = "SELECT * FROM DungCu";
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql);
                 ResultSet rs = stmt.executeQuery()){
                 while(rs.next()){
@@ -36,7 +36,7 @@ public class EquipmentDAO {
         }catch(SQLException ex){
             System.err.println("Lỗi khi lấy danh sách người dùng: " + ex.getMessage());
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            ConnectionPool.releaseConnection(connection);
         }
         return equipments; 
     }
@@ -45,7 +45,7 @@ public class EquipmentDAO {
                 + "NgayThongKe) VALUES (?,?,?,?,?,?)";
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
                 stmt.setString(1, equip.getMaDungCu());
                 stmt.setString(2, equip.getTenDungCu());
@@ -61,7 +61,7 @@ public class EquipmentDAO {
             System.err.println("Lỗi khi thêm dụng cụ: " + ex.getMessage());
             return false;
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            ConnectionPool.releaseConnection(connection);
         }
     }
     public boolean updateEquipment(Equipment equip){
@@ -69,7 +69,7 @@ public class EquipmentDAO {
                 + "TinhTrang = ?, NgayThongKe = ? WHERE MaDungCu = ?";
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
                 stmt.setString(1, equip.getTenDungCu());
                 stmt.setString(2, equip.getLoai());
@@ -85,14 +85,14 @@ public class EquipmentDAO {
             System.err.println("Lỗi khi cập nhật thông tin: " + ex.getMessage());
             return false;
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            ConnectionPool.releaseConnection(connection);
         }
     }   
     public boolean deleteEquipment(String equipId){
         String sql = "DELETE FROM DungCu WHERE MaDungCu = ?";
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
 
                 stmt.setString(1, equipId);
@@ -104,7 +104,7 @@ public class EquipmentDAO {
             System.err.println("Lỗi khi xóa dụng cụ: " + ex.getMessage());
             return false;
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            ConnectionPool.releaseConnection(connection);
         }
     }
     public List<Equipment> searchEquipmentByName(String keyword) throws SQLException {
@@ -112,7 +112,7 @@ public class EquipmentDAO {
         String sql = "SELECT * FROM DungCu WHERE TenDungCu LIKE ?";
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getConnection();
             try (   PreparedStatement stmt = connection.prepareStatement(sql);
                     ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -129,7 +129,7 @@ public class EquipmentDAO {
         } catch(SQLException ex) {
             System.err.println("Lỗi khi tìm kiếm dụng cụ: " + ex.getMessage());
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            ConnectionPool.releaseConnection(connection);
         }
         return equipments;
     }

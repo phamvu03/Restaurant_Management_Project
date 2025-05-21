@@ -1,6 +1,6 @@
 package com.restaurant.restaurant_management_project.dao;
 
-import com.restaurant.restaurant_management_project.database.DatabaseConnection;
+import com.restaurant.restaurant_management_project.database.ConnectionPool;
 import com.restaurant.restaurant_management_project.model.Order;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +19,7 @@ public class OrderDAO {
         String sql = "SELECT * FROM DonHang";
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql);
                 ResultSet rs = stmt.executeQuery()){
                 while(rs.next()){
@@ -36,7 +36,7 @@ public class OrderDAO {
         } catch (SQLException ex) {
             System.err.println("Lỗi khi lấy danh sách đơn hàng: " + ex.getMessage());
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            ConnectionPool.releaseConnection(connection);
         }
         return orders;
     }
@@ -45,7 +45,7 @@ public class OrderDAO {
                 + "ThoiGianThanhToan) VALUES (?,?,?,?,?)";
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
                 stmt.setString(1, order.getMaDonHang());
                 stmt.setString(2, order.getMaDatBan());
@@ -60,14 +60,14 @@ public class OrderDAO {
             System.err.println("Lỗi khi thêm đơn hàng: " + ex.getMessage());
             return false;        
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            ConnectionPool.releaseConnection(connection);
         }
     }
     public boolean deleteOrder(String orderId){
         String sql = "DELETE FROM DonHang WHERE MaDonHang = ?";
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getConnection();
             
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
                 stmt.setString(1, orderId);
@@ -79,7 +79,7 @@ public class OrderDAO {
             System.err.println("Lỗi khi xóa đơn hàng: " + ex.getMessage());
             return false;
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            ConnectionPool.releaseConnection(connection);
         }
     }
 }

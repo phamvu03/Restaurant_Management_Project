@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
-public class DatabaseConnection {
+public class ConnectionPool {
     private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=RM_Db;integratedSecurity=true;encrypt=true;trustServerCertificate=true";
     private static final int MAX_POOL_SIZE = 20; 
     private static final int TIMEOUT_SECONDS = 5;
