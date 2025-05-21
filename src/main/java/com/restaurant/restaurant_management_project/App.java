@@ -16,7 +16,7 @@ import java.util.List;
 public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/fxml/equipmentView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/fxml/manage-menuitem-view.fxml"));
 //        Scene scene = new Scene(fxmlLoader.load());
         Scene scene = new Scene(fxmlLoader.load(), 900, 600);
 

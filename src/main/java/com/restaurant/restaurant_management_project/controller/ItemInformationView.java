@@ -77,7 +77,7 @@ public class ItemInformationView {
     private ObservableList<RMenuItem> menuItemObservableList;
     private Integer side = null ;
     private String imageFormat = "png";
-    private static final Image PLACEHOLDER_IMAGE = new Image(ItemView.class.getResource("/com/app/nguyenhungthanh_2022601002/image/em.png").toExternalForm());
+    private static final Image PLACEHOLDER_IMAGE = new Image(ItemView.class.getResource("/image/em.png").toExternalForm());
     public void initialize() {
         Platform.runLater(() -> {
             form.requestFocus(); // Chuyển focus sang container
@@ -228,6 +228,7 @@ public class ItemInformationView {
         if ( validateForm(itemName.getText(),itemPrice.getText(),errorNameMsg,errorPriceMsg))
         {
             data = new RMenuItem(itemName.getText(),itemStatus.isSelected(),new BigDecimal(itemPrice.getText()),itemCate.getText(),fxImageToBytes(itemImage.getImage(),imageFormat),itemUnit.getText(),side);
+            System.out.println(data.getItemName());
             dataConsumer.accept(data);
             hidePopup();
         }

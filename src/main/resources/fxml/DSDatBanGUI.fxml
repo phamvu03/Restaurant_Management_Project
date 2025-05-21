@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.restaurant.restaurant_management_project.controller.DSDatBanController" spacing="10" stylesheets="@/css/ban-style.css">
+    <Label text="Danh Sách Đặt Bàn" styleClass="title-label"/>
+    <TableView fx:id="datBanTable">
+        <columns>
+            <TableColumn fx:id="colMaDatBan" text="Mã Đặt Bàn" prefWidth="100"/>
+            <TableColumn fx:id="colMaBan" text="Mã Bàn" prefWidth="80"/>
+            <TableColumn fx:id="colTenKhachHang" text="Tên Khách Hàng" prefWidth="150"/>
+            <TableColumn fx:id="colSoDienThoai" text="Số Điện Thoại" prefWidth="120"/>
+            <TableColumn fx:id="colThoiGianDat" text="Thời Gian Đặt" prefWidth="150"/>
+            <TableColumn fx:id="colThoiGianDen" text="Thời Gian Đến" prefWidth="150"/>
+            <TableColumn fx:id="colSoLuongNguoi" text="Số Lượng Người" prefWidth="120"/>
+            <TableColumn fx:id="colGhiChu" text="Ghi Chú" prefWidth="200"/>
+        </columns>
+    </TableView>
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="btnHuyDatBan" text="Hủy Đặt Bàn" styleClass="btn-huy-dat-ban" onAction="#huyDatBan"/>
+    </HBox>
+</VBox>
