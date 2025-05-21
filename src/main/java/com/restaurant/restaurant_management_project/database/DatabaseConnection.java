@@ -1,45 +1,54 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.restaurant.restaurant_management_project.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.LinkedList;
 
-/**
- *
- * @author admin
- */
 public class DatabaseConnection {
-    private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=RM_Db;encrypt=true;trustServerCertificate=true";
-    private static Connection connection = null;
-    
-    public static Connection GetConnection() throws SQLException{
-            try{
-                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                connection = DriverManager.getConnection(URL,"nhahang_admin","abc123!@#");
-                System.out.println("Successfully access to SQL Server! :D");
-            } catch (ClassNotFoundException ex) {
-                System.err.println("Cannot found SQL Server JDBC Driver:: " + ex.getMessage());
-                throw new SQLException("Cannot found SQL Server JDBC Driver:: ", ex);
-            } catch(SQLException e){
-                System.err.println("Connection error to SQL Server:: " + e.getMessage());
-                throw e;
+    private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=RM_Db;integratedSecurity=true;encrypt=true;trustServerCertificate=true";
+    private static final int MAX_POOL_SIZE = 20; 
+    private static final int TIMEOUT_SECONDS = 5;
+
+    private static final LinkedList<Connection> pool = new LinkedList<>();
+
+    static {
+        try {
+            for (int i = 0; i < MAX_POOL_SIZE; i++) {
+                Connection conn = DriverManager.getConnection(URL);
+                pool.add(conn);
             }
-        return connection;
+            System.out.println("Connection Pool initialized with " + pool.size() 
+                    + " connections. (max: " + MAX_POOL_SIZE +  ")");
+        } catch (SQLException e) {
+            System.err.println("Failed to initialize connection pool: " + e.getMessage());
+        }
     }
-    public static void closeConnection(){
-        if(connection == null){
-            try {
-                connection.close();
-                System.out.println("Đã đóng kết nối");
-            } catch (SQLException ex) {
-                System.err.println("Lỗi khi đóng kết nối: " + ex.getMessage());
+
+    public synchronized static Connection getConnection() throws SQLException {
+        if (pool.isEmpty()) {
+            throw new SQLException("No available connections in the pool.");
+        }
+        return pool.removeFirst();
+    }
+
+    public synchronized static void releaseConnection(Connection conn) {
+        if (conn != null) {
+            pool.addLast(conn);
+        }
+    }
+
+    public synchronized static void shutdown() {
+        try {
+            for (Connection conn : pool) {
+                if (conn != null && !conn.isClosed()) {
+                    conn.close();
+                }
             }
-        } 
+            pool.clear();
+            System.out.println("Connection pool has been shutdown.");
+        } catch (SQLException e) {
+            System.err.println("Error shutting down connection pool: " + e.getMessage());
+        }
     }
 }

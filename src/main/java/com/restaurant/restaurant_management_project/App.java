@@ -1,24 +1,19 @@
 package com.restaurant.restaurant_management_project;
 
 import com.restaurant.restaurant_management_project.dao.EquipmentDAO;
+import com.restaurant.restaurant_management_project.database.DatabaseConnection;
 import com.restaurant.restaurant_management_project.model.Equipment;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.sql.Date;
 import java.util.List;
-
 
 /**
  * JavaFX App
  */
 public class App extends Application {
-
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/fxml/container.fxml"));
@@ -27,6 +22,11 @@ public class App extends Application {
 
         stage.setTitle("Restaurant Management");
         stage.setScene(scene);
+        
+        stage.setOnCloseRequest(e -> {
+            System.out.println("Closing all connection!! XD");
+            DatabaseConnection.shutdown();
+        });
         stage.show();
     }
 
@@ -44,5 +44,4 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
-
 }
