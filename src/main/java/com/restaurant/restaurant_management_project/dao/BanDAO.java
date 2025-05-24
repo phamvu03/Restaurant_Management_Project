@@ -1,7 +1,7 @@
 package com.restaurant.restaurant_management_project.dao;
 
 import com.restaurant.restaurant_management_project.model.Ban;
-import com.restaurant.restaurant_management_project.util.ConnectionPool;
+import com.restaurant.restaurant_management_project.database.ConnectionPool;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
