@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * @author admin
  */
 public class EmployeeDAO {
-    public List<Employee> GetAllEmployee(){
+    public List<Employee> getAllEmployee(){
         List<Employee> employees = new ArrayList<>();
         String sql = "SELECT * FROM NHANVIEN";
         Connection connection = null;
