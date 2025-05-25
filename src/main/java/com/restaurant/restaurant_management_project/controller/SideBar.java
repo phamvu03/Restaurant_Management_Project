@@ -137,21 +137,57 @@ public class SideBar {
     @FXML
     private void navigate(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        HBox root = (HBox) scene.getRoot();
         Object source = event.getSource();
         Button clickedButton = (Button) source;
         String buttonId = clickedButton.getId();
         switch (buttonId){
             case ("dasBtn"):
                 loader.setLocation(getClass().getResource("/fxml/dashboard.fxml"));
-                root.getChildren().remove(1);
-                root.getChildren().add(loader.load());
+                load(loader);
                 break;
             case ("menuBtn"):
                 loader.setLocation(getClass().getResource("/fxml/manage-menuitem-view.fxml"));
-                root.getChildren().remove(1);
-                root.getChildren().add(loader.load());
+                load(loader);
                 break;
+            case ("tableOrderBtn"):
+                loader.setLocation(getClass().getResource("/fxml/DatBanGUI.fxml"));
+                load(loader);
+                break;
+            case ("tableBtn"):
+                loader.setLocation(getClass().getResource("/fxml/QLBanGUI.fxml"));
+                load(loader);
+                break;
+            case ("tableOrderMnBtn"):
+                loader.setLocation(getClass().getResource("/fxml/DSDatBanGUI.fxml"));
+                load(loader);
+                break;
+            case ("tableReportBtn"):
+                loader.setLocation(getClass().getResource("/fxml//fxml/ThongKeGUI.fxml"));
+                load(loader);
+                break;
+            case ("employeeBtn"):
+                loader.setLocation(getClass().getResource("NhanVien.fxml"));
+                load(loader);
+                break;
+            case ("accountBtn"):
+                loader.setLocation(getClass().getResource("TaiKhoan.fxml"));
+                load(loader);
+                break;
+            case ("equitmentBtn"):
+                loader.setLocation(getClass().getResource("equipmentView.fxml"));
+                load(loader);
+                break;
+
+        }
+    }
+    private void load( FXMLLoader loader)
+    {
+        HBox root = (HBox) scene.getRoot();
+        root.getChildren().remove(1);
+        try {
+            root.getChildren().add(loader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
