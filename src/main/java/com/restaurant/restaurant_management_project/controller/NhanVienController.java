@@ -1,4 +1,4 @@
-package controller;
+package com.restaurant.restaurant_management_project.controller;
 
 import com.restaurant.restaurant_management_project.dao.EmployeeDAO;
 import com.restaurant.restaurant_management_project.model.Employee;
