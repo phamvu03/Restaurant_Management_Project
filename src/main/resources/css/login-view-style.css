@@ -41,21 +41,22 @@
     -fx-pref-height: 45px;
     -fx-pref-width: 330px;
 }
+
 .show-password-btn
 {
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-    -fx-background-size: 20px 20px;
     -fx-background-color: transparent;
     -fx-min-width: 20px;
     -fx-min-height: 20px;
     -fx-border-color: transparent;
-    -fx-background-image: url("../image/hidepassword.png");
     -fx-cursor: hand;
 }
-.show-password-btn:selected
+.show-password-btn .ikonli-font-icon {
+    -fx-icon-code: "far-eye";
+    -fx-icon-size: 20px;
+}
+.show-password-btn:selected .ikonli-font-icon
 {
-    -fx-background-image: url("../image/showpassword.png");
+    -fx-icon-code:"far-eye-slash";
 }
 /* Login button */
 .login-button

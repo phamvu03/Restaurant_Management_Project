@@ -8,7 +8,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.restaurant.restaurant_management_project.database.DatabaseConnection.GetConnection;
+import static com.restaurant.restaurant_management_project.database.DatabaseConnection.getConnection;
+
 
 public class MenuItemDaoImpl implements MenuItemDao {
 
@@ -17,7 +18,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
 
     public int getNextSequenceValue(String sequenceName) throws SQLException {
         String sql = "SELECT NEXT VALUE FOR " + sequenceName;
-        try (Connection connection = GetConnection();
+        try (Connection connection = getConnection();
              Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             if (rs.next()) {
@@ -38,7 +39,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
         List<RMenuItem> menuItems = new ArrayList<>();
         String sql = "SELECT id, MaMon, TenMon, HinhAnh, Gia, DonVi, Nhom, MonAnKem, TrangThai FROM MonAn ORDER BY Id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         
-        try (Connection conn = GetConnection();
+        try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, offset);
@@ -68,7 +69,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
 
     public int getTotalCount() {
         String sql = "SELECT COUNT(*) FROM MonAn";
-        try (Connection connection = GetConnection();
+        try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             if (resultSet.next()) {
@@ -89,7 +90,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
         PreparedStatement preparedStatement;
         ResultSet resultSet;
         try {
-            connection = GetConnection();
+            connection = getConnection();
             preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             String itemId = "MA" + this.getNextSequenceValue("MID_seq");
             preparedStatement.setString(1,itemId);
@@ -130,7 +131,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
         Connection connection;
         PreparedStatement preparedStatement;
         try {
-            connection = GetConnection();
+            connection = getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, item.getItemName());
             preparedStatement.setBoolean(2, item.isItemStatus());
@@ -159,12 +160,12 @@ public class MenuItemDaoImpl implements MenuItemDao {
         PreparedStatement preparedStatement;
         try {
             //Thay đổi các bản ghi có khóa phụ tương ứng với bản ghi bị xóa
-            connection = GetConnection();
+            connection = getConnection();
             preparedStatement = connection.prepareStatement(sqlUpdate);
             preparedStatement.setInt(1,item.getId());
             exeUpdate(preparedStatement,connection);
             //xóa và trả về kết quả
-            connection = GetConnection();
+            connection = getConnection();
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1,item.getId());
             return exeUpdate(preparedStatement,connection);

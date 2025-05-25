@@ -16,7 +16,7 @@ import java.util.List;
 public class AccountDAO {
     public List<Account> GetAllEquipment(){
         List<Account> accounts = new ArrayList<>();
-        String sql = "SELECT * FROM ChiTietDonHang";
+        String sql = "SELECT * FROM TaiKhoan";
         Connection connection = null;
         try{
             connection = DatabaseConnection.getConnection();
@@ -95,6 +95,30 @@ public class AccountDAO {
         } catch (SQLException ex) {
             System.err.println("Lỗi khi xóa dụng cụ: " + ex.getMessage());
             return false;        
+        } finally {
+            DatabaseConnection.releaseConnection(connection);
+        }
+    }
+    public boolean checkAccount(String userName,String passWord)
+    {
+        String sql = "SELECT * " +
+                "FROM TaiKhoan" +
+                " WHERE TenTK = ? AND MatKhau = ?";
+        System.out.println("Bat dau");
+        Connection connection = null;
+        try{
+            connection = DatabaseConnection.getConnection();
+            try(PreparedStatement stmt = connection.prepareStatement(sql)){
+
+                stmt.setString(1, userName);
+                stmt.setString(2, passWord);
+
+                ResultSet resultSet = stmt.executeQuery();
+                return resultSet.next();
+            }
+        } catch (SQLException ex) {
+            System.err.println("Lỗi khi khi kiểm tra tài khoản! " + ex.getMessage());
+            return false;
         } finally {
             DatabaseConnection.releaseConnection(connection);
         }

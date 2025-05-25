@@ -8,6 +8,7 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.text.Text?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <FlowPane prefHeight="1080"
           prefWidth="1920"
           stylesheets="@../css/login-view-style.css"
@@ -17,23 +18,26 @@
           fx:controller="com.restaurant.restaurant_management_project.controller.LoginController"
 >
     <VBox>
-        <ImageView fx:id="logoImg" styleClass="logo-img" />
-        <Text>SOlOGAN</Text>
+        <ImageView styleClass="logo-img" />
+        <Text>The Golden Folk</Text>
     </VBox>
     <VBox styleClass="login-info">
         <Text text="LOGIN" style="-fx-font-size: 30px;"/>
         <TextField fx:id="userName" styleClass="username" promptText="Tài khoản"/>
-        <Text styleClass="username-error-msg" fx:id="usernameError"/>
         <HBox styleClass="password-container">
             <StackPane >
-                <TextField fx:id="passwordTextField" styleClass="password"/>
+                <TextField fx:id="passwordTextField" promptText="Mật khẩu" styleClass="password"/>
                 <PasswordField fx:id="passwordField"  promptText="Mật khẩu" styleClass="password" />
             </StackPane>
-            <ToggleButton fx:id="showPasswordBtn" styleClass="show-password-btn" onAction="#showPassword"/>
+            <ToggleButton fx:id="showPasswordBtn" styleClass="show-password-btn" onAction="#showPassword">
+                <graphic>
+                    <FontIcon/>
+                </graphic>
+            </ToggleButton>
         </HBox>
-        <Text styleClass="password-error-msg" fx:id="passwordError"/>
-        <Button fx:id="loginButton" styleClass="login-button" text="Đăng nhập"/>
-        <Text fx:id="forgotPassword" styleClass="forgot-password" text="Quên mật khẩu?" onMouseClicked="#forgotPassword"/>
+        <Text styleClass="password-error-msg" fx:id="error" visible="false" managed="${error.visible}"/>
+        <Button  styleClass="login-button" text="Đăng nhập" onAction="#onLogin"/>
+        <Text  styleClass="forgot-password" text="Quên mật khẩu?" onMouseClicked="#onForgotPasswordClicked"/>
     </VBox>
 </FlowPane>
 

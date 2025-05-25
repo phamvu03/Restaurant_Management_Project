@@ -171,7 +171,7 @@ public class NhanVienController {
 	@FXML
 	private void themNhanVien() {
 		if (!validateForm()) return;
-		
+
 		try {
 			NhanVien nv = docTuForm();
 			if (dao.addNhanVien(nv)) {

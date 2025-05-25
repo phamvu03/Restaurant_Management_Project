@@ -47,7 +47,7 @@
 
     <HBox>
         <!--Doanh thu-->
-        <LineChart>
+        <LineChart fx:id="benefitChart">
             <xAxis>
                 <CategoryAxis label="Thời gian"/>
             </xAxis>
@@ -56,7 +56,7 @@
             </yAxis>
         </LineChart>
         <!--Thoi gian dong khach-->
-        <BarChart>
+        <BarChart fx:id="popularTimeChart">
             <xAxis>
                 <CategoryAxis label="Thời gian"/>
             </xAxis>
@@ -76,6 +76,6 @@
         <PieChart fx:id="tableOrderState"/>
     </VBox>
     </HBox>
-    <GridView fx:id="itemList" VBox.vgrow="ALWAYS" />
+    <GridView fx:id="popularItemList" VBox.vgrow="ALWAYS" />
 </VBox>
 

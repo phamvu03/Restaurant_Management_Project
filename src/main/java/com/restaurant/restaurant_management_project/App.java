@@ -16,17 +16,12 @@ import java.util.List;
 public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/fxml/container.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/fxml/dashboard.fxml"));
 //        Scene scene = new Scene(fxmlLoader.load());
         Scene scene = new Scene(fxmlLoader.load(), 900, 600);
 
         stage.setTitle("Restaurant Management");
         stage.setScene(scene);
-        
-        stage.setOnCloseRequest(e -> {
-            System.out.println("Closing all connection!! XD");
-            DatabaseConnection.shutdown();
-        });
         stage.show();
     }
 
