@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * @author admin
  */
 public class AccountDAO {
-    public List<Account> GetAllEquipment(){
+    public List<Account> getAllAccounts(){
         List<Account> accounts = new ArrayList<>();
         String sql = "SELECT * FROM TaiKhoan";
         Connection connection = null;
@@ -125,7 +125,7 @@ public class AccountDAO {
         System.out.println("Bat dau");
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
 
                 stmt.setString(1, userName);
@@ -138,7 +138,11 @@ public class AccountDAO {
             System.err.println("Lỗi khi khi kiểm tra tài khoản! " + ex.getMessage());
             return false;
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            try {
+                ConnectionPool.getInstance().releaseConnection(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }
