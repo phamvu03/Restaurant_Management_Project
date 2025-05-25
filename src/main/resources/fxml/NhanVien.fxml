@@ -20,7 +20,9 @@
 	prefWidth="1293.0" stylesheets="@../css/TKvaNV.css"
 	xmlns="http://javafx.com/javafx/23.0.1"
 	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="com.restaurant.restaurant_management_project.controller.NhanVienController">
+	fx:controller="com.restaurant.restaurant_management_project.controller.NhanVienController"
+
+>
 	<children>
 		<TableView fx:id="tableNhanVien" layoutX="64.0"
 			layoutY="140.0" prefHeight="350.0" prefWidth="1223.0"

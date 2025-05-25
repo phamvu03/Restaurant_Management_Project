@@ -79,6 +79,10 @@
 }
 .logo-img{
     -fx-image: url("../image/logo.png");
-    -fx-fit-width: 50px;
-    -fx-fit-height: 50px;
+    -fx-fit-width: 250px;
+    -fx-fit-height: 250px;
+}
+.name{
+    -fx-font-size: 50px;
+    -fx-font-weight: bold;
 }
