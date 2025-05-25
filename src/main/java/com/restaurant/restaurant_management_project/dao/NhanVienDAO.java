@@ -1,8 +1,7 @@
 package com.restaurant.restaurant_management_project.dao;
 
-import com.restaurant.restaurant_management_project.database.DatabaseConnection;
+import com.restaurant.restaurant_management_project.database.ConnectionPool;
 import com.restaurant.restaurant_management_project.model.NhanVien;
-
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -18,7 +17,7 @@ public class NhanVienDAO {
         String sql = "SELECT * FROM NhanVien";
         Connection connection = null;
         try {
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             try(Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)){
 
@@ -30,7 +29,7 @@ public class NhanVienDAO {
         } catch (SQLException ex) {
             System.err.println("Lỗi khi lấy danh sách nhân viên: " + ex.getMessage());
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            ConnectionPool.getInstance().releaseConnection(connection);
         }
         return list;
 
@@ -40,7 +39,7 @@ public class NhanVienDAO {
     //kiểm tra mã nhân viên có tồn tại chưa
     public boolean maNVTonTai(String maNV) throws SQLException {
         String sql = "SELECT 1 FROM NhanVien WHERE MaNV = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maNV);
             ResultSet rs = ps.executeQuery();
@@ -55,7 +54,7 @@ public class NhanVienDAO {
         String sql = "INSERT INTO NhanVien (MaNV, TenNV, NgaySinh, SDT, Email, ChucVu, Luong) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             setParams(ps, nv);
@@ -67,7 +66,7 @@ public class NhanVienDAO {
     public boolean updateNhanVien(NhanVien nv) throws SQLException {
         String sql = "UPDATE NhanVien SET TenNV=?, NgaySinh=?, SDT=?, Email=?, ChucVu=?, Luong=? WHERE MaNV=?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, nv.getTenNV());
@@ -86,7 +85,7 @@ public class NhanVienDAO {
     public boolean deleteNhanVien(String maNV) throws SQLException {
         String sql = "DELETE FROM NhanVien WHERE MaNV = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, maNV);
@@ -99,7 +98,7 @@ public class NhanVienDAO {
         List<NhanVien> list = new ArrayList<>();
         String sql = "SELECT * FROM NhanVien WHERE TenNV LIKE ? OR ChucVu LIKE ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             String k = "%" + keyword + "%";
@@ -120,7 +119,7 @@ public class NhanVienDAO {
         List<Object[]> result = new ArrayList<>();
         String sql = "SELECT ChucVu, COUNT(*) AS SoLuong FROM NhanVien GROUP BY ChucVu";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
