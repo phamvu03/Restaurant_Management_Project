@@ -36,9 +36,6 @@ public class AddEquipmentController implements Initializable {
 
     @FXML
     private DatePicker date;
-
-    @FXML
-    private TextField idTxt;
     
     @FXML
     private TextField nameTxt;
@@ -66,7 +63,6 @@ public class AddEquipmentController implements Initializable {
     }   
     
     private void handleAddBtnAction() {
-        String id = idTxt.getText();
         String name = nameTxt.getText();
         String type = typeTxt.getText();
         String quantityStr = quantityTxt.getText();
@@ -88,7 +84,6 @@ public class AddEquipmentController implements Initializable {
         }
 
         Equipment equip = new Equipment();
-        equip.setMaDungCu(id);
         equip.setTenDungCu(name);
         equip.setLoai(type);
         equip.setSoLuong(quantity);

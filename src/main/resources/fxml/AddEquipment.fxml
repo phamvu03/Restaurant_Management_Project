@@ -27,21 +27,7 @@
             </Label>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="70.0">
                <children>
-                  <VBox alignment="CENTER_LEFT" prefHeight="86.0" prefWidth="130.0" spacing="10.0">
-                     <children>
-                        <Label text="Mã dụng cụ">
-                           <font>
-                              <Font name="Cambria" size="16.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="idTxt" prefHeight="37.0" prefWidth="158.0" promptText="Mã dụng cụ">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </TextField>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER_LEFT" prefHeight="94.0" prefWidth="300.0" spacing="10.0">
+                  <VBox alignment="CENTER_LEFT" prefHeight="86.0" prefWidth="500.0" spacing="10.0">
                      <children>
                         <Label text="Tên dụng cụ">
                            <font>
@@ -95,16 +81,16 @@
             <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="236.0" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Region prefHeight="70.0" prefWidth="50.0" />
-                  <VBox alignment="CENTER_LEFT" prefHeight="85.0" prefWidth="375.0" spacing="10.0">
+                  <VBox alignment="CENTER_LEFT" prefHeight="86.0" prefWidth="500.0" spacing="10.0">
                      <children>
                         <Label text="Tình trạng">
                            <font>
                               <Font name="Cambria" size="16.0" />
                            </font>
                         </Label>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <TextField fx:id="statusTxt" prefHeight="40.0" prefWidth="446.0" promptText="Tình trạng">
+                              <TextField fx:id="statusTxt" prefHeight="40.0" prefWidth="511.0" promptText="Tình trạng">
                                  <font>
                                     <Font name="Cambria" size="16.0" />
                                  </font>
