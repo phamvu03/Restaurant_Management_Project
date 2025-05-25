@@ -95,21 +95,6 @@ public class MenuItemValidatorUtils {
         return new BigDecimal(cleaned);
     }
 
-    public static Integer parseQuantity(String quantityText) throws NumberFormatException {
-        if (quantityText == null || quantityText.trim().isEmpty()) {
-            return 0;
-        }
-
-        // Loại bỏ tất cả ký tự không phải số
-        String cleaned = quantityText.replaceAll("[^0-9]", "");
-
-        if (cleaned.isEmpty()) {
-            return 0;
-        }
-
-        return Integer.parseInt(cleaned);
-    }
-
     private static void showError(Text errorText, String message) {
         errorText.setText(message);
         errorText.setVisible(true);

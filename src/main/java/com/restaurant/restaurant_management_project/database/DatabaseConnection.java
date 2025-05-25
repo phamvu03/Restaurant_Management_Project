@@ -6,7 +6,8 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 
 public class DatabaseConnection {
-    private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=RM_Db;integratedSecurity=true;encrypt=true;trustServerCertificate=true";
+    private static final String URL = "jdbc:sqlserver://localhost;databaseName=RM_Db;encrypt=true;trustServerCertificate=true";
+
     private static final int MAX_POOL_SIZE = 20; 
     private static final int TIMEOUT_SECONDS = 5;
 
@@ -15,7 +16,7 @@ public class DatabaseConnection {
     static {
         try {
             for (int i = 0; i < MAX_POOL_SIZE; i++) {
-                Connection conn = DriverManager.getConnection(URL);
+                Connection conn = DriverManager.getConnection(URL,"nhahang_admin","abc123!@#");
                 pool.add(conn);
             }
             System.out.println("Connection Pool initialized with " + pool.size() 
