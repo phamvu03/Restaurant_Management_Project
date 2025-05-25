@@ -104,7 +104,7 @@ public class EquipmentController implements Initializable {
     }    
     
     public void loadDataFromDatabase(){
-        List<Equipment> list = equipDAO.GetAllEquipment();
+        List<Equipment> list = equipDAO.getAllEquipment();
         ObservableList<Equipment> observableList  = FXCollections.observableArrayList(list);
         
         colId.setCellValueFactory(new PropertyValueFactory<>("MaDungCu"));
