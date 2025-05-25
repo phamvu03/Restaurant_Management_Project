@@ -1,7 +1,7 @@
 package com.restaurant.restaurant_management_project.model;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -10,7 +10,7 @@ import java.sql.Date;
 public class Employee {
     private String MaNV;
     private String TenNV;
-    private Date NgaySinh;
+    private LocalDate NgaySinh;
     private String SDT;
     private String Email;
     private String ChucVu;
@@ -19,7 +19,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String MaNV, String TenNV, Date NgaySinh, String SDT, String Email, String ChucVu, BigDecimal Luong) {
+    public Employee(String MaNV, String TenNV, LocalDate NgaySinh, String SDT, String Email, String ChucVu, BigDecimal Luong) {
         this.MaNV = MaNV;
         this.TenNV = TenNV;
         this.NgaySinh = NgaySinh;
@@ -45,11 +45,11 @@ public class Employee {
         this.TenNV = TenNV;
     }
 
-    public Date getNgaySinh() {
+    public LocalDate getNgaySinh() {
         return NgaySinh;
     }
 
-    public void setNgaySinh(Date NgaySinh) {
+    public void setNgaySinh(LocalDate NgaySinh) {
         this.NgaySinh = NgaySinh;
     }
 

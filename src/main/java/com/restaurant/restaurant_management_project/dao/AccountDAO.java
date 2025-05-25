@@ -1,7 +1,9 @@
 package com.restaurant.restaurant_management_project.dao;
 
 import com.restaurant.restaurant_management_project.database.ConnectionPool;
+import com.restaurant.restaurant_management_project.database.DatabaseConnection;
 import com.restaurant.restaurant_management_project.model.Account;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +17,7 @@ import java.util.logging.Logger;
  *
  * @author admin
  */
+// 1. Lấy toàn bộ tài khoản
 public class AccountDAO {
     public List<Account> getAllAccounts(){
         List<Account> accounts = new ArrayList<>();
@@ -29,10 +32,11 @@ public class AccountDAO {
                     detail.setMaNV(rs.getString("MaNV"));
                     detail.setTenTK(rs.getString("TenTK"));
                     detail.setMatKhau(rs.getString("MatKhau"));
+                    accounts.add(detail);
                 }
             }
         } catch (SQLException ex) {
-            System.err.println("Lỗi khi lấy danh sách tai khoan: " + ex.getMessage());
+            System.err.println("Lỗi khi lấy danh sách tài khoản: " + ex.getMessage());
         } finally {
             try {
                 ConnectionPool.getInstance().releaseConnection(connection);
@@ -41,6 +45,24 @@ public class AccountDAO {
             }
         }
         return accounts;
+    }
+    // 5. Tìm kiếm theo tên
+    public List<Account> timKiemTaiKhoan(String tukhoa) throws SQLException {
+        List<Account> list = new ArrayList<>();
+        String sql = "SELECT * FROM TaiKhoan WHERE TenTK LIKE ? ";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            String k = "%" + tukhoa + "%";
+            ps.setString(1, k);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Account detail = new Account();
+                    detail.setTenTK(rs.getString("TenTK"));
+                }
+            }
+        }
+        return list;
     }
     public boolean addAccount(Account acc){
         String sql = "INSERT INTO TaiKhoan (MaNV, TenTK, MatKhau) "
@@ -58,7 +80,7 @@ public class AccountDAO {
                 return rowsInserted > 0;
             }
         } catch (SQLException ex) {
-            System.err.println("Lỗi khi thêm tai khoan: " + ex.getMessage());
+            System.err.println("Lỗi khi thêm tài khoản: " + ex.getMessage());
             return false;
         } finally {
             try {
@@ -69,22 +91,20 @@ public class AccountDAO {
         }
     }
     public boolean updateAccount(Account acc){
-        String sql = "UPDATE TaiKhoan SET MatKhau = ?"
-                    + "WHERE MaNV = ? AND TenTK = ?";
+        String sql = "UPDATE TaiKhoan SET TenTK = ?, MatKhau = ? WHERE MaNV = ? ";
         Connection connection = null;
         try{
             connection = ConnectionPool.getInstance().getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
 
-                stmt.setString(1, acc.getMatKhau());
-                stmt.setString(2, acc.getMaNV());
-                stmt.setString(3, acc.getTenTK());
+                stmt.setString(2, acc.getMatKhau());
+                stmt.setString(1, acc.getTenTK());
 
                 int rowsUpdated = stmt.executeUpdate();
                 return rowsUpdated > 0;
             }
         } catch (SQLException ex) {
-            System.err.println("Lỗi khi sửa mat khau: " + ex.getMessage());
+            System.err.println("Lỗi khi sửa mật khẩu: " + ex.getMessage());
             return false;
         } finally {
             try {
@@ -94,8 +114,9 @@ public class AccountDAO {
             }
         }
     }
+
     public boolean deleteAccount(String employId, String accName){
-        String sql = "DELTE FROM TaiKhoan WHERE MaNV = ?";
+        String sql = "DELETE FROM TaiKhoan WHERE MaNV = ?";
         Connection connection = null;
         try{
             connection = ConnectionPool.getInstance().getConnection();
@@ -107,7 +128,7 @@ public class AccountDAO {
                 return rowsDeleted > 0;
             }
         } catch (SQLException ex) {
-            System.err.println("Lỗi khi xóa dụng cụ: " + ex.getMessage());
+            System.err.println("Lỗi khi xóa nhân viên: " + ex.getMessage());
             return false;
         } finally {
             try {

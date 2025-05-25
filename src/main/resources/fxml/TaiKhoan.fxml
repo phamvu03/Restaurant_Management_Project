@@ -1,32 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1200.0"
-	styleClass="root-pane" stylesheets="@../css/TKvaNV.css"
-	xmlns="http://javafx.com/javafx/23.0.1"
-	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="com.restaurant.restaurant_management_project.controller.TaiKhoanController"
->
+<AnchorPane prefHeight="700.0" prefWidth="1033.0" styleClass="root-pane" stylesheets="@../css/TKvaNV.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.AccountController">
 
 	<children>
 		<!-- Header -->
-		<VBox alignment="CENTER" layoutX="0.0" layoutY="20.0"
-			prefWidth="1200.0">
+		<VBox alignment="CENTER" layoutX="0.0" layoutY="20.0" prefHeight="82.0" prefWidth="1063.0">
 			<children>
 				<Label styleClass="header-label" text="QUẢN LÝ TÀI KHOẢN">
 					<font>
@@ -40,19 +23,14 @@
 		</VBox>
 
 		<!-- Search Bar -->
-		<HBox layoutX="30.0" layoutY="80.0" spacing="10.0"
-			styleClass="search-box">
+		<HBox layoutX="30.0" layoutY="80.0" spacing="10.0" styleClass="search-box">
 			<children>
-				<TextField fx:id="txtTimKiem" prefHeight="36.0"
-					prefWidth="250.0" promptText="Nhập tên đăng nhập hoặc vai trò"
-					styleClass="text-field">
+				<TextField fx:id="txtTimKiem" prefHeight="36.0" prefWidth="250.0" promptText="Nhập tên đăng nhập" styleClass="text-field">
 					<tooltip>
-						<Tooltip text="Tìm kiếm theo tên đăng nhập hoặc vai trò" />
+						<Tooltip text="Tìm kiếm theo tên đăng nhập" />
 					</tooltip>
 				</TextField>
-				<Button fx:id="btnTimKiem" onAction="#timkiemTaiKhoan"
-					prefHeight="36.0" prefWidth="100.0" styleClass="button-primary"
-					text="Tìm kiếm">
+				<Button fx:id="btnTimKiem" onAction="#timkiemTaiKhoan" prefHeight="36.0" prefWidth="100.0" styleClass="button-primary" text="Tìm kiếm">
 					<tooltip>
 						<Tooltip text="Tìm kiếm tài khoản" />
 					</tooltip>
@@ -64,74 +42,44 @@
 		</HBox>
 
 		<!-- TableView -->
-		<TableView fx:id="tableTaiKhoan" layoutX="30.0"
-			layoutY="140.0" prefHeight="367.0" prefWidth="1170.0"
-			styleClass="search-box">
+		<TableView fx:id="tableTaiKhoan" layoutX="30.0" layoutY="140.0" prefHeight="367.0" prefWidth="1006.0" styleClass="search-box">
 			<columns>
 				<TableColumn fx:id="colStt" prefWidth="50.0" text="STT" />
-				<TableColumn fx:id="colEmployeeId" prefWidth="220.0"
-					text="Mã nhân viên" />
-				<TableColumn fx:id="colUsername"
-					prefWidth="418.3999938964844" text="Tên đăng nhập" />
-				<TableColumn fx:id="colPassword"
-					prefWidth="314.39996337890625" text="Mật khẩu" />
-				<TableColumn fx:id="colRole"
-					prefWidth="165.60003662109375" text="Vai trò" />
+				<TableColumn fx:id="colEmployeeId" prefWidth="220.0" text="Mã nhân viên" />
+				<TableColumn fx:id="colUsername" prefWidth="418.4" text="Tên đăng nhập" />
+				<TableColumn fx:id="colPassword" prefWidth="314.4" text="Mật khẩu" />
 			</columns>
 		</TableView>
 
 		<!-- Form -->
-		<GridPane hgap="15.0" layoutX="30.0" layoutY="510.0"
-			prefHeight="118.0" prefWidth="882.0" styleClass="search-box"
-			vgap="15.0">
+		<GridPane hgap="15.0" layoutX="30.0" layoutY="510.0" prefHeight="118.0" prefWidth="1006.0" styleClass="search-box" vgap="15.0">
 			<columnConstraints>
 				<ColumnConstraints prefWidth="150.0" />
-				<ColumnConstraints maxWidth="308.79999389648435"
-					minWidth="247.9999755859375" prefWidth="269.60004882812507" />
-				<ColumnConstraints maxWidth="153.60004882812495"
-					minWidth="92.0000061035156" prefWidth="133.59995117187498" />
-				<ColumnConstraints maxWidth="268.7999633789062"
-					minWidth="213.59995117187498" prefWidth="249.59995117187498" />
+				<ColumnConstraints prefWidth="269.6" />
+				<ColumnConstraints prefWidth="133.6" />
+				<ColumnConstraints prefWidth="249.6" />
 			</columnConstraints>
 			<rowConstraints>
-				<RowConstraints maxHeight="40.0"
-					minHeight="16.000000000000004" prefHeight="37.5999755859375" />
-				<RowConstraints maxHeight="64.0" minHeight="40.0"
-					prefHeight="42.4000244140625" />
+				<RowConstraints prefHeight="37.6" />
+				<RowConstraints prefHeight="42.4" />
 			</rowConstraints>
 			<children>
-				<Label graphicTextGap="5.0" styleClass="form-label"
-					text="Tên đăng nhập" />
-				<TextField fx:id="txtUsername" styleClass="text-field"
-					GridPane.columnIndex="1">
+				<Label styleClass="form-label" text="Tên đăng nhập" />
+				<TextField fx:id="txtUsername" styleClass="text-field" GridPane.columnIndex="1">
 					<tooltip>
 						<Tooltip text="Nhập tên đăng nhập (tối đa 50 ký tự)" />
 					</tooltip>
 				</TextField>
 
-				<Label styleClass="form-label" text="Mật khẩu"
-					textFill="#080808" GridPane.rowIndex="1" />
-				<TextField fx:id="txtPassword" styleClass="text-field"
-					GridPane.columnIndex="1" GridPane.rowIndex="1">
+				<Label styleClass="form-label" text="Mật khẩu" textFill="#080808" GridPane.rowIndex="1" />
+				<TextField fx:id="txtPassword" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="1">
 					<tooltip>
 						<Tooltip text="Nhập mật khẩu (tối thiểu 6 ký tự)" />
 					</tooltip>
 				</TextField>
 
-				<Label styleClass="form-label" text="Vai trò"
-					textFill="#080808" GridPane.columnIndex="2" />
-				<ComboBox fx:id="role" prefHeight="38.0" prefWidth="323.0"
-					promptText="Chọn chức vụ" styleClass="combo-box"
-					GridPane.columnIndex="3">
-					<tooltip>
-						<Tooltip text="Chọn vai trò: admin hoặc user" />
-					</tooltip>
-				</ComboBox>
-
-				<Label styleClass="form-label" text="Mã nhân viên"
-					textFill="#080808" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-				<TextField fx:id="txtEmployeeId" styleClass="text-field"
-					GridPane.columnIndex="3" GridPane.rowIndex="1">
+				<Label styleClass="form-label" text="Mã nhân viên" textFill="#080808" GridPane.columnIndex="2" />
+				<TextField fx:id="txtEmployeeId" styleClass="text-field" GridPane.columnIndex="3">
 					<tooltip>
 						<Tooltip text="Nhập mã nhân viên (phải tồn tại)" />
 					</tooltip>
@@ -143,29 +91,24 @@
 		</GridPane>
 
 		<!-- Buttons -->
-		<HBox layoutX="30.0" layoutY="628.0" spacing="35.0"
-			styleClass="button-box">
+		<HBox layoutX="30.0" layoutY="628.0" spacing="35.0" styleClass="button-box">
 			<children>
-				<Button fx:id="btnLamTrong" onAction="#lamTrongForm"
-					styleClass="button-primary" text="Làm trống">
+				<Button fx:id="btnLamTrong" onAction="#lamTrongForm" styleClass="button-primary" text="Làm trống">
 					<tooltip>
 						<Tooltip text="Xóa nội dung các trường nhập liệu" />
 					</tooltip>
 				</Button>
-				<Button fx:id="btnThem" onAction="#themTaiKhoan"
-					styleClass="button-primary" text="Thêm">
+				<Button fx:id="btnThem" onAction="#themTaiKhoan" styleClass="button-primary" text="Thêm">
 					<tooltip>
 						<Tooltip text="Thêm tài khoản mới" />
 					</tooltip>
 				</Button>
-				<Button fx:id="btnSua" onAction="#suaTaiKhoan"
-					styleClass="button-primary" text="Sửa">
+				<Button fx:id="btnSua" onAction="#suaTaiKhoan" styleClass="button-primary" text="Sửa">
 					<tooltip>
 						<Tooltip text="Cập nhật thông tin tài khoản" />
 					</tooltip>
 				</Button>
-				<Button fx:id="btnXoa" onAction="#xoaTaiKhoan"
-					styleClass="button-danger" text="Xóa">
+				<Button fx:id="btnXoa" onAction="#xoaTaiKhoan" styleClass="button-danger" text="Xóa">
 					<tooltip>
 						<Tooltip text="Xóa tài khoản đã chọn" />
 					</tooltip>
