@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * @author admin
  */
 public class OrderDetailDAO {
-    public List<OrderDetail> GetAllEquipment(){
+    public List<OrderDetail> getAllEquipment(){
         List<OrderDetail> orderDetails = new ArrayList<>();
         String sql = "SELECT * FROM ChiTietDonHang";
         Connection connection = null;

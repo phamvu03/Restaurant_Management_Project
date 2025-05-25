@@ -1,14 +1,12 @@
 package com.restaurant.restaurant_management_project.dao;
 
+import com.restaurant.restaurant_management_project.database.ConnectionPool;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-
-import static com.restaurant.restaurant_management_project.database.DatabaseConnection.getConnection;
-import static com.restaurant.restaurant_management_project.database.DatabaseConnection.releaseConnection;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 public class ReportDAO {
     public BigDecimal getBenefitByDate(LocalDate ngay) {
         BigDecimal tongDoanhThu = new BigDecimal(0);
@@ -22,7 +20,7 @@ public class ReportDAO {
         ResultSet rs = null;
 
         try {
-            conn = getConnection();
+            conn = ConnectionPool.getInstance().getConnection();
             ps = conn.prepareStatement(sql);
             ps.setDate(1, java.sql.Date.valueOf(ngay));
             rs = ps.executeQuery();
@@ -48,7 +46,11 @@ public class ReportDAO {
             if (ps != null) {
                 try { ps.close(); } catch (SQLException e) { e.printStackTrace(); }
             }
-            releaseConnection(conn);
+            try {
+                ConnectionPool.getInstance().releaseConnection(conn);
+            } catch (SQLException ex) {
+                Logger.getLogger(ReportDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return tongDoanhThu;
     }
@@ -63,7 +65,7 @@ public class ReportDAO {
         ResultSet rs = null;
 
         try {
-            conn = getConnection();
+            conn = ConnectionPool.getInstance().getConnection();
             ps = conn.prepareStatement(sql);
             ps.setDate(1, java.sql.Date.valueOf(ngay));
             rs = ps.executeQuery();
@@ -85,7 +87,11 @@ public class ReportDAO {
             if (ps != null) {
                 try { ps.close(); } catch (SQLException e) { e.printStackTrace(); }
             }
-            releaseConnection(conn);
+            try {
+                ConnectionPool.getInstance().releaseConnection(conn);
+            } catch (SQLException ex) {
+                Logger.getLogger(ReportDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return orderNum;
     }
@@ -100,7 +106,7 @@ public class ReportDAO {
         ResultSet rs = null;
 
         try {
-            conn = getConnection();
+            conn = ConnectionPool.getInstance().getConnection();
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
 
@@ -121,7 +127,11 @@ public class ReportDAO {
             if (ps != null) {
                 try { ps.close(); } catch (SQLException e) { e.printStackTrace(); }
             }
-            releaseConnection(conn);
+            try {
+                ConnectionPool.getInstance().releaseConnection(conn);
+            } catch (SQLException ex) {
+                Logger.getLogger(ReportDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return tableNum;
     }
@@ -136,7 +146,7 @@ public class ReportDAO {
         ResultSet rs = null;
 
         try {
-            conn = getConnection();
+            conn = ConnectionPool.getInstance().getConnection();
             ps = conn.prepareStatement(sql);
             ps.setTimestamp(1, Timestamp.valueOf(time));
             rs = ps.executeQuery();
@@ -158,7 +168,11 @@ public class ReportDAO {
             if (ps != null) {
                 try { ps.close(); } catch (SQLException e) { e.printStackTrace(); }
             }
-            releaseConnection(conn);
+            try {
+                ConnectionPool.getInstance().releaseConnection(conn);
+            } catch (SQLException ex) {
+                Logger.getLogger(ReportDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return tableNum;
     }
