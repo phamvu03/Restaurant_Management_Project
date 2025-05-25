@@ -1,16 +1,9 @@
 package com.restaurant.restaurant_management_project.model;
 
-import com.restaurant.restaurant_management_project.database.DatabaseConnection;
-
 import java.math.BigDecimal;
-import java.sql.*;
 import java.time.LocalDate;
 
-
-
 public class NhanVien {
-    private static int dem = 0; // Dùng để sinh mã tự động
-
     private String maNV;
     private String tenNV;
     private LocalDate ngaySinh;
@@ -19,50 +12,19 @@ public class NhanVien {
     private String chucVu;
     private BigDecimal luong;
 
-    // Constructor không tham số - tự sinh mã
+    // Constructor không tham số
     public NhanVien() {
-        this.maNV = sinhMaNhanVien();
     }
 
     // Constructor đầy đủ
     public NhanVien(String maNV, String tenNV, LocalDate ngaySinh, String sdt, String email, String chucVu, BigDecimal luong) {
-        if (maNV == null || maNV.trim().isEmpty()) {
-            this.maNV = sinhMaNhanVien();
-        } else {
-            this.maNV = maNV;
-        }
+        this.maNV = maNV;
         this.tenNV = tenNV;
         this.ngaySinh = ngaySinh;
         this.sdt = sdt;
         this.email = email;
         this.chucVu = chucVu;
         this.luong = luong;
-    }
-
-    // Cập nhật biến đếm từ CSDL
-    public static void capNhatBienDemTuDatabase() {
-        String sql = "SELECT MAX(MaNV) FROM NhanVien";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            if (rs.next()) {
-                String maxMa = rs.getString(1); // VD: NV015
-                if (maxMa != null && maxMa.matches("NV\\d{3}")) {
-                    int so = Integer.parseInt(maxMa.substring(2));
-                    dem = so;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Sinh mã mới
-    private static String sinhMaNhanVien() {
-        dem++;
-        return String.format("NV%03d", dem);
     }
 
     // Getters & Setters
