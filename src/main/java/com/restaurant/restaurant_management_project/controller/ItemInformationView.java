@@ -119,7 +119,6 @@ public class ItemInformationView {
         setUpMenuButtons();
         imageChose.setMouseTransparent(false);
         setTextFields(form,true);
-        itemQuantity.setEditable(false);
         button1.setText("Hủy");
         button2.setText("Lưu");
         button1.setOnAction(event -> cancelUpdate());
