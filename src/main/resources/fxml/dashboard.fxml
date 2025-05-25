@@ -15,37 +15,37 @@
 <?import javafx.scene.chart.LineChart?>
 <?import org.controlsfx.control.GridView?>
 <VBox
-      stylesheets="@../css/dashboard.css"
-      xmlns="http://javafx.com/javafx/11.0.14-internal"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.restaurant.restaurant_management_project.controller.DashBoard"
-      HBox.hgrow="ALWAYS"
+        stylesheets="@../css/dashboard.css"
+        xmlns="http://javafx.com/javafx/11.0.14-internal"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.restaurant.restaurant_management_project.controller.DashBoard"
+        HBox.hgrow="ALWAYS"
 >
-    <HBox>
-<VBox>
-    <HBox>
-        <VBox styleClass="metric-card">
-            <Label text="Doanh thu hôm nay"/>
-            <Label fx:id="revenue" text="Đang tải"/>
-            <Label fx:id="todayRevenueCompare"/>
-        </VBox>
-        <VBox styleClass="metric-card">
-            <Label text="Tổng số đơn hàng"/>
-            <Label fx:id="totalOrder" text="Đang tải"/>
-            <Label fx:id="todayOrderCompare"/>
-        </VBox>
-        <VBox styleClass="metric-card">
-            <Label text="Số bàn đang có khách"/>
-            <PieChart fx:id="usedTable"/>
-            <Label fx:id="usedTableText"/>
-        </VBox>
-        <VBox styleClass="metric-card">
-            <Label text="Số lượng đặt bàn sắp tới"/>
-            <Label fx:id="orderedTable" text="Đang tải"/>
-        </VBox>
-    </HBox>
-
-    <HBox>
+    <VBox VBox.vgrow="ALWAYS">
+        <HBox fx:id="firstRowHBox" VBox.vgrow="ALWAYS">
+            <VBox styleClass="metric-card" HBox.hgrow="ALWAYS">
+                <Label text="Doanh thu hôm nay" styleClass="metric-label" alignment="CENTER"/>
+                <Label fx:id="revenue" text="Đang tải" alignment="CENTER"/>
+                <Label fx:id="todayRevenueCompare" alignment="CENTER"/>
+            </VBox >
+            <VBox styleClass="metric-card" HBox.hgrow="ALWAYS">
+                <Label text="Tổng số đơn hàng" styleClass="metric-label" alignment="CENTER"/>
+                <Label fx:id="totalOrder" text="Đang tải" alignment="CENTER"/>
+                <Label fx:id="todayOrderCompare" alignment="CENTER"/>
+            </VBox>
+            <VBox styleClass="metric-card" HBox.hgrow="ALWAYS">
+                <Label text="Số bàn đang có khách" styleClass="metric-label" alignment="CENTER"/>
+                <PieChart fx:id="usedTable"/>
+                <Label fx:id="usedTableText" alignment="CENTER"/>
+            </VBox>
+            <VBox styleClass="metric-card" HBox.hgrow="ALWAYS">
+                <Label text="Số lượng đặt bàn sắp tới" styleClass="metric-label" alignment="CENTER"/>
+                <Label fx:id="orderedTable" text="Đang tải" alignment="CENTER"/>
+            </VBox>
+        </HBox>
+        <!-- Rest of your FXML remains the same -->
+    </VBox>
+    <HBox fx:id="secondRowHBox">
         <!--Doanh thu-->
         <LineChart fx:id="benefitChart">
             <xAxis>
@@ -64,16 +64,8 @@
                 <NumberAxis />
             </yAxis>
         </BarChart>
-    </HBox>
-
-
-</VBox>
-
-    <VBox>
         <!--Doanh thu theo danh muc-->
         <PieChart fx:id="revenueByCate"/>
-    </VBox>
     </HBox>
-    <GridView fx:id="popularItemList" VBox.vgrow="ALWAYS" />
+    <!--    <GridView fx:id="popularItemList" VBox.vgrow="ALWAYS" />-->
 </VBox>
-

@@ -22,7 +22,7 @@
             </graphic>
         </Label>
         <Region HBox.hgrow="ALWAYS"/>
-        <FontIcon iconLiteral="fas-lock-open" iconSize="10" fx:id="lockIcon"/>
+        <FontIcon iconLiteral="fas-lock-open" iconSize="10" fx:id="lockIcon" visible="false"/>
     </HBox>
     <VBox  styleClass="nav-menu" >
         <Button fx:id="dasBtn" styleClass="nav-button"  text="Dashboard" onAction="#navigate">
@@ -30,9 +30,19 @@
                 <FontIcon iconLiteral="fas-money-check-alt" iconSize="20"/>
             </graphic>
         </Button>
-        <Button fx:id="button1" styleClass="nav-button" text="Quản lý nhân sự" onAction="#navigate">
+        <Button fx:id="orderBtn" styleClass="nav-button" text="Gọi món" onAction="#navigate">
             <graphic>
-                <FontIcon iconLiteral="fas-users" iconSize="20"/>
+                <FontIcon iconLiteral="fas-list-alt" iconSize="20"/>
+            </graphic>
+        </Button>
+        <Button fx:id="orderMnBtn" styleClass="nav-button" text="Quản lý đơn hàng" onAction="#navigate">
+            <graphic>
+                <FontIcon iconLiteral="fas-list-alt" iconSize="20"/>
+            </graphic>
+        </Button>
+        <Button fx:id="tableOrderBtn" styleClass="nav-button" text="Đặt bàn" onAction="#navigate">
+            <graphic>
+                    <FontIcon iconLiteral="fas-money-check-alt" iconSize="20"/>
             </graphic>
         </Button>
         <Button fx:id="menuBtn" styleClass="nav-button" text="Quản lý thực đơn" onAction="#navigate">
@@ -40,24 +50,39 @@
                 <FontIcon iconLiteral="fas-list-alt" iconSize="20"/>
             </graphic>
         </Button>
-        <Button fx:id="button3" styleClass="nav-button" text="Thống kê doanh thu" onAction="#navigate">
+        <Button fx:id="tableBtn" styleClass="nav-button" text="Quản lý bàn" onAction="#navigate">
+            <graphic>
+                <FontIcon iconLiteral="fas-money-check-alt" iconSize="20"/>
+            </graphic>
+        </Button>
+        <Button fx:id="tableOrderMnBtn" styleClass="nav-button" text="Quản lý đặt bàn" onAction="#navigate">
+            <graphic>
+                <FontIcon iconLiteral="fas-money-check-alt" iconSize="20"/>
+            </graphic>
+        </Button>
+        <Button fx:id="tableReportBtn" styleClass="nav-button" text="Thống kê bàn" onAction="#navigate">
+            <graphic>
+                <FontIcon iconLiteral="fas-money-check-alt" iconSize="20"/>
+            </graphic>
+        </Button>
+        <Button fx:id="employeeBtn" styleClass="nav-button" text="Quản lý nhân sự" onAction="#navigate">
+            <graphic>
+                <FontIcon iconLiteral="fas-users" iconSize="20"/>
+            </graphic>
+        </Button>
+        <Button fx:id="accountBtn" styleClass="nav-button" text="Quản lý tài khoản" onAction="#navigate">
             <graphic>
                     <FontIcon iconLiteral="fas-money-check-alt" iconSize="20"/>
             </graphic>
         </Button>
-        <Button fx:id="button4" styleClass="nav-button" text="Danh sách bàn ăn" onAction="#navigate">
+        <Button fx:id="equitmentBtn" styleClass="nav-button" text="Quản lý dụng cụ" onAction="#navigate">
             <graphic>
-                    <FontIcon iconLiteral="fas-table" iconSize="20"/>
+                <FontIcon iconLiteral="fas-table" iconSize="20"/>
             </graphic>
         </Button>
-        <Button fx:id="button5" styleClass="nav-button" text="Thống kê doanh thu" onAction="#navigate">
+        <Button fx:id="benefitBtn" styleClass="nav-button" text="Thống kê doanh thu" onAction="#navigate">
             <graphic>
-                    <FontIcon iconLiteral="fas-money-check-alt" iconSize="20"/>
-            </graphic>
-        </Button>
-        <Button fx:id="button6" styleClass="nav-button" text="Thống kê doanh thu" onAction="#navigate">
-            <graphic>
-                    <FontIcon iconLiteral="fas-money-check-alt" iconSize="20"/>
+                <FontIcon iconLiteral="fas-money-check-alt" iconSize="20"/>
             </graphic>
         </Button>
     </VBox>
