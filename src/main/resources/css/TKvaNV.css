@@ -1,0 +1,130 @@
+/* Root pane styling */
+.root-pane {
+    -fx-background-color: #f4f7fa;
+}
+
+/* Header label */
+.header-label {
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+    -fx-padding: 10;
+}
+
+/* Search box */
+.search-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dcdcdc;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+/* Text fields */
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dcdcdc;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+    -fx-padding: 8;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused {
+    -fx-border-color: #3498db;
+}
+
+/* ComboBox */
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dcdcdc;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+    -fx-font-size: 14px;
+}
+
+.combo-box .list-cell {
+    -fx-padding: 8;
+}
+
+/* Buttons */
+.button-primary {
+    -fx-background-color: #3498db;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-padding: 8 16;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+
+.button-primary:hover {
+    -fx-background-color: #2980b9;
+}
+
+.button-danger {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-padding: 8 16;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+
+.button-danger:hover {
+    -fx-background-color: #c0392b;
+}
+
+/* TableView */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dcdcdc;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.table-view .column-header {
+    -fx-background-color: #3498db;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #ffffff;
+}
+
+.table-view .table-cell {
+    -fx-font-size: 13px;
+    -fx-alignment: center-left;
+    -fx-padding: 8;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #f9f9f9;
+}
+
+.table-row-cell:even {
+    -fx-background-color: #ffffff;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #3498db;
+    -fx-text-fill: #ffffff;
+}
+
+/* Form grid */
+.form-grid {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dcdcdc;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.form-label {
+    -fx-font-size: 15px;
+    -fx-text-fill: #2c3e50;
+}
+
+/* Button box */
+.button-box {
+    -fx-background-color: transparent;
+}
