@@ -16,7 +16,7 @@ public class DatabaseConnection {
     static {
         try {
             for (int i = 0; i < MAX_POOL_SIZE; i++) {
-                Connection conn = DriverManager.getConnection(URL,"sa","1");
+                Connection conn = DriverManager.getConnection(URL,"nhahang_admin","abc123!@#");
                 pool.add(conn);
             }
             System.out.println("Connection Pool initialized with " + pool.size() 

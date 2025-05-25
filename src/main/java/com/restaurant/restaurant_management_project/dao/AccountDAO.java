@@ -1,6 +1,6 @@
 package com.restaurant.restaurant_management_project.dao;
 
-import com.restaurant.restaurant_management_project.database.DatabaseConnection;
+import com.restaurant.restaurant_management_project.database.ConnectionPool;
 import com.restaurant.restaurant_management_project.model.Account;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,18 +8,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author admin
  */
 public class AccountDAO {
-    public List<Account> GetAllEquipment(){
+    public List<Account> getAllAccounts(){
         List<Account> accounts = new ArrayList<>();
         String sql = "SELECT * FROM TaiKhoan";
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql);
                 ResultSet rs = stmt.executeQuery()){
                 while(rs.next()){
@@ -32,7 +34,11 @@ public class AccountDAO {
         } catch (SQLException ex) {
             System.err.println("Lỗi khi lấy danh sách tai khoan: " + ex.getMessage());
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            try {
+                ConnectionPool.getInstance().releaseConnection(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return accounts;
     }
@@ -41,7 +47,7 @@ public class AccountDAO {
                 + "VALUES (?,?,?)";
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
 
                 stmt.setString(1, acc.getMaNV());
@@ -55,7 +61,11 @@ public class AccountDAO {
             System.err.println("Lỗi khi thêm tai khoan: " + ex.getMessage());
             return false;        
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            try {
+                ConnectionPool.getInstance().releaseConnection(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     public boolean updateAccount(Account acc){
@@ -63,7 +73,7 @@ public class AccountDAO {
                     + "WHERE MaNV = ? AND TenTK = ?";
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
 
                 stmt.setString(1, acc.getMatKhau());
@@ -77,14 +87,18 @@ public class AccountDAO {
             System.err.println("Lỗi khi sửa mat khau: " + ex.getMessage());
             return false;
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            try {
+                ConnectionPool.getInstance().releaseConnection(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     public boolean deleteAccount(String employId, String accName){
         String sql = "DELTE FROM TaiKhoan WHERE MaNV = ?";
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
 
                 stmt.setString(1, employId);
@@ -96,7 +110,11 @@ public class AccountDAO {
             System.err.println("Lỗi khi xóa dụng cụ: " + ex.getMessage());
             return false;        
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            try {
+                ConnectionPool.getInstance().releaseConnection(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     public boolean checkAccount(String userName,String passWord)
@@ -107,7 +125,7 @@ public class AccountDAO {
         System.out.println("Bat dau");
         Connection connection = null;
         try{
-            connection = DatabaseConnection.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
 
                 stmt.setString(1, userName);
@@ -120,7 +138,11 @@ public class AccountDAO {
             System.err.println("Lỗi khi khi kiểm tra tài khoản! " + ex.getMessage());
             return false;
         } finally {
-            DatabaseConnection.releaseConnection(connection);
+            try {
+                ConnectionPool.getInstance().releaseConnection(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

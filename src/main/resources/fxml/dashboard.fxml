@@ -72,8 +72,6 @@
     <VBox>
         <!--Doanh thu theo danh muc-->
         <PieChart fx:id="revenueByCate"/>
-        <!--Trang thai dat ban-->
-        <PieChart fx:id="tableOrderState"/>
     </VBox>
     </HBox>
     <GridView fx:id="popularItemList" VBox.vgrow="ALWAYS" />
