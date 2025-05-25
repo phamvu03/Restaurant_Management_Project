@@ -1,10 +1,12 @@
-package model;
+package com.restaurant.restaurant_management_project.model;
+
+import com.restaurant.restaurant_management_project.database.DatabaseConnection;
 
 import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
 
-import db.DBConnection;
+
 
 public class NhanVien {
     private static int dem = 0; // Dùng để sinh mã tự động
@@ -41,7 +43,7 @@ public class NhanVien {
     public static void capNhatBienDemTuDatabase() {
         String sql = "SELECT MAX(MaNV) FROM NhanVien";
 
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
