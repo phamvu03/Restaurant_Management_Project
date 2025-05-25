@@ -59,7 +59,7 @@ public class AccountDAO {
             }
         } catch (SQLException ex) {
             System.err.println("Lỗi khi thêm tai khoan: " + ex.getMessage());
-            return false;        
+            return false;
         } finally {
             try {
                 ConnectionPool.getInstance().releaseConnection(connection);
@@ -108,7 +108,7 @@ public class AccountDAO {
             }
         } catch (SQLException ex) {
             System.err.println("Lỗi khi xóa dụng cụ: " + ex.getMessage());
-            return false;        
+            return false;
         } finally {
             try {
                 ConnectionPool.getInstance().releaseConnection(connection);

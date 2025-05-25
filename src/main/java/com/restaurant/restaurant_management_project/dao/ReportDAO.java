@@ -1,6 +1,8 @@
 package com.restaurant.restaurant_management_project.dao;
 
-import com.restaurant.restaurant_management_project.database.DatabaseConnection;
+
+
+import com.restaurant.restaurant_management_project.database.ConnectionPool;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -10,11 +12,20 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
-import static com.restaurant.restaurant_management_project.database.DatabaseConnection.getConnection;
-import static com.restaurant.restaurant_management_project.database.DatabaseConnection.releaseConnection;
 
 public class ReportDAO {
+    private ConnectionPool connectionPool;
+
+    public ReportDAO() {
+        try {
+            connectionPool = ConnectionPool.getInstance();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public BigDecimal getBenefitByDate(LocalDate ngay) {
         BigDecimal tongDoanhThu = new BigDecimal(0);
         String sql = "SELECT SUM(ctdh.SoLuong * ma.Gia) AS TongDoanhThu " +
@@ -27,7 +38,7 @@ public class ReportDAO {
         ResultSet rs = null;
 
         try {
-            conn = getConnection();
+            conn = connectionPool.getConnection();
             ps = conn.prepareStatement(sql);
             ps.setDate(1, java.sql.Date.valueOf(ngay));
             rs = ps.executeQuery();
@@ -53,7 +64,7 @@ public class ReportDAO {
             if (ps != null) {
                 try { ps.close(); } catch (SQLException e) { e.printStackTrace(); }
             }
-            releaseConnection(conn);
+            connectionPool.releaseConnection(conn);
         }
         return tongDoanhThu;
     }
@@ -68,7 +79,7 @@ public class ReportDAO {
         ResultSet rs = null;
 
         try {
-            conn = getConnection();
+            conn = connectionPool.getConnection();
             ps = conn.prepareStatement(sql);
             ps.setDate(1, java.sql.Date.valueOf(ngay));
             rs = ps.executeQuery();
@@ -90,7 +101,7 @@ public class ReportDAO {
             if (ps != null) {
                 try { ps.close(); } catch (SQLException e) { e.printStackTrace(); }
             }
-            releaseConnection(conn);
+            connectionPool.releaseConnection(conn);
         }
         return orderNum;
     }
@@ -105,7 +116,7 @@ public class ReportDAO {
         ResultSet rs = null;
 
         try {
-            conn = getConnection();
+            conn = connectionPool.getConnection();
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
 
@@ -126,7 +137,7 @@ public class ReportDAO {
             if (ps != null) {
                 try { ps.close(); } catch (SQLException e) { e.printStackTrace(); }
             }
-            releaseConnection(conn);
+            connectionPool.releaseConnection(conn);
         }
         return tableNum;
     }
@@ -141,7 +152,7 @@ public class ReportDAO {
         ResultSet rs = null;
 
         try {
-            conn = getConnection();
+            conn = connectionPool.getConnection();
             ps = conn.prepareStatement(sql);
             ps.setTimestamp(1, Timestamp.valueOf(time));
             rs = ps.executeQuery();
@@ -163,7 +174,7 @@ public class ReportDAO {
             if (ps != null) {
                 try { ps.close(); } catch (SQLException e) { e.printStackTrace(); }
             }
-            releaseConnection(conn);
+            connectionPool.releaseConnection(conn);
         }
         return tableNum;
     }
@@ -178,7 +189,7 @@ public class ReportDAO {
         ResultSet rs = null;
 
         try {
-            conn = getConnection();
+            conn = connectionPool.getConnection();
             ps = conn.prepareStatement(sql);
             ps.setTimestamp(1, Timestamp.valueOf(start));
             ps.setTimestamp(2, Timestamp.valueOf(end));
@@ -200,7 +211,7 @@ public class ReportDAO {
             if (ps != null) {
                 try { ps.close(); } catch (SQLException e) { e.printStackTrace(); }
             }
-            releaseConnection(conn);
+            connectionPool.releaseConnection(conn);
         }
         return tableNum;
     }
@@ -211,13 +222,14 @@ public class ReportDAO {
         Map<String, BigDecimal> result = new LinkedHashMap<>();
 
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = connectionPool.getConnection();
 
             String sql = "SELECT " +
                     "    DATEPART(WEEKDAY, dh.ThoiGianThanhToan) AS Thu, " +
-                    "    SUM(ctdh.GiaTien * ctdh.SoLuong) AS DoanhThu " +
+                    "    SUM(ma.Gia * ctdh.SoLuong) AS DoanhThu " +
                     "FROM DonHang dh " +
                     "JOIN ChiTietDonHang ctdh ON dh.MaDonHang = ctdh.MaDonHang " +
+                    "JOIN MonAn ma ON ctdh.MaMon = ma.id " +
                     "WHERE dh.ThoiGianThanhToan IS NOT NULL ";
 
             if (fromDate != null) {
@@ -252,7 +264,7 @@ public class ReportDAO {
                 result.put(tenThu, doanhThu);
             }
         } finally {
-            releaseConnection(conn);
+            connectionPool.releaseConnection(conn);
         }
         return result;
     }
@@ -264,17 +276,18 @@ public class ReportDAO {
         Map<String, BigDecimal> result = new LinkedHashMap<>();
 
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = connectionPool.getConnection();
 
             String sql = "WITH ThongTinTuan AS ( " +
                     "    SELECT " +
                     "        DATEPART(DAY, dh.ThoiGianThanhToan) AS Ngay, " +
                     "        DATEDIFF(WEEK, DATEADD(MONTH, DATEDIFF(MONTH, 0, dh.ThoiGianThanhToan), 0), dh.ThoiGianThanhToan) + 1 AS TuanTrongThang, " +
                     "        dh.ThoiGianThanhToan, " +
-                    "        ctdh.GiaTien, " +
+                    "        ma.Gia, " +
                     "        ctdh.SoLuong " +
                     "    FROM DonHang dh " +
                     "    JOIN ChiTietDonHang ctdh ON dh.MaDonHang = ctdh.MaDonHang " +
+                    "JOIN MonAn ma ON ctdh.MaMon = ma.id "+
                     "    WHERE dh.ThoiGianThanhToan IS NOT NULL " +
                     "    AND YEAR(dh.ThoiGianThanhToan) = ? " +
                     "    AND MONTH(dh.ThoiGianThanhToan) = ? " +
@@ -283,7 +296,7 @@ public class ReportDAO {
                     "    TuanTrongThang, " +
                     "    MIN(CONVERT(DATE, ThoiGianThanhToan)) AS NgayBatDau, " +
                     "    MAX(CONVERT(DATE, ThoiGianThanhToan)) AS NgayKetThuc, " +
-                    "    SUM(GiaTien * SoLuong) AS DoanhThu " +
+                    "    SUM(Gia * SoLuong) AS DoanhThu " +
                     "FROM ThongTinTuan " +
                     "GROUP BY TuanTrongThang " +
                     "ORDER BY TuanTrongThang";
@@ -304,7 +317,7 @@ public class ReportDAO {
                 result.put(thongTinTuan, doanhThu);
             }
         } finally {
-            releaseConnection(conn);
+            connectionPool.releaseConnection(conn);
         }
 
         return result;
@@ -316,13 +329,14 @@ public class ReportDAO {
         Map<String, BigDecimal> result = new LinkedHashMap<>();
 
         try {
-            conn = DatabaseConnection.getConnection();
+            conn = connectionPool.getConnection();
 
             String sql = "SELECT " +
                     "    MONTH(dh.ThoiGianThanhToan) AS Thang, " +
-                    "    SUM(ctdh.GiaTien * ctdh.SoLuong) AS DoanhThu " +
+                    "    SUM(ma.Gia * ctdh.SoLuong) AS DoanhThu " +
                     "FROM DonHang dh " +
                     "JOIN ChiTietDonHang ctdh ON dh.MaDonHang = ctdh.MaDonHang " +
+                    "JOIN MonAn ma ON ctdh.MaMon = ma.id "+
                     "WHERE dh.ThoiGianThanhToan IS NOT NULL ";
 
             if (year > 0) {
@@ -348,7 +362,7 @@ public class ReportDAO {
                 result.put(tenThang, doanhThu);
             }
         } finally {
-            releaseConnection(conn);
+            connectionPool.releaseConnection(conn);
         }
 
         return result;
@@ -359,11 +373,11 @@ public class ReportDAO {
 
         String sql = "SELECT ma.Nhom AS CategoryName, SUM(ctdh.SoLuong) AS TotalQuantitySold " +
                 "FROM MonAn ma " +
-                "JOIN ChiTietDonHang ctdh ON ma.MaMon = ctdh.MaMon " +
+                "JOIN ChiTietDonHang ctdh ON ma.id = ctdh.MaMon " +
                 "GROUP BY ma.Nhom";
         Connection conn = null;
         try{
-            conn = DatabaseConnection.getConnection();
+            conn = connectionPool.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -377,10 +391,135 @@ public class ReportDAO {
             e.printStackTrace();
         }
         finally {
-            releaseConnection(conn);
+            connectionPool.releaseConnection(conn);
         }
 
         return salesMap;
+    }
+    public Map<Integer, Integer> getThongKeKhachTheoGio(LocalDate fromDate, LocalDate toDate) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        // Sử dụng TreeMap để tự động sắp xếp theo giờ
+        Map<Integer, Integer> result = new TreeMap<>();
+
+        try {
+            conn =connectionPool.getConnection();
+
+            String sql = "SELECT " +
+                    "    DATEPART(HOUR, db.ThoiGianHen) AS Gio, " +
+                    "    SUM(db.SoKhach) AS TongKhach " +
+                    "FROM DatBan db " +
+                    "WHERE db.ThoiGianHen BETWEEN ? AND ? " +
+                    "GROUP BY DATEPART(HOUR, db.ThoiGianHen) " +
+                    "ORDER BY Gio";
+
+            ps = conn.prepareStatement(sql);
+            ps.setDate(1, Date.valueOf(fromDate));
+            ps.setDate(2, Date.valueOf(toDate));
+
+            rs = ps.executeQuery();
+
+            // Khởi tạo với 0 khách cho tất cả các giờ từ 0-23
+            for (int i = 0; i < 24; i++) {
+                result.put(i, 0);
+            }
+
+            // Cập nhật số khách cho các giờ có dữ liệu
+            while (rs.next()) {
+                int gio = rs.getInt("Gio");
+                int tongKhach = rs.getInt("TongKhach");
+                result.put(gio, tongKhach);
+            }
+
+        } finally {
+            connectionPool.releaseConnection(conn);
+        }
+        return result;
+    }
+
+    public Map<String, Integer> getThongKeKhachTheoThu(LocalDate fromDate, LocalDate toDate) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Map<String, Integer> result = new LinkedHashMap<>();
+
+        try {
+            conn = connectionPool.getConnection();
+
+            String sql = "SELECT " +
+                    "    DATEPART(WEEKDAY, db.ThoiGianHen) AS Thu, " +
+                    "    SUM(db.SoKhach) AS TongKhach " +
+                    "FROM DatBan db " +
+                    "WHERE db.ThoiGianHen BETWEEN ? AND ? " +
+                    "GROUP BY DATEPART(WEEKDAY, db.ThoiGianHen) " +
+                    "ORDER BY Thu";
+
+            ps = conn.prepareStatement(sql);
+            ps.setDate(1, Date.valueOf(fromDate));
+            ps.setDate(2, Date.valueOf(toDate));
+
+            rs = ps.executeQuery();
+
+            // Khởi tạo với 0 khách cho tất cả các thứ
+            for (int i = 1; i <= 7; i++) {
+                result.put(getTenThu(i), 0);
+            }
+
+            // Cập nhật số khách cho các thứ có dữ liệu
+            while (rs.next()) {
+                int thu = rs.getInt("Thu");
+                int tongKhach = rs.getInt("TongKhach");
+                result.put(getTenThu(thu), tongKhach);
+            }
+
+        } finally {
+            connectionPool.releaseConnection(conn);
+        }
+        return result;
+    }
+    public Map<Integer, Integer> getThongKeKhachTheoNgayTrongThang(int month, int year) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Map<Integer, Integer> result = new TreeMap<>();
+
+        try {
+            conn = connectionPool.getConnection();
+
+            String sql = "SELECT " +
+                    "    DAY(db.ThoiGianHen) AS Ngay, " +
+                    "    SUM(db.SoKhach) AS TongKhach " +
+                    "FROM DatBan db " +
+                    "WHERE MONTH(db.ThoiGianHen) = ? AND YEAR(db.ThoiGianHen) = ? " +
+                    "GROUP BY DAY(db.ThoiGianHen) " +
+                    "ORDER BY Ngay";
+
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, month);
+            ps.setInt(2, year);
+
+            rs = ps.executeQuery();
+
+            // Khởi tạo với 0 khách cho tất cả các ngày trong tháng
+            int daysInMonth = LocalDate.of(year, month, 1).lengthOfMonth();
+            for (int i = 1; i <= daysInMonth; i++) {
+                result.put(i, 0);
+            }
+
+            // Cập nhật số khách cho các ngày có dữ liệu
+            while (rs.next()) {
+                int ngay = rs.getInt("Ngay");
+                int tongKhach = rs.getInt("TongKhach");
+                result.put(ngay, tongKhach);
+            }
+
+        } finally {
+            connectionPool.releaseConnection(conn);
+        }
+
+        return result;
     }
     private String getTenThu(int thu) {
         switch (thu) {
@@ -416,11 +555,4 @@ public class ReportDAO {
         }
     }
 
-    /**
-     * Format ngày từ Date sang String dạng dd/MM/yyyy
-     */
-    private String formatDate(Date date) {
-        if (date == null) return "";
-        return date.toLocalDate().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-    }
 }

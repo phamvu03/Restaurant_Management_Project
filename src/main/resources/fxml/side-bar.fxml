@@ -22,7 +22,7 @@
             </graphic>
         </Label>
         <Region HBox.hgrow="ALWAYS"/>
-        <FontIcon iconLiteral="fas-lock-open" iconSize="10" fx:id="lockIcon"/>
+        <FontIcon iconLiteral="fas-lock-open" iconSize="10" fx:id="lockIcon" visible="false"/>
     </HBox>
     <VBox  styleClass="nav-menu" >
         <Button fx:id="dasBtn" styleClass="nav-button"  text="Dashboard" onAction="#navigate">

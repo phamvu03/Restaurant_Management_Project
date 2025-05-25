@@ -4,11 +4,14 @@ import com.restaurant.restaurant_management_project.dao.ReportDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import org.controlsfx.control.GridView;
 
 import java.math.BigDecimal;
@@ -34,12 +37,13 @@ public class DashBoard {
     public Label usedTableText;
     public Label orderedTable;
     public LineChart<String, Double> benefitChart;
-    public BarChart popularTimeChart;
+    public BarChart<String,Integer> popularTimeChart;
     public PieChart revenueByCate;
-    public PieChart tableOrderState;
     public GridView popularItemList;
 
     private final ReportDAO reportDAO = new ReportDAO();
+    public HBox firstRowHBox;
+    public HBox secondRowHBox;
     //data
     private BigDecimal todayRevenueData;
     private BigDecimal yesRevenueData;
@@ -53,17 +57,21 @@ public class DashBoard {
     Map<String, BigDecimal> doanhThuTheoThang;
     Map<String, BigDecimal> doanhThuTheoNam;
     Map<String,Integer> soLuongTheoDanhMuc;
+    Map<Integer,Integer> khachTheoGio;
+
     private ObservableList<PieChart.Data> usedTableDataList;
     private ObservableList<PieChart.Data> saleByCate;
     private ObservableList<XYChart.Series<String, Double>> benfitChartData;
+    private ObservableList<XYChart.Series<String, Integer>> popularTimeData;
 
     public void initialize() {
         usedTableDataList = FXCollections.observableArrayList();
         benfitChartData = FXCollections.observableArrayList();
+        popularTimeData = FXCollections.observableArrayList();
         doanhThuTheoTuan =  new LinkedHashMap<>();
         doanhThuTheoNam = new LinkedHashMap<>();
         doanhThuTheoThang = new LinkedHashMap<>();
-
+        saleByCate = FXCollections.observableArrayList();
         Task<Void> loadDataTask = new Task<>() {
             @Override
             protected Void call() throws Exception {
@@ -87,6 +95,7 @@ public class DashBoard {
 
                 orderingTable = reportDAO.getOrderedTable(LocalDateTime.now(),cuoiNgay);
 
+                //doanh thu
                 doanhThuTheoTuan = reportDAO.getDoanhThuTheoThu(startOfWeek,today);
                 doanhThuTheoNam = reportDAO.getDoanhThuTheoThang(today.getYear());
                 doanhThuTheoThang = reportDAO.getDoanhThuTheoTuanTrongThang(today.getMonthValue(),today.getYear());
@@ -110,7 +119,13 @@ public class DashBoard {
                 {
                     saleByCate.add(new PieChart.Data(entry.getKey(),(double) entry.getValue()/totalSale));
                 }
-
+                //Gio dong khach
+                XYChart.Series<String,Integer> data2 = new XYChart.Series<>();
+                khachTheoGio = reportDAO.getThongKeKhachTheoGio(today.minusDays(1),today.minusDays(1));
+                for(Map.Entry<Integer, Integer> entry: khachTheoGio.entrySet())
+                {
+                    data2.getData().add(new XYChart.Data<>(entry.getKey()+"",entry.getValue()));
+                }
                 return null;
             }
 
@@ -166,6 +181,7 @@ public class DashBoard {
 
         revenueByCate.setData(saleByCate);
 
+        popularTimeChart.setData(popularTimeData);
     }
     public static double formatToDouble(BigDecimal soTien) {
         if (soTien == null) {
@@ -219,5 +235,6 @@ public class DashBoard {
             return 100;
         }
     }
+
 }
 

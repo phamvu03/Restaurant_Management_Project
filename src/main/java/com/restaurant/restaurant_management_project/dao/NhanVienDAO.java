@@ -26,7 +26,7 @@ public class NhanVienDAO {
         }
         return list;
     }
-    
+
     //kiểm tra mã nhân viên có tồn tại chưa
     public boolean maNVTonTai(String maNV) throws SQLException {
         String sql = "SELECT 1 FROM NhanVien WHERE MaNV = ?";
@@ -40,7 +40,7 @@ public class NhanVienDAO {
 
     // 2. Thêm nhân viên mới
     public boolean addNhanVien(NhanVien nv) throws SQLException {
-    	
+
 
         String sql = "INSERT INTO NhanVien (MaNV, TenNV, NgaySinh, SDT, Email, ChucVu, Luong) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?)";

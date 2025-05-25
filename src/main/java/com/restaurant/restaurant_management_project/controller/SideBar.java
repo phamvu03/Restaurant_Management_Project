@@ -112,6 +112,7 @@ public class SideBar {
 
     private void collapseSidebar() {
         if (isExpanded && !isLocked) {
+            lockIcon.setVisible(false);
             isExpanded = false;
             collapseAnimation.play();
         }
@@ -119,6 +120,7 @@ public class SideBar {
 
     private void expandSidebar() {
         if (!isExpanded) {
+            lockIcon.setVisible(true);
             isExpanded = true;
             expandAnimation.play();
         }
