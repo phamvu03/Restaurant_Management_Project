@@ -144,7 +144,7 @@ public class ReportDAO {
     public int getTableInUse(LocalDateTime time)
     {
         int tableNum = 0;
-        String sql = "SELECT DISTINCT MaBan FROM DatBan " +
+        String sql = "SELECT COUNT (DISTINCT MaBan) FROM DatBan " +
                 "WHERE ? BETWEEN ThoiGianHen AND DATEADD(HOUR, 2, ThoiGianHen)" ;
 
         Connection conn = null;
@@ -158,8 +158,7 @@ public class ReportDAO {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                // Xử lý trường hợp SUM trả về NULL
-                tableNum = rs.getInt("SoLuongBan");
+                tableNum = rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -28,8 +28,8 @@
     </MenuButton>
 
     <Label text="Khoảng giá:" style="-fx-font-weight: bold;"/>
-    <RangeSlider fx:id="priceRangeSlider" min="0" max="800000" lowValue="10000" highValue="800000"
-                 showTickLabels="true" showTickMarks="true" majorTickUnit="20000" blockIncrement="10000"/>
+    <RangeSlider fx:id="priceRangeSlider" min="0" max="200000" lowValue="5000" highValue="200000"
+                 showTickLabels="true" showTickMarks="true" majorTickUnit="10000" blockIncrement="5000"/>
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Label fx:id="minPriceLabel" text="0đ" styleClass="price-label"/>
         <Region HBox.hgrow="ALWAYS"/>
