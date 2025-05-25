@@ -8,7 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * JavaFX App
@@ -24,8 +27,12 @@ public class App extends Application {
         stage.setScene(scene);
         
         stage.setOnCloseRequest(e -> {
-            System.out.println("Closing all connection!! XD");
-            ConnectionPool.shutdown();
+            try {
+                System.out.println("Closing all connection!! XD");
+                ConnectionPool.getInstance().shutdown();
+            } catch (SQLException ex) {
+                Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         stage.show();
     }
@@ -35,7 +42,7 @@ public class App extends Application {
 //        Equipment newE = new Equipment("DC002", "A", "Loai 1", 100, "Tot", Date.valueOf("2025-4-30"));
         EquipmentDAO equipDAO = new EquipmentDAO();
 //        equipDAO.addEquipment(newE);
-        equipmentList = equipDAO.GetAllEquipment();
+        equipmentList = equipDAO.getAllEquipment();
         for(Equipment e : equipmentList){
             e.inThongTin();
         }

@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,7 +21,7 @@ public class OrderDAO {
         String sql = "SELECT * FROM DonHang";
         Connection connection = null;
         try{
-            connection = ConnectionPool.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql);
                 ResultSet rs = stmt.executeQuery()){
                 while(rs.next()){
@@ -36,7 +38,11 @@ public class OrderDAO {
         } catch (SQLException ex) {
             System.err.println("Lỗi khi lấy danh sách đơn hàng: " + ex.getMessage());
         } finally {
-            ConnectionPool.releaseConnection(connection);
+            try {
+                ConnectionPool.getInstance().releaseConnection(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return orders;
     }
@@ -45,7 +51,7 @@ public class OrderDAO {
                 + "ThoiGianThanhToan) VALUES (?,?,?,?,?)";
         Connection connection = null;
         try{
-            connection = ConnectionPool.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
                 stmt.setString(1, order.getMaDonHang());
                 stmt.setString(2, order.getMaDatBan());
@@ -60,14 +66,18 @@ public class OrderDAO {
             System.err.println("Lỗi khi thêm đơn hàng: " + ex.getMessage());
             return false;        
         } finally {
-            ConnectionPool.releaseConnection(connection);
+            try {
+                ConnectionPool.getInstance().releaseConnection(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     public boolean deleteOrder(String orderId){
         String sql = "DELETE FROM DonHang WHERE MaDonHang = ?";
         Connection connection = null;
         try{
-            connection = ConnectionPool.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
                 stmt.setString(1, orderId);
@@ -79,7 +89,11 @@ public class OrderDAO {
             System.err.println("Lỗi khi xóa đơn hàng: " + ex.getMessage());
             return false;
         } finally {
-            ConnectionPool.releaseConnection(connection);
+            try {
+                ConnectionPool.getInstance().releaseConnection(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

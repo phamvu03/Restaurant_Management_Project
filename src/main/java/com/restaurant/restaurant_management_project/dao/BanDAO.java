@@ -12,7 +12,7 @@ public class BanDAO {
         List<Ban> dsBan = new ArrayList<>();
         String sql = "SELECT * FROM Ban ORDER BY maBan";
 
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -30,7 +30,7 @@ public class BanDAO {
         // Thêm maBan vào câu lệnh SQL
         String sql = "INSERT INTO Ban (maBan, tenBan, viTri, trangThai, soChoNgoi) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, ban.getMaBan());
@@ -49,7 +49,7 @@ public class BanDAO {
     public boolean suaBan(Ban ban) {
         String sql = "UPDATE Ban SET tenBan = ?, viTri = ?, trangThai = ?, soChoNgoi = ? WHERE maBan = ?";
 
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, ban.getTenBan());
@@ -69,7 +69,7 @@ public class BanDAO {
     public boolean xoaBan(int maBan) {
         String sql = "DELETE FROM Ban WHERE maBan = ?";
 
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, maBan);
@@ -84,7 +84,7 @@ public class BanDAO {
     public boolean capNhatTrangThai(int maBan, String trangThai) {
         String sql = "UPDATE Ban SET trangThai = ? WHERE maBan = ?";
 
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, trangThai);
@@ -100,7 +100,7 @@ public class BanDAO {
     public Ban getBanById(int maBan) {
         String sql = "SELECT * FROM Ban WHERE maBan = ?";
 
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, maBan);

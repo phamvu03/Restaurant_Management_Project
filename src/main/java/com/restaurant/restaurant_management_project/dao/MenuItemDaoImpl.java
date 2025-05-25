@@ -6,6 +6,8 @@ import com.restaurant.restaurant_management_project.model.RMenuItem;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MenuItemDaoImpl implements MenuItemDao {
 
@@ -14,7 +16,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
 
     public int getNextSequenceValue(String sequenceName) throws SQLException {
         String sql = "SELECT NEXT VALUE FOR " + sequenceName;
-        try (Connection connection = ConnectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             if (rs.next()) {
@@ -36,7 +38,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
         String sql = "SELECT id, MaMon, TenMon, HinhAnh, Gia, DonVi, Nhom, MonAnKem, TrangThai FROM MonAn ORDER BY Id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         Connection connection = null;
         try{
-            connection = ConnectionPool.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setInt(1, offset);
                 stmt.setInt(2, limit);
@@ -61,7 +63,11 @@ public class MenuItemDaoImpl implements MenuItemDao {
             e.printStackTrace();
         }
         finally{
-            ConnectionPool.releaseConnection(connection);
+            try {
+                ConnectionPool.getInstance().releaseConnection(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(MenuItemDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return menuItems;
     }
@@ -70,7 +76,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
         String sql = "SELECT COUNT(*) FROM MonAn";
         Connection connection = null;
         try{
-            connection = ConnectionPool.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -80,7 +86,11 @@ public class MenuItemDaoImpl implements MenuItemDao {
         } catch (SQLException e) {
             throw new RuntimeException("Lỗi khi đếm số lượng món ăn: " + e.getMessage(), e);
         } finally {
-            ConnectionPool.releaseConnection(connection);
+            try {
+                ConnectionPool.getInstance().releaseConnection(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(MenuItemDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return 0;
     }
@@ -93,7 +103,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
         Connection connection = null;
         ResultSet resultSet;
         try{
-            connection = ConnectionPool.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
                 String itemId = "MA" + this.getNextSequenceValue("MID_seq");
                 preparedStatement.setString(1,itemId);
@@ -123,7 +133,11 @@ public class MenuItemDaoImpl implements MenuItemDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            ConnectionPool.releaseConnection(connection);
+            try {
+                ConnectionPool.getInstance().releaseConnection(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(MenuItemDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return result > 0;
     }
@@ -135,7 +149,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
                 "WHERE Id = ?;";
         Connection connection = null;
         try{
-            connection = ConnectionPool.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
                 preparedStatement.setString(1, item.getItemName());
                 preparedStatement.setBoolean(2, item.isItemStatus());
@@ -156,7 +170,11 @@ public class MenuItemDaoImpl implements MenuItemDao {
          catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            ConnectionPool.releaseConnection(connection);
+            try {
+                ConnectionPool.getInstance().releaseConnection(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(MenuItemDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -167,7 +185,7 @@ public boolean delete(RMenuItem item) {
     Connection connection = null;
 
     try {
-        connection = ConnectionPool.getConnection();
+        connection = ConnectionPool.getInstance().getConnection();
 
         // 1. Update các bản ghi liên quan
         PreparedStatement updateStmt = connection.prepareStatement(sqlUpdate);
@@ -181,7 +199,11 @@ public boolean delete(RMenuItem item) {
     } catch (SQLException e) {
         throw new RuntimeException(e);
     } finally {
-        ConnectionPool.releaseConnection(connection);
+        try {
+            ConnectionPool.getInstance().releaseConnection(connection);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuItemDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
 
