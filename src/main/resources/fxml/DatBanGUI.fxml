@@ -4,7 +4,8 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.restaurant.restaurant_management_project.controller.DatBanController" stylesheets="@/css/ban-style.css">
+      fx:controller="com.restaurant.restaurant_management_project.controller.DatBanController"
+      stylesheets="@../css/ban-style.css">
 
     <HBox styleClass="header">
         <Label text="ROYAL THEDREAMERS RESTAURANT ★★★★" styleClass="header-title"/>

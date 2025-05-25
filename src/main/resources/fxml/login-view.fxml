@@ -19,7 +19,7 @@
 >
     <VBox>
         <ImageView styleClass="logo-img" />
-        <Text>The Golden Folk</Text>
+        <Text styleClass="name">The Golden Folk</Text>
     </VBox>
     <VBox styleClass="login-info">
         <Text text="LOGIN" style="-fx-font-size: 30px;"/>

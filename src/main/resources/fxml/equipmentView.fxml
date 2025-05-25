@@ -17,7 +17,8 @@
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.EquipmentController">
     <stylesheets>
-        <URL value="@/css/equipment.css" />
+        <URL value="@../css/equipment.css"
+        />
     </stylesheets>
    <children>
       <StackPane />

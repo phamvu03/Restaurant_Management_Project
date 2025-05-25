@@ -162,19 +162,19 @@ public class SideBar {
                 load(loader);
                 break;
             case ("tableReportBtn"):
-                loader.setLocation(getClass().getResource("/fxml//fxml/ThongKeGUI.fxml"));
+                loader.setLocation(getClass().getResource("/fxml/ThongKeGUI.fxml"));
                 load(loader);
                 break;
             case ("employeeBtn"):
-                loader.setLocation(getClass().getResource("NhanVien.fxml"));
+                loader.setLocation(getClass().getResource("/fxml/NhanVien.fxml"));
                 load(loader);
                 break;
             case ("accountBtn"):
-                loader.setLocation(getClass().getResource("TaiKhoan.fxml"));
+                loader.setLocation(getClass().getResource("/fxml/TaiKhoan.fxml"));
                 load(loader);
                 break;
             case ("equitmentBtn"):
-                loader.setLocation(getClass().getResource("equipmentView.fxml"));
+                loader.setLocation(getClass().getResource("/fxml/equipmentView.fxml"));
                 load(loader);
                 break;
 

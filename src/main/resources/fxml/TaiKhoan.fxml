@@ -20,7 +20,8 @@
 	styleClass="root-pane" stylesheets="@../css/TKvaNV.css"
 	xmlns="http://javafx.com/javafx/23.0.1"
 	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="com.restaurant.restaurant_management_project.controller.TaiKhoanController">
+	fx:controller="com.restaurant.restaurant_management_project.controller.TaiKhoanController"
+>
 
 	<children>
 		<!-- Header -->

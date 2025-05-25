@@ -21,7 +21,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/fxml/login-view.fxml"));
 //        Scene scene = new Scene(fxmlLoader.load());
-        Scene scene = new Scene(fxmlLoader.load(), 900, 600);
+        Scene scene = new Scene(fxmlLoader.load(), 1500, 800);
 
         stage.setTitle("Restaurant Management");
         stage.setScene(scene);
@@ -35,17 +35,6 @@ public class App extends Application {
             }
         });
         stage.show();
-    }
-
-    public void connectionTest(){
-        List<Equipment> equipmentList;
-//        Equipment newE = new Equipment("DC002", "A", "Loai 1", 100, "Tot", Date.valueOf("2025-4-30"));
-        EquipmentDAO equipDAO = new EquipmentDAO();
-//        equipDAO.addEquipment(newE);
-        equipmentList = equipDAO.getAllEquipment();
-        for(Equipment e : equipmentList){
-            e.inThongTin();
-        }
     }
     
     public static void main(String[] args) {
