@@ -1,7 +1,8 @@
 package com.restaurant.restaurant_management_project.controller;
 
-import com.restaurant.restaurant_management_project.dao.EmployeeDAO;
-import com.restaurant.restaurant_management_project.model.Employee;
+
+import com.restaurant.restaurant_management_project.dao.NhanVienDAO;
+import com.restaurant.restaurant_management_project.model.NhanVien;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -38,24 +40,24 @@ public class NhanVienController {
 	private Button btnXoa;
 
 	@FXML
-	private TableColumn<Employee, String> colMaNV;
+	private TableColumn<NhanVien, String> colMaNV;
 	@FXML
-	private TableColumn<Employee, String> colTenNV;
+	private TableColumn<NhanVien, String> colTenNV;
 	@FXML
-	private TableColumn<Employee, LocalDate> colNgaySinh;
+	private TableColumn<NhanVien, LocalDate> colNgaySinh;
 	@FXML
-	private TableColumn<Employee, String> colSDT;
+	private TableColumn<NhanVien, String> colSDT;
 	@FXML
-	private TableColumn<Employee, String> colEmail;
+	private TableColumn<NhanVien, String> colEmail;
 	@FXML
-	private TableColumn<Employee, String> colChucVu;
+	private TableColumn<NhanVien, String> colChucVu;
 	@FXML
-	private TableColumn<Employee, BigDecimal> colLuong;
+	private TableColumn<NhanVien, BigDecimal> colLuong;
 	@FXML
-	private TableColumn<Employee, Integer> colStt;
+	private TableColumn<NhanVien, Integer> colStt;
 
 	@FXML
-	private TableView<Employee> tableEmployee;
+	private TableView<NhanVien> tableNhanVien;
 
 	@FXML
 	private ComboBox<String> txtChucVu;
@@ -74,8 +76,8 @@ public class NhanVienController {
 	@FXML
 	private TextField txtTimKiem;
 
-	private final EmployeeDAO dao = new EmployeeDAO();
-	private ObservableList<Employee> dsEmployee;
+	private final NhanVienDAO dao = new NhanVienDAO();
+	private ObservableList<NhanVien> dsNhanVien;
 
 	@FXML
 	public void initialize() {
@@ -92,13 +94,13 @@ public class NhanVienController {
 		colLuong.setCellValueFactory(
 				cell -> new javafx.beans.property.SimpleObjectProperty<>(cell.getValue().getLuong()));
 		colStt.setCellValueFactory(cell -> new javafx.beans.property.SimpleIntegerProperty(
-				tableEmployee.getItems().indexOf(cell.getValue()) + 1).asObject());
+				tableNhanVien.getItems().indexOf(cell.getValue()) + 1).asObject());
 
 		txtChucVu.getItems().addAll("Phục vụ", "Thu ngân", "Bếp chính", "Phụ bếp", "Quản lý", "Tổ trưởng ca","Tiếp tân", "Giao hàng", "Tạp vụ");
 
 		loadData();
 
-		tableEmployee.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, selected) -> {
+		tableNhanVien.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, selected) -> {
 			if (selected != null) {
 				hienThiChiTiet(selected);
 			}
@@ -106,12 +108,16 @@ public class NhanVienController {
 	}
 
 	private void loadData() {
-            List<Employee> list = dao.getAllEmployee();
-            dsEmployee = FXCollections.observableArrayList(list);
-            tableEmployee.setItems(dsEmployee);
+		try {
+			List<NhanVien> list = dao.getAllNhanVien();
+			dsNhanVien = FXCollections.observableArrayList(list);
+			tableNhanVien.setItems(dsNhanVien);
+		} catch (SQLException e) {
+			showError("Lỗi tải dữ liệu: " + e.getMessage());
+		}
 	}
 
-	private void hienThiChiTiet(Employee nv) {
+	private void hienThiChiTiet(NhanVien nv) {
 		txtMaNV.setText(nv.getMaNV());
 		txtTenNV.setText(nv.getTenNV());
 		txtNgaySinh.setValue(nv.getNgaySinh());
@@ -159,19 +165,19 @@ public class NhanVienController {
 	}
 
 
-	private Employee docTuForm() {
-		return new Employee(txtMaNV.getText(), txtTenNV.getText(), txtNgaySinh.getValue(), txtSDT.getText(),
+	private NhanVien docTuForm() {
+		return new NhanVien(txtMaNV.getText(), txtTenNV.getText(), txtNgaySinh.getValue(), txtSDT.getText(),
 				txtEmail.getText(), txtChucVu.getValue(), new BigDecimal(txtLuong.getText()));
 	}
 
 	@FXML
-	private void themEmployee() {
+	private void themNhanVien() {
 		if (!validateForm()) return;
 
 		try {
-			Employee nv = docTuForm();
-			if (dao.addEmployee(nv)) {
-				dsEmployee.add(nv);
+			NhanVien nv = docTuForm();
+			if (dao.addNhanVien(nv)) {
+				dsNhanVien.add(nv);
 				showInfo("Đã thêm nhân viên.");
 				lamTrongForm();
 			}
@@ -181,11 +187,11 @@ public class NhanVienController {
 	}
 
 	@FXML
-	private void suaEmployee() {
+	private void suaNhanVien() {
 	    if (!validateForm()) return;
 	    try {
-	        Employee nv = docTuForm();
-	        if (dao.updateEmployee(nv)) {
+	        NhanVien nv = docTuForm();
+	        if (dao.updateNhanVien(nv)) {
 	            showInfo("Đã cập nhật.");
 	            loadData();      // tải lại danh sách
 	            lamTrongForm();  // xóa form
@@ -196,30 +202,34 @@ public class NhanVienController {
 	}
 
 	@FXML
-	private void deleteEmployee() {
-	    Employee selected = tableEmployee.getSelectionModel().getSelectedItem();
+	private void xoaNhanVien() {
+	    NhanVien selected = tableNhanVien.getSelectionModel().getSelectedItem();
 	    if (selected == null) {
 	        showError("Chưa chọn nhân viên.");
 	        return;
 	    }
-            if (dao.deleteEmployee(selected.getMaNV())) {
-                showInfo("Đã xóa.");
-                loadData();      // tải lại danh sách
-                lamTrongForm();  // xóa form
-            }
+	    try {
+	        if (dao.deleteNhanVien(selected.getMaNV())) {
+	            showInfo("Đã xóa.");
+	            loadData();      // tải lại danh sách
+	            lamTrongForm();  // xóa form
+	        }
+	    } catch (SQLException e) {
+	        showError("Lỗi xóa: " + e.getMessage());
+	    }
 	}
 
 
 	@FXML
-	private void timKiemEmployee() {
+	private void timKiemNhanVien() {
 		String keyword = txtTimKiem.getText();
 		try {
-			List<Employee> list = dao.searchEmployee(keyword);
+			List<NhanVien> list = dao.searchNhanVien(keyword);
 			if (list.isEmpty()) {
 	            showInfo("Không tìm thấy nhân viên nào với từ khóa: " + keyword);
 	        }
-			dsEmployee = FXCollections.observableArrayList(list);
-			tableEmployee.setItems(dsEmployee);
+			dsNhanVien = FXCollections.observableArrayList(list);
+			tableNhanVien.setItems(dsNhanVien);
 		} catch (SQLException e) {
 			showError("Lỗi tìm kiếm: " + e.getMessage());
 		}
@@ -248,7 +258,7 @@ public class NhanVienController {
 	    pieChart.setTitle("Tỉ lệ nhân viên theo chức vụ");
 
 	    try {
-	        List<Object[]> thongKe = dao.thongKeEmployeeTheoChucVu();
+	        List<Object[]> thongKe = dao.thongKeNhanVienTheoChucVu();
 	        for (Object[] row : thongKe) {
 	            String chucVu = (String) row[0];
 	            int soLuong = (int) row[1];

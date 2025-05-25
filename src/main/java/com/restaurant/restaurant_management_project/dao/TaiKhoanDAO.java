@@ -1,24 +1,24 @@
-package dao;
+package com.restaurant.restaurant_management_project.dao;
 
-import db.ConnectionPool;
-import db.DBConnection;
-import model.NhanVien;
-import model.TaiKhoan;
+import com.restaurant.restaurant_management_project.database.DatabaseConnection;
+import com.restaurant.restaurant_management_project.model.TaiKhoan;
+
+
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
 
 public class TaiKhoanDAO {
-
+  
 
     // 1. Lấy toàn bộ tài khoản
     public List<TaiKhoan> getAllAccounts() throws SQLException {
         List<TaiKhoan> list = new ArrayList<>();
         String sql = "SELECT * FROM TaiKhoan";
 
-        try (Connection conn = DBConnection.getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
                while (rs.next()) {
                    list.add(mapRow(rs));
@@ -32,7 +32,7 @@ public class TaiKhoanDAO {
         List<TaiKhoan> list = new ArrayList<>();
         String sql = "SELECT * FROM TaiKhoan WHERE username LIKE ? OR role LIKE ?";
 
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             String k = "%" + tukhoa + "%";
@@ -51,7 +51,7 @@ public class TaiKhoanDAO {
     // 3. Thêm tài khoản mới
     public boolean addAccount(TaiKhoan tk) throws SQLException {
         String sql = "INSERT INTO TaiKhoan (username, password, role, MaNV) VALUES (?, ?, ?, ?)";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
                setParams(ps, tk);
@@ -62,7 +62,7 @@ public class TaiKhoanDAO {
     // 4. Cập nhật tai khoan
     public boolean updateTaiKhoan(TaiKhoan tk) throws SQLException {
         String sql = "UPDATE TaiKhoan SET password = ?, username =?, role=?,MaNV=? WHERE username = ?";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
         	ps.setString(1, tk.getPassword());
@@ -77,7 +77,7 @@ public class TaiKhoanDAO {
     // 5. Xóa tài khoản
     public boolean deleteAccount(String username) throws SQLException {
         String sql = "DELETE FROM TaiKhoan WHERE username = ?";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
             return ps.executeUpdate() > 0;
@@ -87,7 +87,7 @@ public class TaiKhoanDAO {
     // 6. Kiểm tra đăng nhập
     public boolean checkLogin(String username, String password) throws SQLException {
         String sql = "SELECT 1 FROM TaiKhoan WHERE username = ? AND password = ?";
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
             ps.setString(2, password);

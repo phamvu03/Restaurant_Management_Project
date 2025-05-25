@@ -1,29 +1,31 @@
 package com.restaurant.restaurant_management_project.controller;
 
-import com.restaurant.restaurant_management_project.dao.AccountDAO;
-import com.restaurant.restaurant_management_project.model.Account;
+
+import com.restaurant.restaurant_management_project.dao.TaiKhoanDAO;
+import com.restaurant.restaurant_management_project.model.TaiKhoan;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+
 import java.sql.SQLException;
 import java.util.List;
 
 public class TaiKhoanController {
 
 	@FXML
-	private TableView<Account> tableAccount;
+	private TableView<TaiKhoan> tableTaiKhoan;
 	@FXML
-	private TableColumn<Account, String> colUsername;
+	private TableColumn<TaiKhoan, String> colUsername;
 	@FXML
-	private TableColumn<Account, String> colPassword;
+	private TableColumn<TaiKhoan, String> colPassword;
 	@FXML
-	private TableColumn<Account, String> colRole;
+	private TableColumn<TaiKhoan, String> colRole;
 	@FXML
-	private TableColumn<Account, String> colEmployeeId;
+	private TableColumn<TaiKhoan, String> colEmployeeId;
 	@FXML
-	private TableColumn<Account, Integer> colStt;
+	private TableColumn<TaiKhoan, Integer> colStt;
 
 	@FXML
 	private TextField txtTimKiem;
@@ -36,22 +38,22 @@ public class TaiKhoanController {
 	@FXML
 	private TextField txtEmployeeId;
 
-	private AccountDAO dao = new AccountDAO();
-	private ObservableList<Account> dsAccount;
+	private TaiKhoanDAO dao = new TaiKhoanDAO();
+	private ObservableList<TaiKhoan> dsTaiKhoan;
 
 	@FXML
 	public void initialize() {
-		colUsername.setCellValueFactory(cell ->new javafx.beans.property.SimpleStringProperty(cell.getValue().getTenTK()));
-		colPassword.setCellValueFactory(cell ->new javafx.beans.property.SimpleStringProperty(cell.getValue().getMatKhau()));
+		colUsername.setCellValueFactory(cell ->new javafx.beans.property.SimpleStringProperty(cell.getValue().getUsername()));
+		colPassword.setCellValueFactory(cell ->new javafx.beans.property.SimpleStringProperty(cell.getValue().getPassword()));
 		colRole.setCellValueFactory(cell ->new javafx.beans.property.SimpleStringProperty(cell.getValue().getRole()));
 		colEmployeeId.setCellValueFactory(cell ->new javafx.beans.property.SimpleStringProperty(cell.getValue().getMaNV()));
 		colStt.setCellValueFactory(cell -> new javafx.beans.property.SimpleIntegerProperty(
-				tableAccount.getItems().indexOf(cell.getValue()) + 1).asObject());
+				tableTaiKhoan.getItems().indexOf(cell.getValue()) + 1).asObject());
 
 		role.setItems(FXCollections.observableArrayList("admin", "user"));
 
 		loadData();
-		tableAccount.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, selected) -> {
+		tableTaiKhoan.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, selected) -> {
 			if (selected != null) {
 				hienThiChiTiet(selected);
 			}
@@ -59,14 +61,18 @@ public class TaiKhoanController {
 	}
 
 	private void loadData() {
-            List<Account> list = dao.getAllAccounts();
-            dsAccount = FXCollections.observableArrayList(list);
-            tableAccount.setItems(dsAccount);
+		try {
+			List<TaiKhoan> list = dao.getAllAccounts();
+			dsTaiKhoan = FXCollections.observableArrayList(list);
+			tableTaiKhoan.setItems(dsTaiKhoan);
+		} catch (SQLException e) {
+			showError("Lỗi tải dữ liệu: " + e.getMessage());
+		}
 	}
 
-	private void hienThiChiTiet(Account tk) {
-		txtUsername.setText(tk.getTenTK());
-		txtPassword.setText(tk.getMatKhau());
+	private void hienThiChiTiet(TaiKhoan tk) {
+		txtUsername.setText(tk.getUsername());
+		txtPassword.setText(tk.getPassword());
 		role.setValue(tk.getRole());
 		txtEmployeeId.setText(tk.getMaNV());
 	}
@@ -81,45 +87,50 @@ public class TaiKhoanController {
 
 	}
 
-	private Account docTuForm() {
-	    return new Account(
+	private TaiKhoan docTuForm() {
+	    return new TaiKhoan(
 	        txtUsername.getText(),
 	        txtPassword.getText(),
+	        role.getValue(),
 	        txtEmployeeId.getText()
 	    );
 	}
 
 	@FXML
-	private void themAccount() {
-            if (!validateForm())
-                return;
-
-            try {
-                Account tk = docTuForm();
-                if (dao.addAccount(tk)) {
-                    dsAccount.add(tk);
-                    showInfo("Đã thêm tài khoản mới.");
-                    lamTrongForm();
-                }
-            } catch (Exception e) {
-                showError("Lỗi thêm: " + e.getMessage());
-            }
-	}
-
-	@FXML
-	private void suaAccount() {
+	private void themTaiKhoan() {
 		if (!validateForm())
 			return;
-                Account tk = docTuForm();
-                if (dao.updateAccount(tk)) {
-                    showInfo("Đã cập nhật.");
-                    loadData(); // tải lại danh sách
-                    lamTrongForm(); // xóa form
-                }
+
+		try {
+			TaiKhoan tk = docTuForm();
+			if (dao.addAccount(tk)) {
+				dsTaiKhoan.add(tk);
+				showInfo("Đã thêm tài khoản mới.");
+				lamTrongForm();
+			}
+		} catch (Exception e) {
+			showError("Lỗi thêm: " + e.getMessage());
+		}
 	}
 
 	@FXML
-	private void xoaAccount() {
+	private void suaTaiKhoan() {
+		if (!validateForm())
+			return;
+		try {
+			TaiKhoan tk = docTuForm();
+			if (dao.updateTaiKhoan(tk)) {
+				showInfo("Đã cập nhật.");
+				loadData(); // tải lại danh sách
+				lamTrongForm(); // xóa form
+			}
+		} catch (SQLException e) {
+			showError("Lỗi cập nhật: " + e.getMessage());
+		}
+	}
+
+	@FXML
+	private void xoaTaiKhoan() {
 		String username = txtUsername.getText();
 		if (username.isEmpty()) {
 			showAlert("Chọn tài khoản để xóa!");
@@ -139,15 +150,15 @@ public class TaiKhoanController {
 	}
 
 	@FXML
-	private void timkiemAccount() {
+	private void timkiemTaiKhoan() {
 		String tukhoa = txtUsername.getText();
 		try {
-			List<Account> list = dao.timKiemAccount(tukhoa);
+			List<TaiKhoan> list = dao.timKiemTaiKhoan(tukhoa);
 			if (list.isEmpty()) {
 	            showInfo("Không tìm thấy nhân viên nào với từ khóa: " + tukhoa);
 	        }
-			dsAccount = FXCollections.observableArrayList(list);
-			tableAccount.setItems(dsAccount);
+			dsTaiKhoan = FXCollections.observableArrayList(list);
+			tableTaiKhoan.setItems(dsTaiKhoan);
 		} catch (SQLException e) {
 			showError("Lỗi tìm kiếm: " + e.getMessage());
 		}
