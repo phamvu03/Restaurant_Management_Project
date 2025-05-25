@@ -12,11 +12,17 @@ import javafx.scene.control.Label;
 import org.controlsfx.control.GridView;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class DashBoard {
 
@@ -27,7 +33,7 @@ public class DashBoard {
     public PieChart usedTable;
     public Label usedTableText;
     public Label orderedTable;
-    public LineChart<String, BigDecimal> benefitChart;
+    public LineChart<String, Double> benefitChart;
     public BarChart popularTimeChart;
     public PieChart revenueByCate;
     public PieChart tableOrderState;
@@ -41,25 +47,69 @@ public class DashBoard {
     private int yesOrderNum;
     private int tableInUse;
     private int totalTable;
+    private int orderingTable;
+
+    Map<String, BigDecimal> doanhThuTheoTuan;
+    Map<String, BigDecimal> doanhThuTheoThang;
+    Map<String, BigDecimal> doanhThuTheoNam;
+    Map<String,Integer> soLuongTheoDanhMuc;
     private ObservableList<PieChart.Data> usedTableDataList;
-    private ObservableList<XYChart.Series<String, Long>> barChartSeriesList;
+    private ObservableList<PieChart.Data> saleByCate;
+    private ObservableList<XYChart.Series<String, Double>> benfitChartData;
+
     public void initialize() {
         usedTableDataList = FXCollections.observableArrayList();
-        barChartSeriesList = FXCollections.observableArrayList();
+        benfitChartData = FXCollections.observableArrayList();
+        doanhThuTheoTuan =  new LinkedHashMap<>();
+        doanhThuTheoNam = new LinkedHashMap<>();
+        doanhThuTheoThang = new LinkedHashMap<>();
+
         Task<Void> loadDataTask = new Task<>() {
             @Override
             protected Void call() throws Exception {
-                todayRevenueData = reportDAO.getBenefitByDate(LocalDate.now());
-                yesRevenueData = reportDAO.getBenefitByDate(LocalDate.now().minusDays(1));
+                LocalDate today = LocalDate.now();
+                LocalDate startOfWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+                todayRevenueData = reportDAO.getBenefitByDate(today);
+                yesRevenueData = reportDAO.getBenefitByDate(today.minusDays(1));
 
-                todayOrderNum = reportDAO.getOderByDate(LocalDate.now());
-                yesOrderNum = reportDAO.getOderByDate(LocalDate.now().minusDays(1));
+                todayOrderNum = reportDAO.getOderByDate(today);
+                yesOrderNum = reportDAO.getOderByDate(today.minusDays(1));
 
                 totalTable = reportDAO.geTotalTable();
                 tableInUse = reportDAO.getTableInUse(LocalDateTime.now());
+                usedTableDataList.addAll(new PieChart.Data("Đang sử dụng",(double) tableInUse/totalTable),
+                new PieChart.Data("Trống", (double) (totalTable - tableInUse) /totalTable)
+                );
 
-                usedTableDataList.addAll(new PieChart.Data("Đang sử dụng",(double) tableInUse/totalTable));
+                LocalDateTime cuoiNgay = LocalDateTime.of(
+                        LocalDateTime.now().toLocalDate(),
+                        LocalTime.of(0, 0, 0)).plusHours(23).plusMinutes(59).plusSeconds(59);
 
+                orderingTable = reportDAO.getOrderedTable(LocalDateTime.now(),cuoiNgay);
+
+                doanhThuTheoTuan = reportDAO.getDoanhThuTheoThu(startOfWeek,today);
+                doanhThuTheoNam = reportDAO.getDoanhThuTheoThang(today.getYear());
+                doanhThuTheoThang = reportDAO.getDoanhThuTheoTuanTrongThang(today.getMonthValue(),today.getYear());
+
+                XYChart.Series<String,Double> data = new XYChart.Series<>();
+                for(Map.Entry<String, BigDecimal> entry: doanhThuTheoTuan.entrySet())
+                {
+                    data.getData().add(new XYChart.Data<>(entry.getKey(),formatToDouble(entry.getValue())));
+                }
+                benfitChartData.add(data);
+
+                //so luong ban theo danh muc
+                soLuongTheoDanhMuc = reportDAO.getSalesByCategory();
+                long totalSale = 0;
+                for(Map.Entry<String, Integer> entry: soLuongTheoDanhMuc.entrySet())
+                {
+                    totalSale+= entry.getValue();
+                }
+
+                for(Map.Entry<String, Integer> entry: soLuongTheoDanhMuc.entrySet())
+                {
+                    saleByCate.add(new PieChart.Data(entry.getKey(),(double) entry.getValue()/totalSale));
+                }
 
                 return null;
             }
@@ -110,7 +160,22 @@ public class DashBoard {
         usedTable.setData(usedTableDataList);
         usedTableText.setText(tableInUse+"/"+totalTable);
 
+        orderedTable.setText(orderingTable+"");
 
+        benefitChart.setData(benfitChartData);
+
+        revenueByCate.setData(saleByCate);
+
+    }
+    public static double formatToDouble(BigDecimal soTien) {
+        if (soTien == null) {
+            return 0;
+        }
+
+        // Chuyển đổi sang đơn vị triệu
+        BigDecimal soTienTrieu = soTien.divide(new BigDecimal(1000000), 2, RoundingMode.HALF_UP);
+
+        return soTienTrieu.doubleValue();
     }
     public static String formatMn(BigDecimal soTien) {
         if (soTien == null) {

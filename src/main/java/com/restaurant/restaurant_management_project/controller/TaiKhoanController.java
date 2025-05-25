@@ -1,4 +1,4 @@
-package controller;
+package com.restaurant.restaurant_management_project.controller;
 
 import dao.TaiKhoanDAO;
 import javafx.collections.FXCollections;
