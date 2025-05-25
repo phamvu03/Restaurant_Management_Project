@@ -2,7 +2,7 @@ package com.restaurant.restaurant_management_project.dao;
 
 import com.restaurant.restaurant_management_project.model.DatBan;
 import com.restaurant.restaurant_management_project.model.ThongKe;
-import com.restaurant.restaurant_management_project.util.ConnectionPool;
+import com.restaurant.restaurant_management_project.database.ConnectionPool;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class DatBanDAO {
         String sql = "INSERT INTO DatBan (maBan, tenKhachHang, soDienThoai, thoiGianDat, thoiGianDen, soLuongNguoi, ghiChu) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, datBan.getMaBan());
@@ -46,7 +46,7 @@ public class DatBanDAO {
         List<DatBan> ds = new ArrayList<>();
         String sql = "SELECT * FROM DatBan ORDER BY thoiGianDat DESC";
 
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -72,7 +72,7 @@ public class DatBanDAO {
     public boolean huyDatBan(int maDatBan) {
         String sql = "DELETE FROM DatBan WHERE maDatBan = ?";
 
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, maDatBan);
@@ -93,7 +93,7 @@ public class DatBanDAO {
                 "GROUP BY DATE(thoiGianDat) " +
                 "ORDER BY ngay";
 
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setDate(1, Date.valueOf(from));
