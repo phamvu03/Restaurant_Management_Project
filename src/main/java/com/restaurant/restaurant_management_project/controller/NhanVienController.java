@@ -1,6 +1,8 @@
-package controller;
+package com.restaurant.restaurant_management_project.controller;
 
-import dao.NhanVienDAO;
+
+import com.restaurant.restaurant_management_project.dao.NhanVienDAO;
+import com.restaurant.restaurant_management_project.model.NhanVien;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,7 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.NhanVien;
+
 
 import java.math.BigDecimal;
 import java.sql.SQLException;

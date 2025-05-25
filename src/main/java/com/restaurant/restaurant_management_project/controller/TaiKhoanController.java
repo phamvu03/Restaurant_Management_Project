@@ -1,13 +1,14 @@
-package controller;
+package com.restaurant.restaurant_management_project.controller;
 
-import dao.TaiKhoanDAO;
+
+import com.restaurant.restaurant_management_project.dao.TaiKhoanDAO;
+import com.restaurant.restaurant_management_project.model.TaiKhoan;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import model.NhanVien;
-import model.TaiKhoan;
+
 import java.sql.SQLException;
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package com.restaurant.restaurant_management_project.dao;
 
+import com.restaurant.restaurant_management_project.database.DatabaseConnection;
 import com.restaurant.restaurant_management_project.model.DatBan;
 import com.restaurant.restaurant_management_project.model.ThongKe;
-import com.restaurant.restaurant_management_project.util.ConnectionPool;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,30 +12,30 @@ public class DatBanDAO {
     public boolean themDatBan(DatBan datBan) {
         String sql = "INSERT INTO DatBan (maBan, tenKhachHang, soDienThoai, thoiGianDat, thoiGianDen, soLuongNguoi, ghiChu) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-        try (Connection conn = ConnectionPool.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                stmt.setInt(1, datBan.getMaBan());
+                stmt.setString(2, datBan.getTenKhachHang());
+                stmt.setString(3, datBan.getSoDienThoai());
+                stmt.setTimestamp(4, Timestamp.valueOf(datBan.getThoiGianDat()));
+                stmt.setTimestamp(5, Timestamp.valueOf(datBan.getThoiGianDen()));
+                stmt.setInt(6, datBan.getSoLuongNguoi());
+                stmt.setString(7, datBan.getGhiChu());
 
-            stmt.setInt(1, datBan.getMaBan());
-            stmt.setString(2, datBan.getTenKhachHang());
-            stmt.setString(3, datBan.getSoDienThoai());
-            stmt.setTimestamp(4, Timestamp.valueOf(datBan.getThoiGianDat()));
-            stmt.setTimestamp(5, Timestamp.valueOf(datBan.getThoiGianDen()));
-            stmt.setInt(6, datBan.getSoLuongNguoi());
-            stmt.setString(7, datBan.getGhiChu());
-
-            int affectedRows = stmt.executeUpdate();
-            if (affectedRows == 0) {
-                return false;
-            }
-
-            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    datBan.setMaDatBan(generatedKeys.getInt(1));
+                int affectedRows = stmt.executeUpdate();
+                if (affectedRows == 0) {
+                    return false;
                 }
-            }
 
-            return true;
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        datBan.setMaDatBan(generatedKeys.getInt(1));
+                    }
+                }
+
+                return true;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -46,7 +46,7 @@ public class DatBanDAO {
         List<DatBan> ds = new ArrayList<>();
         String sql = "SELECT * FROM DatBan ORDER BY thoiGianDat DESC";
 
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -72,7 +72,7 @@ public class DatBanDAO {
     public boolean huyDatBan(int maDatBan) {
         String sql = "DELETE FROM DatBan WHERE maDatBan = ?";
 
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, maDatBan);
@@ -93,7 +93,7 @@ public class DatBanDAO {
                 "GROUP BY DATE(thoiGianDat) " +
                 "ORDER BY ngay";
 
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setDate(1, Date.valueOf(from));
