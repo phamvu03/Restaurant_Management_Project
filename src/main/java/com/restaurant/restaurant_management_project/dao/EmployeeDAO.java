@@ -146,13 +146,17 @@ public class EmployeeDAO {
     // Tìm kiếm theo mã
     public List<Employee> searchNhanVien(String tuKhoa) {
         List<Employee> list = new ArrayList<>();
-        String sql = "SELECT * FROM NhanVien WHERE MaNV LIKE ?";
+        String sql = "SELECT * FROM NhanVien WHERE MaNV LIKE ? OR TenNV LIKE ? OR ChucVu LIKE ?";
         Connection connection = null;
 
         try {
             connection = ConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-                stmt.setString(1, "%" + tuKhoa + "%");
+                String wildcardKeyword = "%" + tuKhoa + "%";
+                stmt.setString(1, wildcardKeyword);
+                stmt.setString(2, wildcardKeyword);
+                stmt.setString(3, wildcardKeyword);
+
                 try (ResultSet rs = stmt.executeQuery()) {
                     while (rs.next()) {
                         Employee emp = new Employee();
@@ -179,6 +183,7 @@ public class EmployeeDAO {
 
         return list;
     }
+
 
     // Lấy giá trị sequence kế tiếp (VD: NV001, NV002)
     public String getNextSequenceValue(String sequenceName) {

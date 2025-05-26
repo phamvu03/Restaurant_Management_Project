@@ -11,11 +11,11 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -31,7 +31,6 @@ public class EmployeeController {
 	@FXML private Button btnSua;
 	@FXML private Button btnThem;
 	@FXML private Button btnTimKiem;
-	@FXML private Button btnXemBieuDo;
 	@FXML private Button btnXoa;
 
 	@FXML private TableColumn<Employee, String> colMaNV;
@@ -86,7 +85,7 @@ public class EmployeeController {
 			dsNhanVien = FXCollections.observableArrayList(list);
 			tableNhanVien.setItems(dsNhanVien);
 		} catch (Exception e) {
-			showError("Lỗi tải dữ liệu: " + e.getMessage());
+			showSuccessDialog("Lỗi tải dữ liệu: " + e.getMessage());
 		}
 	}
 
@@ -94,7 +93,7 @@ public class EmployeeController {
 	private void hienThiChiTiet(Employee nv) {
 		txtMaNV.setText(nv.getMaNV());
 		txtTenNV.setText(nv.getTenNV());
-		txtNgaySinh.setValue(nv.getNgaySinh()); // ✅ ĐÃ SỬA: không dùng .toLocalDate()
+		txtNgaySinh.setValue(nv.getNgaySinh());
 		txtSDT.setText(nv.getSDT());
 		txtEmail.setText(nv.getEmail());
 		txtChucVu.setValue(nv.getChucVu());
@@ -104,33 +103,33 @@ public class EmployeeController {
 	private boolean validateForm() {
 		if (txtNgaySinh.getValue() == null || txtSDT.getText().isEmpty() || txtEmail.getText().isEmpty()
 				|| txtChucVu.getValue() == null || txtLuong.getText().isEmpty()) {
-			showError("Vui lòng điền đầy đủ thông tin.");
+			showSuccessDialog("Vui lòng điền đầy đủ thông tin.");
 			return false;
 		}
 
 		if (txtNgaySinh.getValue().isAfter(LocalDate.now())) {
-			showError("Ngày sinh không thể sau ngày hiện tại.");
+			showSuccessDialog("Ngày sinh không thể sau ngày hiện tại.");
 			return false;
 		}
 
 		try {
 			BigDecimal luong = new BigDecimal(txtLuong.getText());
 			if (luong.compareTo(BigDecimal.ZERO) < 0) {
-				showError("Lương phải lớn hơn hoặc bằng 0.");
+				showSuccessDialog("Lương phải lớn hơn hoặc bằng 0.");
 				return false;
 			}
 		} catch (NumberFormatException e) {
-			showError("Lương phải là một số hợp lệ.");
+			showSuccessDialog("Lương phải là một số hợp lệ.");
 			return false;
 		}
 
 		if (!txtSDT.getText().matches("0\\d{9}")) {
-			showError("Số điện thoại phải có 10 chữ số và bắt đầu bằng 0.");
+			showSuccessDialog("Số điện thoại phải có 10 chữ số và bắt đầu bằng 0.");
 			return false;
 		}
 
 		if (!txtEmail.getText().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
-			showError("Email không hợp lệ.");
+			showSuccessDialog("Email không hợp lệ.");
 			return false;
 		}
 
@@ -157,16 +156,21 @@ public class EmployeeController {
 			Employee nv = docTuForm();
 			if (dao.addEmployee(nv)) {
 				dsNhanVien.add(nv);
-				showInfo("Đã thêm nhân viên.");
+				showSuccessDialog("Đã thêm nhân viên.");
 				lamTrongForm();
 			}
 		} catch (Exception e) {
-			showError("Lỗi thêm: " + e.getMessage());
+			showSuccessDialog("Lỗi thêm: " + e.getMessage());
 		}
 	}
 	@FXML
 	private void handleCreateAccount(ActionEvent event) throws IOException {
 		// Tạo FXMLLoader để load giao diện Tài Khoản
+		Employee selectedEmployee = tableNhanVien.getSelectionModel().getSelectedItem();
+		if (selectedEmployee == null) {
+			showSuccessDialog("Vui lòng chọn một nhân viên trước khi tạo tài khoản.");
+			return;
+		}
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/TaiKhoan.fxml"));
 
 		// Lấy root hiện tại (HBox chứa sidebar và nội dung)
@@ -179,6 +183,11 @@ public class EmployeeController {
 
 		// Thêm phần giao diện tài khoản mới được load vào
 		root.getChildren().add(loader.load());
+		// Lấy controller
+		AccountController controller = loader.getController();
+
+		// Truyền mã nhân viên sang
+		controller.setMaNhanVien(selectedEmployee.getMaNV());
 	}
 
 	@FXML
@@ -187,12 +196,12 @@ public class EmployeeController {
 		try {
 			Employee nv = docTuForm();
 			if (dao.updateEmployee(nv)) {
-				showInfo("Đã cập nhật.");
+				showSuccessDialog("Đã cập nhật.");
 				loadData();
 				lamTrongForm();
 			}
 		} catch (Exception e) {
-			showError("Lỗi cập nhật: " + e.getMessage());
+			showSuccessDialog("Lỗi cập nhật: " + e.getMessage());
 		}
 	}
 
@@ -200,17 +209,17 @@ public class EmployeeController {
 	private void xoaNhanVien() {
 		Employee selected = tableNhanVien.getSelectionModel().getSelectedItem();
 		if (selected == null) {
-			showError("Chưa chọn nhân viên.");
+			showSuccessDialog("Chưa chọn nhân viên.");
 			return;
 		}
 		try {
 			if (dao.deleteEmployee(selected.getMaNV())) {
-				showInfo("Đã xóa.");
+				showSuccessDialog("Đã xóa.");
 				loadData();
 				lamTrongForm();
 			}
 		} catch (Exception e) {
-			showError("Lỗi xóa: " + e.getMessage());
+			showSuccessDialog("Lỗi xóa: " + e.getMessage());
 		}
 	}
 
@@ -220,12 +229,12 @@ public class EmployeeController {
 		try {
 			List<Employee> list = dao.searchNhanVien(keyword);
 			if (list.isEmpty()) {
-				showInfo("Không tìm thấy nhân viên nào với từ khóa: " + keyword);
+				showSuccessDialog("Không tìm thấy nhân viên nào với từ khóa: " + keyword);
 			}
 			dsNhanVien = FXCollections.observableArrayList(list);
 			tableNhanVien.setItems(dsNhanVien);
 		} catch (Exception e) {
-			showError("Lỗi tìm kiếm: " + e.getMessage());
+			showSuccessDialog("Lỗi tìm kiếm: " + e.getMessage());
 		}
 	}
 
@@ -241,37 +250,17 @@ public class EmployeeController {
 		txtTimKiem.clear();
 		loadData();
 	}
-	@FXML
-	private void xemBieuDoLuong() {
-		Stage stage = new Stage();
-		stage.setTitle("Biểu đồ nhân viên");
-
-		PieChart pieChart = new PieChart();
-		pieChart.setTitle("Tỉ lệ nhân viên theo chức vụ");
-
-		// Giả sử EmployeeDAO chưa hỗ trợ biểu đồ: thêm thủ công từ danh sách
-		for (Employee emp : dsNhanVien) {
-			String chucVu = emp.getChucVu();
-			long count = dsNhanVien.stream().filter(e -> e.getChucVu().equals(chucVu)).count();
-
-			boolean exists = pieChart.getData().stream().anyMatch(data -> data.getName().startsWith(chucVu));
-			if (!exists) {
-				pieChart.getData().add(new PieChart.Data(chucVu + " (" + count + ")", count));
-			}
-		}
-
-		VBox vbox = new VBox(10, pieChart);
-		vbox.setPadding(new Insets(10));
-		Scene scene = new Scene(vbox, 600, 600);
-		stage.setScene(scene);
-		stage.show();
+	private void showSuccessDialog(String message) {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle("Thông báo");
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		// Tùy chỉnh DialogPane
+		DialogPane dialogPane = alert.getDialogPane();
+		alert.initStyle(StageStyle.UTILITY);
+		alert.showAndWait();
 	}
 
-	private void showError(String msg) {
-		new Alert(Alert.AlertType.ERROR, msg).showAndWait();
+
 	}
 
-	private void showInfo(String msg) {
-		new Alert(Alert.AlertType.INFORMATION, msg).showAndWait();
-	}
-}

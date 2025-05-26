@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.StageStyle;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -59,7 +60,7 @@ public class AccountController {
 			dsTaiKhoan = FXCollections.observableArrayList(list);
 			tableTaiKhoan.setItems(dsTaiKhoan);
 		} catch (Exception e) {
-			showError("Lỗi tải dữ liệu: " + e.getMessage());
+			showSuccessDialog("Lỗi tải dữ liệu: " + e.getMessage());
 		}
 	}
 
@@ -71,7 +72,7 @@ public class AccountController {
 
 	private boolean validateForm() {
 		if (txtEmployeeId.getText().isEmpty() || txtPassword.getText().isEmpty() || txtUsername.getText().isEmpty()) {
-			showError("Vui lòng điền đầy đủ thông tin.");
+			showSuccessDialog("Vui lòng điền đầy đủ thông tin.");
 			return false;
 		}
 		return true;
@@ -93,11 +94,11 @@ public class AccountController {
 			Account acc = docTuForm();
 			if (dao.addAccount(acc)) {
 				dsTaiKhoan.add(acc);
-				showInfo("Đã thêm tài khoản mới.");
+				showSuccessDialog("Đã thêm tài khoản mới.");
 				lamTrongForm();
 			}
 		} catch (Exception e) {
-			showError("Lỗi thêm: " + e.getMessage());
+			showSuccessDialog("Lỗi thêm: " + e.getMessage());
 		}
 	}
 	@FXML
@@ -107,12 +108,12 @@ public class AccountController {
 		try {
 			Account acc = docTuForm();
 			if (dao.updateAccount(acc)) {
-				showInfo("Đã cập nhật.");
+				showSuccessDialog("Đã cập nhật.");
 				loadData();
 				lamTrongForm();
 			}
 		} catch (Exception e) {
-			showError("Lỗi cập nhật: " + e.getMessage());
+			showSuccessDialog("Lỗi cập nhật: " + e.getMessage());
 		}
 	}
 
@@ -123,37 +124,38 @@ public class AccountController {
 		String tenTK = txtUsername.getText();
 
 		if (maNV.isEmpty() || tenTK.isEmpty()) {
-			showAlert("Vui lòng chọn tài khoản để xóa.");
+			showSuccessDialog("Vui lòng chọn tài khoản để xóa.");
 			return;
 		}
 
 		try {
 			if (dao.deleteAccount(maNV, tenTK)) {
-				showAlert("Xóa thành công!");
+				showSuccessDialog("Xóa thành công!");
 				loadData();
 				lamTrongForm();
 			} else {
-				showAlert("Xóa thất bại!");
+				showSuccessDialog("Xóa thất bại!");
 			}
 		} catch (Exception e) {
-			showAlert("Lỗi: " + e.getMessage());
+			showSuccessDialog("Lỗi: " + e.getMessage());
 		}
 	}
 
 	@FXML
 	private void timkiemTaiKhoan() {
-		String tukhoa = txtTimKiem.getText();
+		String tuKhoa = txtTimKiem.getText();
 		try {
-			List<Account> list = dao.timKiemTaiKhoan(tukhoa);
+			List<Account> list = dao.timKiemTaiKhoan(tuKhoa);
 			if (list.isEmpty()) {
-				showInfo("Không tìm thấy tài khoản nào.");
+				showSuccessDialog("Không tìm thấy tài khoản nào với từ khóa: " + tuKhoa);
 			}
 			dsTaiKhoan = FXCollections.observableArrayList(list);
 			tableTaiKhoan.setItems(dsTaiKhoan);
-		} catch (SQLException e) {
-			showError("Lỗi tìm kiếm: " + e.getMessage());
+		} catch (Exception e) {
+			showSuccessDialog("Lỗi khi tìm kiếm tài khoản: " + e.getMessage());
 		}
 	}
+
 
 	@FXML
 	private void lamTrongForm() {
@@ -161,24 +163,25 @@ public class AccountController {
 		txtPassword.clear();
 		txtEmployeeId.clear();
 		txtTimKiem.clear();
+		txtEmployeeId.setEditable(true); // hoặc setDisable(true) nếu muốn mờ đi
+
 		loadData();
 	}
 
-	private void showAlert(String msg) {
-		Alert alert = new Alert(Alert.AlertType.INFORMATION);
-		alert.setContentText(msg);
-		alert.showAndWait();
-	}
 	public void setMaNhanVien(String maNV) {
 		txtEmployeeId.setText(maNV);
+		txtEmployeeId.setEditable(false); // hoặc setDisable(true) nếu muốn mờ đi
 	}
 
-
-	private void showError(String msg) {
-		new Alert(Alert.AlertType.ERROR, msg).showAndWait();
+	private void showSuccessDialog(String message) {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle("Thông báo");
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		// Tùy chỉnh DialogPane
+		DialogPane dialogPane = alert.getDialogPane();
+		alert.initStyle(StageStyle.UTILITY);
+		alert.showAndWait();
 	}
 
-	private void showInfo(String msg) {
-		new Alert(Alert.AlertType.INFORMATION, msg).showAndWait();
-	}
 }

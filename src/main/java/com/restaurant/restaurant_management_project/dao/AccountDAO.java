@@ -47,24 +47,49 @@ public class AccountDAO {
         return accounts;
     }
     // 5. Tìm kiếm theo tên
-    public List<Account> timKiemTaiKhoan(String tukhoa) throws SQLException {
-        List<Account> list = new ArrayList<>();
-        String sql = "SELECT * FROM TaiKhoan WHERE TenTK LIKE ? ";
+    public List<Account> timKiemTaiKhoan(String keyword) {
+        List<Account> result = new ArrayList<>();
+        String sql = "SELECT * FROM TaiKhoan WHERE TenTK LIKE ? OR MaNV LIKE ?";
+        Connection connection = null;
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            String k = "%" + tukhoa + "%";
-            ps.setString(1, k);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Account detail = new Account();
-                    detail.setTenTK(rs.getString("TenTK"));
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                String wildcard = "%" + keyword + "%";
+                stmt.setString(1, wildcard);
+                stmt.setString(2, wildcard);
+
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        result.add(new Account(
+                                rs.getString("MaNV"),
+                                rs.getString("TenTK"),
+                                rs.getString("MatKhau")
+                        ));
+                    }
                 }
             }
+        } catch (SQLException ex) {
+            System.err.println("Lỗi khi tìm kiếm tài khoản: " + ex.getMessage());
+        } finally {
+            try {
+                ConnectionPool.getInstance().releaseConnection(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        return list;
+
+        return result;
     }
+
+
+
     public boolean addAccount(Account acc){
+        if (isUsernameExists(acc.getTenTK())) {
+            System.err.println("Tên tài khoản đã tồn tại!");
+            return false;
+        }
+
         String sql = "INSERT INTO TaiKhoan (MaNV, TenTK, MatKhau) "
                 + "VALUES (?,?,?)";
         Connection connection = null;
@@ -91,14 +116,17 @@ public class AccountDAO {
         }
     }
     public boolean updateAccount(Account acc){
+
         String sql = "UPDATE TaiKhoan SET TenTK = ?, MatKhau = ? WHERE MaNV = ? ";
         Connection connection = null;
         try{
             connection = ConnectionPool.getInstance().getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
 
-                stmt.setString(2, acc.getMatKhau());
                 stmt.setString(1, acc.getTenTK());
+                stmt.setString(2, acc.getMatKhau());
+                stmt.setString(3, acc.getMaNV());
+
 
                 int rowsUpdated = stmt.executeUpdate();
                 return rowsUpdated > 0;
@@ -140,9 +168,7 @@ public class AccountDAO {
     }
     public boolean checkAccount(String userName,String passWord)
     {
-        String sql = "SELECT * " +
-                "FROM TaiKhoan" +
-                " WHERE TenTK = ? AND MatKhau = ?";
+        String sql = "SELECT * FROM TaiKhoan WHERE TenTK = ? AND MatKhau = ?";
         System.out.println("Bat dau");
         Connection connection = null;
         try{
@@ -166,4 +192,18 @@ public class AccountDAO {
             }
         }
     }
+    public boolean isUsernameExists(String tenTK) {
+        String sql = "SELECT 1 FROM TaiKhoan WHERE TenTK = ?";
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, tenTK);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException ex) {
+            System.err.println("Lỗi khi kiểm tra tên tài khoản: " + ex.getMessage());
+            return false;
+        }
+    }
+
 }

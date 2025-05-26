@@ -48,7 +48,7 @@
 						<Label contentDisplay="CENTER" styleClass="form-label" text="Số điện thoại" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 						<Label styleClass="form-label" text="Ngày sinh" GridPane.columnIndex="4" GridPane.rowIndex="1" />
 						<Label styleClass="form-label" text="Lương" GridPane.rowIndex="2" />
-						<TextField fx:id="txtMaNV" maxWidth="-Infinity" prefHeight="38.0" prefWidth="176.0" styleClass="text-field" GridPane.columnIndex="1" />
+						<TextField fx:id="txtMaNV" maxWidth="-Infinity" prefHeight="38.0" prefWidth="176.0" styleClass="text-field" GridPane.columnIndex="1" editable="false"/>
 						<TextField fx:id="txtTenNV" maxWidth="-Infinity" prefHeight="38.0" prefWidth="226.0" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 						<TextField fx:id="txtEmail" maxWidth="-Infinity" prefHeight="38.0" prefWidth="277.0" styleClass="text-field" GridPane.columnIndex="5" />
 						<TextField fx:id="txtSDT" maxWidth="-Infinity" prefHeight="38.0" prefWidth="238.0" styleClass="text-field" GridPane.columnIndex="3" GridPane.rowIndex="1" />
@@ -72,11 +72,10 @@
 			</children>
 		</HBox>
 
-		<HBox layoutX="64.0" layoutY="85.0" prefHeight="46.0" prefWidth="480.0" spacing="10.0" styleClass="search-box">
+		<HBox layoutX="64.0" layoutY="85.0" prefHeight="46.0" prefWidth="364.0" spacing="10.0" styleClass="search-box">
 			<children>
 				<TextField fx:id="txtTimKiem" prefHeight="38.0" prefWidth="233.0" promptText="Nhập tên nhân viên hoặc chức vụ" styleClass="text-field" />
 				<Button fx:id="btnTimKiem" mnemonicParsing="false" onAction="#timKiemNhanVien" prefHeight="36.0" prefWidth="112.0" styleClass="button-primary" text="Tìm kiếm" />
-				<Button fx:id="btnXemBieuDo" mnemonicParsing="false" onAction="#xemBieuDoLuong" prefHeight="36.0" prefWidth="115.0" styleClass="button-secondary" text="Xem biểu đồ" />
 			</children>
 			<padding>
 				<Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
