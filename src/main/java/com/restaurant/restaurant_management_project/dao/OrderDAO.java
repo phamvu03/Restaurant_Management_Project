@@ -53,10 +53,11 @@ public class OrderDAO {
         try{
             connection = ConnectionPool.getInstance().getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
-                stmt.setString(1, order.getMaDatBan());
-                stmt.setString(2, order.getMaNV());
-                stmt.setDate(3, order.getThoiGianTao());
-                stmt.setDate(4, order.getThoiGianThanhToan());
+                stmt.setString(1, order.getMaDonHang());
+                stmt.setString(2, order.getMaDatBan());
+                stmt.setString(3, order.getMaNV());
+                stmt.setDate(4, order.getThoiGianTao());
+                stmt.setDate(5, order.getThoiGianTao());
 
                 int rowsInserted = stmt.executeUpdate();
                 return rowsInserted > 0;

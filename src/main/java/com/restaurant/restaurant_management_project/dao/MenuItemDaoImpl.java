@@ -97,38 +97,38 @@ public class MenuItemDaoImpl implements MenuItemDao {
 
     @Override
     public boolean add(RMenuItem item) {
-        String sql = "INSERT INTO MonAn (TenMon,TrangThai,Gia,Nhom,HinhAnh,DonVi,MonAnKem)" +
+        String sql = "INSERT INTO MonAn (MaMon,TenMon,TrangThai,Gia,Nhom,HinhAnh,DonVi,MonAnKem)" +
                 "VALUES (?, ?, ?,?,?,?,?,?);";
         int result;
         Connection connection = null;
         ResultSet resultSet;
         try{
             connection = ConnectionPool.getInstance().getConnection();
-            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-//                String itemId = "MA" + this.getNextSequenceValue("MID_seq");
-//                preparedStatement.setString(1,itemId);
-                preparedStatement.setString(1, item.getItemName());
-                preparedStatement.setBoolean(2, item.isItemStatus());
-                preparedStatement.setBigDecimal(3, item.getItemPrice());
-                preparedStatement.setString(4, item.getItemCategory());
-                preparedStatement.setBytes(5, item.getItemImage());
-                preparedStatement.setString(6, item.getItemUnit());
+            try(PreparedStatement preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
+                String itemId = "MA" + this.getNextSequenceValue("MID_seq");
+                preparedStatement.setString(1,itemId);
+                preparedStatement.setString(2, item.getItemName());
+                preparedStatement.setBoolean(3, item.isItemStatus());
+                preparedStatement.setBigDecimal(4, item.getItemPrice());
+                preparedStatement.setString(5, item.getItemCategory());
+                preparedStatement.setBytes(6, item.getItemImage());
+                preparedStatement.setString(7, item.getItemUnit());
                 if (item.getSideItem() == null)
                 {
-                    preparedStatement.setNull(7, Types.INTEGER);
+                    preparedStatement.setNull(8, Types.INTEGER);
                 }
-                else preparedStatement.setInt(7, item.getSideItem());
+                else preparedStatement.setInt(8, item.getSideItem());
                 result = preparedStatement.executeUpdate();
-//                if(result>0)
-//                {
-//                    resultSet = preparedStatement.getGeneratedKeys();
-//                    if(resultSet.next())
-//                    {     
-//                        int id = resultSet.getInt(1);
-//                        item.setItemId(itemId);
-//                        item.setId(id);
-//                    }
-//                }
+                if(result>0)
+                {
+                    resultSet = preparedStatement.getGeneratedKeys();
+                    if(resultSet.next())
+                    {
+                        int id = resultSet.getInt(1);
+                        item.setItemId(itemId);
+                        item.setId(id);
+                    }
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

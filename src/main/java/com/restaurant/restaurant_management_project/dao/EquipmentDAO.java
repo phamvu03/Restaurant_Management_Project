@@ -110,7 +110,7 @@ public class EquipmentDAO {
                 stmt.setInt(3, equip.getSoLuong());
                 stmt.setString(4, equip.getTinhTrang());
                 stmt.setDate(5, equip.getNgayThongKe());
-                stmt.setString(6, equip.getMaDungCu());
+                stmt.setString(6, equip.getMaDungCu()); // Điều kiện WHERE
 
                 int rowsUpdated = stmt.executeUpdate();
                 return rowsUpdated > 0;
@@ -174,7 +174,7 @@ public class EquipmentDAO {
         try {
             connection = ConnectionPool.getInstance().getConnection();
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-                stmt.setString(1, "%" + keyword + "%");
+                stmt.setString(1, "%" + keyword + "%"); // Đặt tham số cho LIKE
                 try (ResultSet rs = stmt.executeQuery()) {
                     while (rs.next()) {
                         Equipment equip = new Equipment();
