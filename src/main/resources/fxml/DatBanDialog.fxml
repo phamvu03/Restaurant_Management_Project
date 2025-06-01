@@ -21,7 +21,6 @@
         </Spinner>
 
         <Label text="Ngày đến:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
-        <DatePicker fx:id="dpThoiGianDen" GridPane.rowIndex="3" GridPane.columnIndex="1" />
 
         <Label text="Giờ đến:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
         <HBox GridPane.rowIndex="4" GridPane.columnIndex="1" spacing="5" alignment="CENTER_LEFT">

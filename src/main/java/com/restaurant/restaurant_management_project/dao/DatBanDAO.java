@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DatBanDAO {
     public boolean themDatBan(DatBan datBan) {
-        String sql = "INSERT INTO DatBan (maBan, tenKhachHang, soDienThoai, thoiGianDat, thoiGianDen, soLuongNguoi, ghiChu) " +
+        String sql = "INSERT INTO DatBan (maBan, tenKhachHang, soDienThoai, thoiGianDat, soLuongNguoi, ghiChu) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionPool.getInstance().getConnection();
@@ -21,7 +21,6 @@ public class DatBanDAO {
             stmt.setString(2, datBan.getTenKhachHang());
             stmt.setString(3, datBan.getSoDienThoai());
             stmt.setTimestamp(4, Timestamp.valueOf(datBan.getThoiGianDat()));
-            stmt.setTimestamp(5, Timestamp.valueOf(datBan.getThoiGianDen()));
             stmt.setInt(6, datBan.getSoLuongNguoi());
             stmt.setString(7, datBan.getGhiChu());
 
@@ -58,7 +57,6 @@ public class DatBanDAO {
                 datBan.setTenKhachHang(rs.getString("tenKhachHang"));
                 datBan.setSoDienThoai(rs.getString("soDienThoai"));
                 datBan.setThoiGianDat(rs.getTimestamp("thoiGianDat").toLocalDateTime());
-                datBan.setThoiGianDen(rs.getTimestamp("thoiGianDen").toLocalDateTime());
                 datBan.setSoLuongNguoi(rs.getInt("soLuongNguoi"));
                 datBan.setGhiChu(rs.getString("ghiChu"));
 

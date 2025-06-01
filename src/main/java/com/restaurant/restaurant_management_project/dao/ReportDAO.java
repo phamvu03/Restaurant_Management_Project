@@ -145,7 +145,7 @@ public class ReportDAO {
     {
         int tableNum = 0;
         String sql = "SELECT COUNT (DISTINCT MaBan) FROM DatBan " +
-                "WHERE ? BETWEEN ThoiGianHen AND DATEADD(HOUR, 2, ThoiGianHen)" ;
+                "WHERE ? BETWEEN ThoiGianDat AND DATEADD(HOUR, 2, ThoiGianDat)" ;
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -181,7 +181,7 @@ public class ReportDAO {
     {
         int tableNum = 0;
         String sql = "SELECT COUNT(*) FROM DatBan " +
-                "WHERE ThoiGianHen >= ? AND ThoiGianHen <= ?" ;
+                "WHERE ThoiGianDat >= ? AND ThoiGianDat <= ?" ;
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -407,11 +407,11 @@ public class ReportDAO {
             conn =connectionPool.getConnection();
 
             String sql = "SELECT " +
-                    "    DATEPART(HOUR, db.ThoiGianHen) AS Gio, " +
+                    "    DATEPART(HOUR, db.ThoiGianDat) AS Gio, " +
                     "    SUM(db.SoKhach) AS TongKhach " +
                     "FROM DatBan db " +
-                    "WHERE db.ThoiGianHen BETWEEN ? AND ? " +
-                    "GROUP BY DATEPART(HOUR, db.ThoiGianHen) " +
+                    "WHERE db.ThoiGianDat BETWEEN ? AND ? " +
+                    "GROUP BY DATEPART(HOUR, db.ThoiGianDat) " +
                     "ORDER BY Gio";
 
             ps = conn.prepareStatement(sql);
@@ -448,11 +448,11 @@ public class ReportDAO {
             conn = connectionPool.getConnection();
 
             String sql = "SELECT " +
-                    "    DATEPART(WEEKDAY, db.ThoiGianHen) AS Thu, " +
+                    "    DATEPART(WEEKDAY, db.ThoiGianDat) AS Thu, " +
                     "    SUM(db.SoKhach) AS TongKhach " +
                     "FROM DatBan db " +
-                    "WHERE db.ThoiGianHen BETWEEN ? AND ? " +
-                    "GROUP BY DATEPART(WEEKDAY, db.ThoiGianHen) " +
+                    "WHERE db.ThoiGianDat BETWEEN ? AND ? " +
+                    "GROUP BY DATEPART(WEEKDAY, db.ThoiGianDat) " +
                     "ORDER BY Thu";
 
             ps = conn.prepareStatement(sql);
@@ -488,11 +488,11 @@ public class ReportDAO {
             conn = connectionPool.getConnection();
 
             String sql = "SELECT " +
-                    "    DAY(db.ThoiGianHen) AS Ngay, " +
+                    "    DAY(db.ThoiGianDat) AS Ngay, " +
                     "    SUM(db.SoKhach) AS TongKhach " +
                     "FROM DatBan db " +
-                    "WHERE MONTH(db.ThoiGianHen) = ? AND YEAR(db.ThoiGianHen) = ? " +
-                    "GROUP BY DAY(db.ThoiGianHen) " +
+                    "WHERE MONTH(db.ThoiGianDat) = ? AND YEAR(db.ThoiGianDat) = ? " +
+                    "GROUP BY DAY(db.ThoiGianDat) " +
                     "ORDER BY Ngay";
 
             ps = conn.prepareStatement(sql);
