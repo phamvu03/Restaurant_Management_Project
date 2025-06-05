@@ -1,5 +1,4 @@
 
-/* ===== ROOT VARIABLES ===== */
 * {
     /* Màu sắc chính */
     -primary-color: #2196F3;          /* Xanh dương */
@@ -27,11 +26,10 @@
     -shadow-color: rgba(0,0,0,0.15);
 }
 
-/* ===== CONTAINER STYLES ===== */
 .container {
     -fx-background-color: -card-color;
     -fx-background-radius: 12px;
-    -fx-effect: dropshadow(gaussian, -shadow-color, 10, 0, 0, 2px);
+    -fx-effect: dropshadow(gaussian, -shadow-color, 10, 0, 0, 2);
 
     -fx-spacing: 10px;
     -fx-cursor: hand;
@@ -42,14 +40,14 @@
 }
 
 .container:hover {
-    -fx-effect: dropshadow(gaussian, -shadow-color, 20, 0, 0, 4px);
+    -fx-effect: dropshadow(gaussian, -shadow-color, 20, 0, 0, 4);
     -fx-scale-x: 1.02;
     -fx-scale-y: 1.02;
     -fx-border-color: -primary-light;
 }
 
 .container:pressed {
-    -fx-effect: dropshadow(gaussian, -shadow-color, 8, 0, 0, 1px);
+    -fx-effect: dropshadow(gaussian, -shadow-color, 8, 0, 0, 1);
     -fx-scale-x: 0.98;
     -fx-scale-y: 0.98;
 }
@@ -58,7 +56,7 @@
     -fx-background-radius: 12px;
     -fx-border-radius: 12px;
     -fx-background-color: #F8F8F8;
-    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.05), 2, 0, 0, 1px);
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.05), 2, 0, 0, 1);
     -fx-padding: 10px;
     -fx-alignment: center;
 }
@@ -120,7 +118,7 @@
     -fx-font-weight: bold;
     -fx-translate-x: -10px;
     -fx-translate-y: 10px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 0, 1px);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 0, 1);
 }
 
 .new-badge {
