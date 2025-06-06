@@ -1,0 +1,90 @@
+/* Modern ScrollPane Styling */
+
+/* Main ScrollPane styling */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane:focused {
+    -fx-background-insets: 0;
+}
+
+/* Scrollbar styling */
+.scroll-bar:vertical {
+    -fx-background-color: #f5f5f5;
+    -fx-background-radius: 10;
+    -fx-pref-width: 8px;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+}
+
+.scroll-bar:horizontal {
+    -fx-background-color: #f5f5f5;
+    -fx-background-radius: 10;
+    -fx-pref-height: 8px;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+}
+
+/* The thumb (the draggable part of the scrollbar) */
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #d0d0d0;
+    -fx-background-radius: 10px;
+    -fx-background-insets: 0;
+}
+
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: #d0d0d0;
+    -fx-background-radius: 10px;
+    -fx-background-insets: 0;
+}
+
+/* Hover effect for the thumb */
+.scroll-bar .thumb:hover,
+.scroll-bar .thumb:pressed {
+    -fx-background-color: #a0a0a0;
+}
+
+/* Hide the increment and decrement buttons */
+.scroll-bar > .increment-button,
+.scroll-bar > .decrement-button {
+    -fx-opacity: 0;
+    -fx-pref-height: 0;
+    -fx-pref-width: 0;
+}
+
+/* Remove default border around the content */
+.scroll-pane > .corner {
+    -fx-background-color: transparent;
+}
+
+/* For List/TableView components */
+.list-view .scroll-bar:vertical,
+.table-view .scroll-bar:vertical,
+.tree-view .scroll-bar:vertical,
+.text-area .scroll-bar:vertical {
+    -fx-pref-width: 8px;
+}
+
+.list-view .scroll-bar:horizontal,
+.table-view .scroll-bar:horizontal,
+.tree-view .scroll-bar:horizontal,
+.text-area .scroll-bar:horizontal {
+    -fx-pref-height: 8px;
+}
+
+/* Make scrollbar semi-transparent when not in use */
+.scroll-bar {
+    -fx-opacity: 0.6;
+}
+
+.scroll-bar:hover {
+    -fx-opacity: 1;
+}

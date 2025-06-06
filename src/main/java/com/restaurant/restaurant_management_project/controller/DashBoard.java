@@ -1,6 +1,8 @@
 package com.restaurant.restaurant_management_project.controller;
 
+import com.restaurant.restaurant_management_project.dao.MenuItemDaoImpl;
 import com.restaurant.restaurant_management_project.dao.ReportDAO;
+import com.restaurant.restaurant_management_project.model.RMenuItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -10,6 +12,8 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.GridView;
@@ -17,6 +21,7 @@ import org.controlsfx.control.GridView;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.sql.Date;
 import java.text.NumberFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -39,11 +44,13 @@ public class DashBoard {
     public LineChart<String, Double> benefitChart;
     public BarChart<String,Integer> popularTimeChart;
     public PieChart revenueByCate;
-    public GridView popularItemList;
+    public ListView<RMenuItem> popularItemList;
 
+    private final MenuItemDaoImpl menuItemDao = new MenuItemDaoImpl();
     private final ReportDAO reportDAO = new ReportDAO();
     public HBox firstRowHBox;
     public HBox secondRowHBox;
+    public VBox container;
     //data
     private BigDecimal todayRevenueData;
     private BigDecimal yesRevenueData;
@@ -63,11 +70,15 @@ public class DashBoard {
     private ObservableList<PieChart.Data> saleByCate;
     private ObservableList<XYChart.Series<String, Double>> benfitChartData;
     private ObservableList<XYChart.Series<String, Integer>> popularTimeData;
+    private ObservableList<RMenuItem> populateItemData;
 
     public void initialize() {
+        popularItemList.setFocusTraversable(false);
+        container.requestFocus();
         usedTableDataList = FXCollections.observableArrayList();
         benfitChartData = FXCollections.observableArrayList();
         popularTimeData = FXCollections.observableArrayList();
+        populateItemData = FXCollections.observableArrayList();
         doanhThuTheoTuan =  new LinkedHashMap<>();
         doanhThuTheoNam = new LinkedHashMap<>();
         doanhThuTheoThang = new LinkedHashMap<>();
@@ -77,6 +88,9 @@ public class DashBoard {
             protected Void call() throws Exception {
                 LocalDate today = LocalDate.now();
                 LocalDate startOfWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+                LocalDateTime cuoiNgay = LocalDateTime.of(
+                        LocalDateTime.now().toLocalDate(),
+                        LocalTime.of(0, 0, 0)).plusHours(23).plusMinutes(59).plusSeconds(59);
                 todayRevenueData = reportDAO.getBenefitByDate(today);
                 yesRevenueData = reportDAO.getBenefitByDate(today.minusDays(1));
 
@@ -88,10 +102,6 @@ public class DashBoard {
                 usedTableDataList.addAll(new PieChart.Data("Đang sử dụng",(double) tableInUse/totalTable),
                 new PieChart.Data("Trống", (double) (totalTable - tableInUse) /totalTable)
                 );
-
-                LocalDateTime cuoiNgay = LocalDateTime.of(
-                        LocalDateTime.now().toLocalDate(),
-                        LocalTime.of(0, 0, 0)).plusHours(23).plusMinutes(59).plusSeconds(59);
 
                 orderingTable = reportDAO.getOrderedTable(LocalDateTime.now(),cuoiNgay);
 
@@ -126,6 +136,8 @@ public class DashBoard {
                 {
                     data2.getData().add(new XYChart.Data<>(entry.getKey()+"",entry.getValue()));
                 }
+                populateItemData.addAll( menuItemDao.getPopularMenuItems(10, Date.valueOf(startOfWeek),Date.valueOf(today)));
+
                 return null;
             }
 
@@ -182,6 +194,13 @@ public class DashBoard {
         revenueByCate.setData(saleByCate);
 
         popularTimeChart.setData(popularTimeData);
+
+        popularItemList.setItems(populateItemData);
+
+        popularItemList.setCellFactory(v->{
+            return new ItemListCell();
+        });
+        adjustListViewHeight();
     }
     public static double formatToDouble(BigDecimal soTien) {
         if (soTien == null) {
@@ -235,6 +254,22 @@ public class DashBoard {
             return 100;
         }
     }
+    private void adjustListViewHeight() {
+        // Set a fixed cell height if not already set in FXML
+        double cellHeight = popularItemList.getFixedCellSize() > 0 ?
+                popularItemList.getFixedCellSize() : 80; // default height
 
+        // Calculate total height: cell height * number of items
+        double totalHeight = cellHeight * popularItemList.getItems().size();
+
+        // Add a small buffer for cell spacing and borders (adjust as needed)
+        totalHeight += 10;
+
+        // Set preferred height to calculated height
+        popularItemList.setPrefHeight(totalHeight);
+
+        // Ensure max height is sufficient
+        popularItemList.setMaxHeight(totalHeight);
+    }
 }
 

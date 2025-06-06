@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 public class RMenuItem {
 
@@ -118,4 +119,18 @@ public class RMenuItem {
         this.sideItem = sideItem;
     }
 
+    @Override
+    public String toString() {
+        return "RMenuItem{" +
+                "id=" + id +
+                ", itemId='" + itemId + '\'' +
+                ", itemName='" + itemName + '\'' +
+                ", itemStatus=" + itemStatus +
+                ", itemPrice=" + itemPrice +
+                ", itemCategory='" + itemCategory + '\'' +
+                ", itemImage=" + Arrays.toString(itemImage) +
+                ", itemUnit='" + itemUnit + '\'' +
+                ", sideItem=" + sideItem +
+                '}';
+    }
 }

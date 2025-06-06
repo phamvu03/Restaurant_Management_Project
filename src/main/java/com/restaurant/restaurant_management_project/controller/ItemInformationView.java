@@ -77,7 +77,7 @@ public class ItemInformationView {
     private ObservableList<RMenuItem> menuItemObservableList;
     private Integer side = null ;
     private String imageFormat = "png";
-    private static final Image PLACEHOLDER_IMAGE = new Image(ItemView.class.getResource("/image/em.png").toExternalForm());
+    private static final Image PLACEHOLDER_IMAGE = new Image(ItemGridCell.class.getResource("/image/em.png").toExternalForm());
     public void initialize() {
         Platform.runLater(() -> {
             form.requestFocus(); // Chuyển focus sang container

@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public class ItemView extends GridCell<RMenuItem> {
+public class ItemGridCell extends GridCell<RMenuItem> {
 
     // Các biến FXML
     @FXML private ImageView itemImage;
@@ -32,8 +32,7 @@ public class ItemView extends GridCell<RMenuItem> {
     @FXML private VBox itemContainer; // This is the root node defined in FXML
     // --- State for the cell ---
     private boolean fxmlLoaded = false;
-    private static final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-    private static final Image PLACEHOLDER_IMAGE = new Image(ItemView.class.getResource("/image/em.png").toExternalForm());
+    private static final Image PLACEHOLDER_IMAGE = new Image(ItemGridCell.class.getResource("/image/em.png").toExternalForm());
     private final Consumer<RMenuItem> clickConsumer;
     private CompletableFuture<?> currentImageLoadTask;
     private static final int MAX_CACHE_SIZE = 100;
@@ -44,7 +43,7 @@ public class ItemView extends GridCell<RMenuItem> {
         }
     };
 
-    public ItemView(Consumer<RMenuItem> clickConsumer){
+    public ItemGridCell(Consumer<RMenuItem> clickConsumer){
         getStyleClass().add("item-cell");
         this.clickConsumer = clickConsumer;
         setOnMouseClicked((MouseEvent event) -> {
