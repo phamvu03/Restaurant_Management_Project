@@ -13,13 +13,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * JavaFX App
- */
+
 public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/fxml/container.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/fxml/login-view.fxml"));
 //        Scene scene = new Scene(fxmlLoader.load());
         Scene scene = new Scene(fxmlLoader.load(), 1500, 800);
 

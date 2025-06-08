@@ -4,24 +4,18 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-import java.awt.*;
 import java.io.IOException;
 
 public class SideBar {
@@ -177,7 +171,10 @@ public class SideBar {
                 loader.setLocation(getClass().getResource("/fxml/equipmentView.fxml"));
                 load(loader);
                 break;
-
+            case ("benefitBtn"):
+                loader.setLocation(getClass().getResource("/fxml/BenefitReport.fxml"));
+                load(loader);
+                break;
         }
     }
     private void load( FXMLLoader loader)

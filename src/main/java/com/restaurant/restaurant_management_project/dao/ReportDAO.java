@@ -9,6 +9,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -25,7 +26,72 @@ public class ReportDAO {
             throw new RuntimeException(e);
         }
     }
+    public Map<String, BigDecimal> getDoanhThuTheoNgay(LocalDate fromDate, LocalDate toDate) {
+        Map<String, BigDecimal> result = new LinkedHashMap<>();
 
+        // Điền dữ liệu mặc định cho tất cả các ngày trong khoảng thời gian
+        LocalDate currentDate = fromDate;
+        while (!currentDate.isAfter(toDate)) {
+            String formattedDate = currentDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            result.put(formattedDate, BigDecimal.ZERO);
+            currentDate = currentDate.plusDays(1);
+        }
+
+        // SQL truy vấn doanh thu theo ngày từ DonHang, ChiTietDonHang và MonAn
+        String sql = "SELECT " +
+                "    CAST(dh.ThoiGianThanhToan AS DATE) as Ngay, " +
+                "    SUM(ma.Gia * ctdh.SoLuong) as DoanhThu " +
+                "FROM DonHang dh " +
+                "JOIN ChiTietDonHang ctdh ON dh.MaDonHang = ctdh.MaDonHang " +
+                "JOIN MonAn ma ON ctdh.MaMon = ma.id " +
+                "WHERE dh.ThoiGianThanhToan IS NOT NULL " +
+                "AND dh.ThoiGianThanhToan BETWEEN ? AND ? " +
+                "GROUP BY CAST(dh.ThoiGianThanhToan AS DATE) " +
+                "ORDER BY CAST(dh.ThoiGianThanhToan AS DATE)";
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = connectionPool.getConnection();
+            stmt = conn.prepareStatement(sql);
+
+            // Đặt tham số cho khoảng thời gian
+            LocalDateTime fromDateTime = fromDate.atStartOfDay();
+            LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
+            stmt.setTimestamp(1, Timestamp.valueOf(fromDateTime));
+            stmt.setTimestamp(2, Timestamp.valueOf(toDateTime));
+
+            rs = stmt.executeQuery();
+
+            // Cập nhật doanh thu cho các ngày có dữ liệu
+            while (rs.next()) {
+                LocalDate date = rs.getDate("Ngay").toLocalDate();
+                String formattedDate = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                BigDecimal revenue = rs.getBigDecimal("DoanhThu");
+
+                // Kiểm tra và xử lý giá trị null
+                if (revenue != null) {
+                    result.put(formattedDate, revenue);
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("Lỗi khi truy vấn doanh thu theo ngày: " + ex.getMessage());
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
+        } finally {
+            // Đóng tài nguyên theo thứ tự ngược lại
+            if (rs != null) {
+                try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
+            if (stmt != null) {
+                try { stmt.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
+            connectionPool.releaseConnection(conn);
+        }
+        return result;
+    }
     public BigDecimal getBenefitByDate(LocalDate ngay) {
         BigDecimal tongDoanhThu = new BigDecimal(0);
         String sql = "SELECT SUM(ctdh.SoLuong * ma.Gia) AS TongDoanhThu " +

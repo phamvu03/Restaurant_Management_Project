@@ -38,15 +38,11 @@ public class ItemInformationView {
     @FXML
     private StackPane imageChose;
     @FXML
-    private Text errorQuantityMsg;
-    @FXML
     private Text errorPriceMsg;
     @FXML
     private Text errorNameMsg;
     @FXML
     private TextField itemID;
-    @FXML
-    private TextField itemQuantity;
     @FXML
     private VBox form;
     @FXML
@@ -65,8 +61,6 @@ public class ItemInformationView {
     private Button button2;
     @FXML
     private Button button1;
-    @FXML
-    private FontIcon closeIcon;
     @FXML
     private TextField itemName;
     Runnable onCancel;
@@ -119,7 +113,6 @@ public class ItemInformationView {
         setUpMenuButtons();
         imageChose.setMouseTransparent(false);
         setTextFields(form,true);
-        itemQuantity.setEditable(false);
         button1.setText("Hủy");
         button2.setText("Lưu");
         button1.setOnAction(event -> cancelUpdate());
