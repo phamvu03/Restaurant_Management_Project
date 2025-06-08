@@ -98,7 +98,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
         try{
             conn = connectionPool.getConnection();
             try(PreparedStatement preparedStatement = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
-                String itemId = "MA" + this.getNextSequenceValue("MID_seq");
+                String itemId = "MA" + String.format("%03d", this.getNextSequenceValue("MID_seq"));
                 preparedStatement.setString(1,itemId);
                 preparedStatement.setString(2, item.getItemName());
                 preparedStatement.setBoolean(3, item.isItemStatus());
@@ -167,6 +167,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
 public boolean delete(RMenuItem item) {
     String sqlDelete = "DELETE FROM MonAn WHERE Id=?";
     String sqlUpdate = "UPDATE dbo.MonAn SET MonAnKem = NULL WHERE MonAnKem = ?";
+    String deleteCTDH = "DELETE FROM ChiTietDonHang WHERE MaMon= ? ";
         Connection conn = null;
 
     try {
@@ -176,7 +177,10 @@ public boolean delete(RMenuItem item) {
         PreparedStatement updateStmt = conn.prepareStatement(sqlUpdate);
         updateStmt.setInt(1, item.getId());
         exeUpdate(updateStmt, conn);
-
+        //2. Xoa chi tiet don hang
+        PreparedStatement dele = conn.prepareStatement(deleteCTDH);
+        dele.setInt(1, item.getId());
+        exeUpdate(dele, conn);
         // 2. Xóa món ăn chính
         PreparedStatement deleteStmt = conn.prepareStatement(sqlDelete);
         deleteStmt.setInt(1, item.getId());
