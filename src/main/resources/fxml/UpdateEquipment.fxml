@@ -3,142 +3,122 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.UpdateEquipmentController">
-    <stylesheets>
-        <URL value="@../css/addequipment.css" />
-    </stylesheets>
+<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.UpdateEquipmentController">
+   <stylesheets>
+      <URL value="@../css/addequipment.css" />
+   </stylesheets>
    <children>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Region layoutX="10.0" layoutY="54.0" prefHeight="44.0" prefWidth="600.0" />
             <Label text="Sửa dụng cụ">
                <font>
                   <Font name="Cambria" size="36.0" />
                </font>
+               <padding>
+                  <Insets bottom="30.0" />
+               </padding>
             </Label>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="70.0">
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="235.20001220703125" minWidth="10.0" prefWidth="149.5999755859375" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="330.4000244140625" minWidth="10.0" prefWidth="330.4000244140625" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
                <children>
-                  <VBox alignment="CENTER_LEFT" prefHeight="86.0" prefWidth="130.0" spacing="10.0">
-                     <children>
-                        <Label text="Mã dụng cụ">
-                           <font>
-                              <Font name="Cambria" size="16.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="idTxt" editable="false" prefHeight="37.0" prefWidth="158.0" promptText="Mã dụng cụ">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </TextField>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER_LEFT" prefHeight="94.0" prefWidth="300.0" spacing="10.0">
-                     <children>
-                        <Label text="Tên dụng cụ">
-                           <font>
-                              <Font name="Cambria" size="16.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="nameTxt" prefHeight="40.0" prefWidth="497.0" promptText="Tên dụng cụ">
-                           <font>
-                              <Font name="Cambria" size="16.0" />
-                           </font>
-                        </TextField>
-                     </children>
-                  </VBox>
+                  <Label text="Mã dụng cụ">
+                     <font>
+                        <Font name="Cambria" size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="idTxt" prefHeight="40.0" prefWidth="497.0" promptText="Mã dụng cụ" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="Cambria" size="16.0" />
+                     </font>
+                  </TextField>
                </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="84.0" prefWidth="565.0" spacing="100.0">
+            </GridPane>
+            <VBox alignment="CENTER_LEFT" prefHeight="86.0" prefWidth="500.0" spacing="10.0">
                <children>
-                  <VBox alignment="CENTER_LEFT" prefHeight="94.0" prefWidth="200.0" spacing="10.0">
-                     <children>
-                        <Label text="Số lượng">
-                           <font>
-                              <Font name="Cambria" size="16.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="quantityTxt" prefHeight="37.0" prefWidth="158.0" promptText="Số lượng">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </TextField>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER_LEFT" layoutX="60.0" layoutY="10.0" prefHeight="94.0" prefWidth="200.0" spacing="10.0">
-                     <children>
-                        <Label text="Loại">
-                           <font>
-                              <Font name="Cambria" size="16.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="typeTxt" promptText="Loại">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </TextField>
-                     </children>
-                  </VBox>
-               </children>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="236.0" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Region prefHeight="70.0" prefWidth="50.0" />
-                  <VBox alignment="CENTER_LEFT" prefHeight="85.0" prefWidth="375.0" spacing="10.0">
-                     <children>
-                        <Label text="Tình trạng">
-                           <font>
-                              <Font name="Cambria" size="16.0" />
-                           </font>
-                        </Label>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <TextField fx:id="statusTxt" prefHeight="40.0" prefWidth="446.0" promptText="Tình trạng">
-                                 <font>
-                                    <Font name="Cambria" size="16.0" />
-                                 </font>
-                              </TextField>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </children>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </HBox>
-            <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="92.0" prefHeight="94.0" prefWidth="509.0" spacing="10.0">
-               <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Region prefHeight="39.0" prefWidth="54.0" />
-                        <Label text="Ngày chỉnh sửa">
-                           <font>
-                              <Font name="Cambria" size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Region prefHeight="39.0" prefWidth="54.0" />
-                        <DatePicker fx:id="date" prefHeight="40.0" prefWidth="200.0" />
-                     </children>
-                  </HBox>
+                  <Label text="Tên dụng cụ">
+                     <font>
+                        <Font name="Cambria" size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="nameTxt" prefHeight="40.0" prefWidth="497.0" promptText="Tên dụng cụ">
+                     <font>
+                        <Font name="Cambria" size="16.0" />
+                     </font>
+                  </TextField>
+                  <Label fx:id="nameErrorLabel" managed="false" style="-fx-font-size: 12px; -fx-padding: 2 0 0 0;" textFill="red" visible="false" />
                </children>
             </VBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0">
+            <GridPane hgap="30.0" vgap="10.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Số lượng">
+                     <font>
+                        <Font name="Cambria" size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="quantityTxt" prefHeight="37.0" prefWidth="170.0" promptText="Số lượng" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </TextField>
+                  <Label text="Loại" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="Cambria" size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="typeTxt" promptText="Loại" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </TextField>
+                  <Label text="Tình trạng" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="Cambria" size="16.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="cbxStatus" prefHeight="30.0" prefWidth="290.0" promptText="Tình trạng" GridPane.rowIndex="4" />
+                  <Label fx:id="quantityErrorLabel" managed="false" style="-fx-font-size: 12px; -fx-padding: 2 0 0 0;" textFill="red" visible="false" GridPane.rowIndex="2" />
+                  <Label fx:id="typeErrorLabel" managed="false" style="-fx-font-size: 12px; -fx-padding: 2 0 0 0;" textFill="red" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="statusErrorLabel" managed="false" style="-fx-font-size: 12px; -fx-padding: 2 0 0 0;" textFill="red" visible="false" GridPane.rowIndex="5" />
+                  <Label text="Ngày chỉnh sửa" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="Cambria" size="16.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="date" prefHeight="30.0" prefWidth="321.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Label fx:id="dateErrorLabel" managed="false" style="-fx-font-size: 12px; -fx-padding: 2 0 0 0;" textFill="red" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+               </children>
+            </GridPane>
+            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="480.0" spacing="40.0">
                <children>
                   <Button fx:id="updateBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="130.0" text="Sửa">
                      <font>
@@ -153,4 +133,7 @@
          </children>
       </VBox>
    </children>
+   <padding>
+      <Insets left="60.0" right="60.0" />
+   </padding>
 </AnchorPane>

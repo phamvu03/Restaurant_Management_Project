@@ -18,9 +18,9 @@
     -error-color: #ea4335;
     -disabled-color: #dadce0;
 
-        -scrollbar-track-color: transparent;
-        -scrollbar-thumb-color: #616161;
-        -scrollbar-thumb-hover-color: #424242;
+    -scrollbar-track-color: transparent;
+    -scrollbar-thumb-color: #616161;
+    -scrollbar-thumb-hover-color: #424242;
 }
 
 /* === Root Container === */

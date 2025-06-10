@@ -6,115 +6,116 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.GridView?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.OrderViewController">
-   <left>
-      <VBox prefHeight="600.0" prefWidth="550.0" spacing="10.0" style="-fx-background-color: #f0f0f0;" BorderPane.alignment="CENTER">
+<AnchorPane HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.OrderViewController">
+   <HBox AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" HBox.hgrow="ALWAYS">
+      <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #f0f0f0;" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
          <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
          </padding>
-         <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Món chính" />
-         <ScrollPane fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
-            <content>
-               <FlowPane fx:id="menuItemsPane" hgap="10.0" prefWrapLength="530.0" vgap="10.0">
-                  <VBox alignment="CENTER" 
-                        onMouseClicked="#handleMenuItemClicked" 
-                        
-                        onMouseReleased="#handleMenuItemMouseReleased" 
-                        prefHeight="150.0" prefWidth="120.0" spacing="5.0" 
-                        style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 5; -fx-background-radius: 5;"
-                  >
-                     <children>
-                        <ImageView fx:id="imgComThit" fitHeight="80.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                           </ImageView>
-                        <Label text="Cơm thịt ba chỉ" />
-                        <Label style="-fx-font-weight: bold; -fx-text-fill: red;" text="30K" />
-                     </children>
-                     <userData>
-                        </userData>
-                  </VBox>
-                  </FlowPane>
-            </content>
-         </ScrollPane>
-         <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Món" />
-         </VBox>
-   </left>
-   <right>
-      <VBox prefHeight="600.0" prefWidth="350.0" spacing="10.0" style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-width: 0 0 0 1;" BorderPane.alignment="CENTER">
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-         <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Gọi món" VBox.vgrow="ALWAYS">
+            <font>
+               <Font name="Cambria" size="18.0" />
+            </font></Label>
+         <HBox fx:id="searchContainer" alignment="CENTER_LEFT" spacing="10.0" styleClass="search-container">
+            <TextField fx:id="searchField" maxWidth="500.0" minHeight="40.0" promptText="Tìm kiếm" styleClass="search-field" HBox.hgrow="ALWAYS" />
+            <Button fx:id="searchBtn" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="clear-button">
+               <graphic>
+                  <FontIcon iconLiteral="fas-search" iconSize="16" styleClass="search-icon" />
+               </graphic>
+            </Button>
+            <Button fx:id="filterBtn" minHeight="30.0" minWidth="30.0" styleClass="search-btn">
+               <graphic>
+                  <FontIcon iconLiteral="fas-filter" iconSize="20" />
+               </graphic>
+            </Button>
+            <padding>
+               <Insets bottom="8.0" left="16.0" right="16.0" top="8.0" />
+            </padding>
+            <VBox.margin>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </VBox.margin>
+         </HBox>
+         <GridPane>
+           <columnConstraints>
+             <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" percentWidth="10.0" />
+             <ColumnConstraints hgrow="SOMETIMES" minWidth="400.0" percentWidth="80.0" />
+           </columnConstraints>
+           <rowConstraints>
+             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+           </rowConstraints>
             <children>
-               <FontIcon iconLiteral="fas-shopping-cart" iconSize="20" />
-               <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Giỏ hàng" />
-               <Label fx:id="lblCartItemCount" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="(0)" />
-               <Label fx:id="lblCartTotal" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: red;" text="0 đ" />
-               <Button mnemonicParsing="false" onAction="#clearCart" style="-fx-background-color: transparent;">
-                  <graphic>
-                     <FontIcon iconLiteral="fas-trash-alt" iconSize="18" style="-fx-fill: red;" />
-                  </graphic>
-               </Button>
+               <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Món" textFill="#6b6b6b">
+                  <font>
+                     <Font size="16.0" />
+                  </font></Label>
+               <Label fx:id="lblItemName" minHeight="40.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+                  <font>
+                     <Font name="Cambria" size="16.0" />
+                  </font>
+               </Label>
             </children>
-         </HBox>
+            <padding>
+               <Insets left="16.0" right="16.0" />
+            </padding>
+         </GridPane>
+         <GridView fx:id="itemList" VBox.vgrow="ALWAYS" />
+      </VBox>
+
+      <VBox alignment="CENTER" minHeight="600.0" minWidth="350.0" spacing="10.0" style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-width: 0 0 0 1;">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
          <HBox alignment="CENTER_LEFT" spacing="10.0">
-             <Button mnemonicParsing="false" text="Thêm khách h...">
-                 <graphic>
-                     <FontIcon iconLiteral="fas-user-plus" />
-                 </graphic>
-             </Button>
-             <Button mnemonicParsing="false" text="Giao hàng">
-                 <graphic>
-                     <FontIcon iconLiteral="fas-motorcycle" />
-                 </graphic>
-             </Button>
+            <FontIcon iconLiteral="fas-shopping-cart" iconSize="20" />
+            <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Giỏ hàng" />
+            <Label fx:id="lblCartItemCount" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="(0)" />
+            <Label fx:id="lblCartTotal" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: red;" text="0 đ" />
          </HBox>
          <Separator prefWidth="200.0" />
-         <ScrollPane fx:id="orderScrollPane" fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
-            <content>
-               <VBox fx:id="orderItemsVBox" spacing="8.0">
-                  </VBox>
-            </content>
+         <ScrollPane fx:id="orderScrollPane" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+            <VBox fx:id="orderItemsVBox" spacing="8.0">
+            </VBox>
          </ScrollPane>
          <Separator prefWidth="200.0" />
-         <GridPane hgap="10.0" vgap="5.0">
+
+         <GridPane hgap="10" vgap="5.0">
             <columnConstraints>
-               <javafx.scene.layout.ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-               <javafx.scene.layout.ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
+               <javafx.scene.layout.ColumnConstraints hgrow="SOMETIMES" minWidth="60" />
+               <javafx.scene.layout.ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="60" />
             </columnConstraints>
             <rowConstraints>
-               <javafx.scene.layout.RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-               <javafx.scene.layout.RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-               <javafx.scene.layout.RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               <javafx.scene.layout.RowConstraints minHeight="10" vgrow="SOMETIMES" />
             </rowConstraints>
-            <children>
-               <Label text="Ghi chú" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-               <TextField fx:id="txtGhiChu" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Label text="Ghi chú" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="txtGhiChu" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+         </GridPane>
 
-               <Label text="Chiết khấu thanh toán" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-               <Button mnemonicParsing="false" onAction="#addDiscount" style="-fx-background-color: #e0e0e0; -fx-min-width: 30;" text="+" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-               <Label text="Phí dịch vụ" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-               <Button mnemonicParsing="false" onAction="#addServiceFee" style="-fx-background-color: #e0e0e0; -fx-min-width: 30;" text="+" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            </children>
+         <GridPane hgap="10" vgap="5.0">
+            <columnConstraints>
+               <javafx.scene.layout.ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="120" />
+               <javafx.scene.layout.ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="120" />
+            </columnConstraints>
+            <rowConstraints>
+               <javafx.scene.layout.RowConstraints minHeight="10" vgrow="SOMETIMES" />
+               <javafx.scene.layout.RowConstraints minHeight="10" vgrow="SOMETIMES" />
+            </rowConstraints>
+               <Button mnemonicParsing="false" prefWidth="200" styleClass="funcBtn" stylesheets="@../css/orderview.css" text="Ghi chú" HBox.Hgrow="ALWAYS" />
+               <Button mnemonicParsing="false" prefWidth="200" styleClass="funcBtn" stylesheets="@../css/orderview.css" text="Chuyển bàn" GridPane.columnIndex="1" />
+               <Button mnemonicParsing="false" prefWidth="200" styleClass="funcBtn" stylesheets="@../css/orderview.css" text="Tách bàn" GridPane.rowIndex="1" />
+               <Button mnemonicParsing="false" prefWidth="200" styleClass="funcBtn" stylesheets="@../css/orderview.css" text="Tạm tính" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </GridPane>
          <Separator prefWidth="200.0" />
-         <Button
-                 fx:id="btnThanhToan"
-                 text="Thanh toán"
-                 onAction="#handleThanhToan"
-                 prefHeight="40.0" prefWidth="350.0"
-                 style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;"
-         />
+         <Button fx:id="btnThanhToan" onAction="#handleThanhToan" prefHeight="40.0" prefWidth="350.0" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;" text="Thanh toán" />
       </VBox>
-   </right>
-</BorderPane>
+   </HBox>
+</AnchorPane>

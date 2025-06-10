@@ -17,8 +17,8 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.restaurant.restaurant_management_project.controller.ManageMenuItemView"
             stylesheets="@../css/manage-menuitem-style.css"
-                fx:id="content"
-                HBox.hgrow="ALWAYS"
+            fx:id="content"
+            HBox.hgrow="ALWAYS"
     >
         <VBox alignment="CENTER" spacing="10" AnchorPane.bottomAnchor="5" AnchorPane.leftAnchor="5" AnchorPane.rightAnchor="5" AnchorPane.topAnchor="5">
             <!--Search container-->
