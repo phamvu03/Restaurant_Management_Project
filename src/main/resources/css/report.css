@@ -1,0 +1,323 @@
+/* Dashboard CSS for Restaurant Management System */
+
+/* ========== Color Variables ========== */
+* {
+    -fx-primary: #2D3748;
+    -fx-secondary: #4A5568;
+    -fx-primary-light: #E2E8F0;
+    -fx-secondary-light: #EDF2F7;
+    -fx-accent: #3182CE;
+    -fx-success: #38A169;
+    -fx-warning: #ED8936;
+    -fx-danger: #E53E3E;
+    -fx-gray-light: #F7FAFC;
+    -fx-gray: #CBD5E0;
+}
+
+/* ========== Main Containers ========== */
+.root {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: white;
+}
+
+BorderPane {
+    -fx-background-color: white;
+}
+
+VBox, HBox {
+    -fx-background-color: transparent;
+}
+
+/* ========== Header Styles ========== */
+.header-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-primary;
+}
+
+Label {
+    -fx-text-fill: -fx-secondary;
+}
+
+Separator {
+    -fx-background-color: -fx-gray;
+    -fx-opacity: 0.7;
+}
+
+/* ========== Form Controls ========== */
+.combo-box {
+    -fx-background-color: white;
+    -fx-border-color: -fx-gray;
+    -fx-border-radius: 4px;
+}
+
+.combo-box .list-cell {
+    -fx-padding: 5 10 5 10;
+}
+
+.combo-box:hover {
+    -fx-border-color: -fx-accent;
+}
+
+.date-picker {
+    -fx-background-color: white;
+    -fx-border-color: -fx-gray;
+    -fx-border-radius: 4px;
+}
+
+.date-picker:hover {
+    -fx-border-color: -fx-accent;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: -fx-primary-light;
+    -fx-background-radius: 0;
+}
+
+.date-picker .arrow-button:hover {
+    -fx-background-color: -fx-accent;
+}
+
+.date-picker .arrow-button .arrow {
+    -fx-background-color: -fx-secondary;
+}
+
+.date-picker .arrow-button:hover .arrow {
+    -fx-background-color: white;
+}
+
+/* ========== Button Styles ========== */
+.button {
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+    -fx-padding: 8 16 8 16;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.button-primary {
+    -fx-background-color: -fx-accent;
+    -fx-text-fill: white;
+}
+
+.button-primary:hover {
+    -fx-background-color: derive(-fx-accent, 20%);
+}
+
+.button-success {
+    -fx-background-color: -fx-success;
+    -fx-text-fill: white;
+}
+
+.button-success:hover {
+    -fx-background-color: derive(-fx-success, 20%);
+}
+
+.button FontIcon {
+    -fx-icon-color: white;
+    -fx-icon-size: 14px;
+}
+
+/* ========== Tab Pane Styles ========== */
+.tab-pane {
+    -fx-tab-min-width: 100px;
+    -fx-tab-min-height: 40px;
+}
+
+.tab {
+    -fx-background-color: -fx-primary-light;
+    -fx-background-radius: 4 4 0 0;
+    -fx-padding: 5 15 5 15;
+}
+
+.tab:selected {
+    -fx-background-color: white;
+    -fx-border-color: -fx-gray;
+    -fx-border-width: 1 1 0 1;
+    -fx-border-radius: 4 4 0 0;
+    -fx-background-insets: 0;
+}
+
+.tab .tab-label {
+    -fx-text-fill: -fx-secondary;
+    -fx-font-weight: normal;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: -fx-accent;
+    -fx-font-weight: bold;
+}
+
+.tab-pane > .tab-header-area {
+    -fx-padding: 5 0 0 0;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-close-button {
+    -fx-background-color: -fx-secondary;
+}
+
+.tab-pane .tab-content-area {
+    -fx-background-color: white;
+    -fx-border-color: -fx-gray;
+    -fx-border-width: 1;
+    -fx-border-radius: 0 0 4 4;
+}
+
+/* ========== Chart Styles ========== */
+.chart {
+    -fx-padding: 10;
+    -fx-background-color: transparent;
+}
+
+.chart-title {
+    -fx-text-fill: -fx-primary;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.axis {
+    -fx-tick-label-fill: -fx-secondary;
+}
+
+.axis-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-secondary;
+}
+
+/* Bar Chart specific */
+.bar-chart {
+    -fx-background-color: transparent;
+}
+
+.chart-bar {
+    -fx-bar-fill: -fx-accent;
+}
+
+.chart-bar.default-color1 {
+    -fx-bar-fill: -fx-success;
+}
+
+.chart-bar.default-color2 {
+    -fx-bar-fill: -fx-warning;
+}
+
+/* Line Chart specific */
+.line-chart {
+    -fx-background-color: transparent;
+}
+
+.chart-series-line {
+    -fx-stroke-width: 3px;
+}
+
+.default-color0.chart-series-line {
+    -fx-stroke: -fx-accent;
+}
+
+.default-color1.chart-series-line {
+    -fx-stroke: -fx-success;
+}
+
+.chart-line-symbol {
+    -fx-background-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.default-color0.chart-line-symbol {
+    -fx-background-color: -fx-accent, white;
+}
+
+.default-color1.chart-line-symbol {
+    -fx-background-color: -fx-success, white;
+}
+
+/* Pie Chart specific */
+.pie-chart {
+    -fx-background-color: transparent;
+}
+
+.chart-pie {
+    -fx-border-color: white;
+    -fx-border-width: 2px;
+}
+
+.chart-pie-label {
+    -fx-fill: -fx-secondary;
+}
+
+.chart-pie-label-line {
+    -fx-stroke: -fx-secondary;
+    -fx-fill: -fx-secondary;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+    -fx-padding: 20px;
+}
+
+.chart-legend-item {
+    -fx-text-fill: -fx-secondary;
+}
+
+.chart-legend-item-symbol {
+    -fx-padding: 5px;
+    -fx-background-radius: 5px;
+}
+
+/* ========== Table Styles ========== */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: -fx-gray;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+}
+
+.table-view .column-header {
+    -fx-background-color: -fx-primary-light;
+    -fx-padding: 10 5 10 5;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: -fx-primary;
+    -fx-font-weight: bold;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: -fx-primary-light;
+}
+
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: -fx-primary-light;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 3;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: -fx-gray-light;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: derive(-fx-accent, 70%);
+    -fx-text-fill: -fx-primary;
+}
+
+.table-view .cell {
+    -fx-alignment: center-left;
+    -fx-padding: 10 5 10 5;
+}
+
+.table-view .column-header .sort-button {
+    -fx-padding: 3 0 0 0;
+}
+
+.table-view .virtual-flow .scroll-bar:vertical,
+.table-view .virtual-flow .scroll-bar:horizontal {
+    -fx-background-color: -fx-primary-light;
+}
+
+.table-view .virtual-flow .scroll-bar:vertical .thumb,
+.table-view .virtual-flow .scroll-bar:horizontal .thumb {
+    -fx-background-color: -fx-secondary;
+}

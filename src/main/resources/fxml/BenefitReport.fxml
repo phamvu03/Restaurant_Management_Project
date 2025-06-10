@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane stylesheets="@../css/report.css" xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.restaurant.restaurant_management_project.controller.BenefitReportController"
+
+>
+   <top>
+      <VBox spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="15.0">
+               <children>
+                  <Label styleClass="header-label" text="Báo cáo doanh thu" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="15.0">
+               <children>
+                  <Label text="Loại báo cáo:" />
+                  <ComboBox fx:id="reportTypeComboBox" prefWidth="200.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="15.0">
+               <children>
+                  <Label text="Từ ngày:" />
+                  <DatePicker fx:id="fromDatePicker" />
+                  <Label text="Đến ngày:" />
+                  <DatePicker fx:id="toDatePicker" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label text="Năm:" />
+                  <ComboBox fx:id="yearComboBox" prefWidth="100.0" />
+                  <Label text="Tháng:" />
+                  <ComboBox fx:id="monthComboBox" prefWidth="100.0" />
+                  <Button mnemonicParsing="false" onAction="#loadData" styleClass="button-primary" text="Tải dữ liệu">
+                     <graphic>
+                        <FontIcon iconLiteral="fas-sync-alt" />
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <Separator />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
+   </top>
+   <center>
+      <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+         <tabs>
+            <Tab text="Biểu đồ">
+               <content>
+                  <VBox alignment="TOP_CENTER" spacing="20.0">
+                     <children>
+                        <!-- Đặc biệt chú ý đến các biểu đồ này -->
+                        <BarChart fx:id="revenueBarChart">
+                           <xAxis>
+                              <CategoryAxis label="Thời gian" />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis label="Doanh thu (VNĐ)" />
+                           </yAxis>
+                        </BarChart>
+                        <LineChart fx:id="revenueLineChart">
+                           <xAxis>
+                              <CategoryAxis label="Thời gian" />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis label="Doanh thu (VNĐ)" />
+                           </yAxis>
+                        </LineChart>
+                        <PieChart fx:id="revenuePieChart" />
+                     </children>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </Tab>
+            <Tab text="Bảng dữ liệu">
+               <content>
+                  <VBox spacing="20.0">
+                     <children>
+                        <TableView fx:id="revenueTable" VBox.vgrow="ALWAYS">
+                           <columns>
+                              <TableColumn fx:id="periodColumn" prefWidth="200.0" text="Kỳ báo cáo" />
+                              <TableColumn fx:id="revenueColumn" prefWidth="200.0" text="Doanh thu" />
+                           </columns>
+                        </TableView>
+                        <HBox alignment="CENTER_RIGHT">
+                           <children>
+                              <Button fx:id="exportButton" mnemonicParsing="false" onAction="#exportToExcel" styleClass="button-success" text="Xuất báo cáo Excel">
+                                 <graphic>
+                                    <FontIcon iconLiteral="fas-file-excel" />
+                                 </graphic>
+                              </Button>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </center>
+</BorderPane>

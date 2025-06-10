@@ -14,12 +14,14 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import org.controlsfx.control.GridView?>
+<?import javafx.geometry.Insets?>
 <VBox
         stylesheets="@../css/dashboard.css"
         xmlns="http://javafx.com/javafx/11.0.14-internal"
         xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="com.restaurant.restaurant_management_project.controller.DashBoard"
         HBox.hgrow="ALWAYS"
+        fx:id="container"
 >
     <VBox VBox.vgrow="ALWAYS">
         <HBox fx:id="firstRowHBox" VBox.vgrow="ALWAYS">
@@ -45,27 +47,48 @@
         </HBox>
         <!-- Rest of your FXML remains the same -->
     </VBox>
-    <HBox fx:id="secondRowHBox">
-        <!--Doanh thu-->
-        <LineChart fx:id="benefitChart">
-            <xAxis>
-                <CategoryAxis label="Thời gian"/>
-            </xAxis>
-            <yAxis>
-                <NumberAxis label="Doanh thu"/>
-            </yAxis>
-        </LineChart>
-        <!--Thoi gian dong khach-->
-        <BarChart fx:id="popularTimeChart">
-            <xAxis>
-                <CategoryAxis label="Thời gian"/>
-            </xAxis>
-            <yAxis>
-                <NumberAxis />
-            </yAxis>
-        </BarChart>
-        <!--Doanh thu theo danh muc-->
-        <PieChart fx:id="revenueByCate"/>
-    </HBox>
-    <!--    <GridView fx:id="popularItemList" VBox.vgrow="ALWAYS" />-->
+    <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true"
+                style="-fx-background-color: #f8f9fa;-fx-background-insets: 0;-fx-padding: 0;-fx-border-width: 0;    "
+                stylesheets="@../css/scrollpane.css">
+        <VBox style="-fx-padding: 0; -fx-background-color: #f8f9fa;" >
+            <HBox fx:id="secondRowHBox" style="-fx-padding: 0;-fx-spacing: 0">
+                <VBox styleClass="charts">
+                    <Label text="Doanh thu theo tuần" style="-fx-font-size: 20; -fx-font-weight: bold"/>
+                    <LineChart fx:id="benefitChart" >
+                        <xAxis>
+                            <CategoryAxis label="Thời gian"/>
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis label="Doanh thu"/>
+                        </yAxis>
+                    </LineChart>
+                </VBox>
+                <!--Doanh thu-->
+               <VBox styleClass="charts">
+                   <Label text="Thời gian đông khác hôm nay" style="-fx-font-size: 20; -fx-font-weight: bold"/>
+                   <!--Thoi gian dong khach-->
+                   <BarChart fx:id="popularTimeChart" >
+                       <xAxis>
+                           <CategoryAxis label="Thời gian"/>
+                       </xAxis>
+                       <yAxis>
+                           <NumberAxis />
+                       </yAxis>
+                   </BarChart>
+               </VBox>
+                <VBox styleClass="charts">
+                    <Label text="Doanh thu theo danh mục món ăn" style="-fx-font-size: 20; -fx-font-weight: bold"/>
+                    <!--Doanh thu theo danh muc-->
+                    <PieChart fx:id="revenueByCate" />
+                </VBox>
+
+            </HBox>
+            <Label text="Top 10 món bán chạy nhất trong tuần" style="-fx-font-size: 25; -fx-font-weight: bold"/>
+            <ListView style="-fx-background-color: #f8f9fa;-fx-background-insets: 0;-fx-padding: 0;-fx-border-width: 0; "
+                      fx:id="popularItemList"
+                      VBox.vgrow="NEVER"
+                      fixedCellSize="80"
+            />
+        </VBox>
+    </ScrollPane>
 </VBox>

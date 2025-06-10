@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      alignment="CENTER_LEFT"
+      fx:id="container"
+      styleClass="item-container"
+      prefHeight="70"
+      prefWidth="600"
+      spacing="12">
+
+    <!-- Item number -->
+    <Label fx:id="num" text="#1" styleClass="item-number"/>
+
+    <!-- Food image -->
+    <ImageView fx:id="img" fitHeight="70" fitWidth="100" styleClass="food-image"/>
+
+    <!-- Name, price, and category -->
+    <VBox styleClass="item-details" HBox.hgrow="ALWAYS">
+        <Label fx:id="name" styleClass="item-name"/>
+        <HBox spacing="5" alignment="CENTER_LEFT">
+            <Label fx:id="price" styleClass="item-price"/>
+            <Label fx:id="category" text="Main Course" styleClass="item-category"/>
+        </HBox>
+    </VBox>
+
+    <!-- Flexible space -->
+    <Region styleClass="spacer" HBox.hgrow="ALWAYS"/>
+
+<!--    &lt;!&ndash; Trend indicator (will be set in controller) &ndash;&gt;-->
+<!--    <ImageView fx:id="trendIndicator" fitHeight="40" fitWidth="20"/>-->
+
+    <!-- Sales info -->
+    <VBox styleClass="sales-container" alignment="CENTER_RIGHT">
+        <Label fx:id="sales" styleClass="sales-number"/>
+        <Label fx:id="salesPercentage" text="Sales" styleClass="sales-text"/>
+    </VBox>
+</HBox>

@@ -10,9 +10,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * JavaFX App
- */
+
 public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {

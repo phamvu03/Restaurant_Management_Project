@@ -475,7 +475,7 @@ public class ManageMenuItemView {
 
     private void initializeGrid() {
         itemList.setCellFactory(v -> {
-            return new ItemView(menuItem -> {
+            return new ItemGridCell(menuItem -> {
                 Platform.runLater(() -> showInfo(menuItem));
             });
         });

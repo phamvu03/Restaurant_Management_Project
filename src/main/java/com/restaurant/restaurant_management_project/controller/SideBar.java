@@ -171,7 +171,10 @@ public class SideBar {
                 loader.setLocation(getClass().getResource("/fxml/EquipmentView.fxml"));
                 load(loader);
                 break;
-
+            case ("benefitBtn"):
+                loader.setLocation(getClass().getResource("/fxml/BenefitReport.fxml"));
+                load(loader);
+                break;
         }
     }
     private void load( FXMLLoader loader)

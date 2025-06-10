@@ -7,10 +7,9 @@
 /* VBox Container Styling */
 VBox {
     -fx-spacing: 25;
-    -fx-padding: 30;
+    -fx-padding: 30 30 0 30;
 }
 
-/* HBox Styling for Row Layout */
 HBox {
     -fx-spacing: 25;
     -fx-alignment: center;
@@ -35,31 +34,10 @@ HBox {
     -fx-max-height: 300px;
 }
 
-/* Metric Card Title */
 .metric-label {
     -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-text-fill: #4a4a4a;
-    -fx-alignment: center;
-    -fx-text-alignment: center;
-    -fx-pref-width: 200;
-}
-
-/* Value Labels */
-.metric-card > Label:nth-child(2) {
-    -fx-font-size: 22px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #212529;
-    -fx-padding: 5 0;
-    -fx-alignment: center;
-    -fx-text-alignment: center;
-    -fx-pref-width: 200;
-}
-
-/* Comparison Label */
-.metric-card > Label:nth-child(3) {
-    -fx-font-size: 14px;
-    -fx-text-fill: #28a745; /* green for positive values */
     -fx-alignment: center;
     -fx-text-alignment: center;
     -fx-pref-width: 200;
@@ -77,8 +55,8 @@ LineChart, BarChart, PieChart {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0, 0, 2);
     -fx-padding: 20;
     -fx-legend-visible: false;
-    -fx-min-height: 300px;
-    -fx-min-width: 300px;
+    -fx-min-height: 100px;
+    -fx-min-width: 100px;
 }
 
 /* Line Chart Styling */
@@ -107,7 +85,7 @@ LineChart, BarChart, PieChart {
 
 /* Different pie colors */
 .default-color0.chart-pie { -fx-pie-color: #4d94ff; }
-.default-color1.chart-pie { -fx-pie-color: #63a6ff; }
+.default-color1.chart-pie { -fx-pie-color: #808080; }
 .default-color2.chart-pie { -fx-pie-color: #7fb8ff; }
 .default-color3.chart-pie { -fx-pie-color: #a8d0ff; }
 .default-color4.chart-pie { -fx-pie-color: #d1e6ff; }
@@ -164,16 +142,7 @@ HBox > .metric-card {
     -fx-hgrow: ALWAYS;
     -fx-pref-width: 100%;
 }
-
-/* For the second row of charts */
-HBox:nth-child(2) > * {
+Hbox > .charts{
     -fx-hgrow: ALWAYS;
-    -fx-pref-width: 33.33%;
-    -fx-min-height: 350px;
-    -fx-pref-height: 350px;
-}
-
-/* Make sure charts fill their containers properly */
-HBox:nth-child(2) {
-    -fx-fill-width: true;
+    -fx-pref-width: 100%;
 }

@@ -1,0 +1,96 @@
+/* Base container styling - now with full border */
+.item-container {
+    -fx-padding: 12px;
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-alignment: center-left;
+    -fx-spacing: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 3, 0, 0, 1); /* Optional: subtle shadow */
+}
+
+/* Add some margin between items */
+.list-cell {
+    -fx-padding: 4px 8px;
+    -fx-background-color: transparent;
+}
+
+/* Remove the default focus highlight from list cells */
+.list-cell:filled:selected, .list-cell:filled:selected:hover {
+    -fx-background-color: transparent;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: transparent;
+}
+
+/* The rest of your CSS remains unchanged */
+.item-number {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: #555555;
+    -fx-min-width: 30px;
+}
+
+.food-image {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);
+    -fx-background-radius: 4;
+}
+
+.item-details {
+    -fx-spacing: 2;
+    -fx-padding: 0 0 0 8;
+    -fx-pref-width: 200;
+    -fx-max-width: 200;
+}
+
+.item-name {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+}
+
+.item-price {
+    -fx-font-size: 13px;
+    -fx-text-fill: #555555;
+}
+
+.item-category {
+    -fx-font-size: 12px;
+    -fx-text-fill: #4CAF50;
+}
+
+.sales-container {
+    -fx-spacing: 2;
+    -fx-alignment: center-right;
+    -fx-padding: 0 0 0 8;
+}
+
+.sales-number {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-text-fill: #333333;
+}
+
+.sales-text {
+    -fx-font-size: 12px;
+    -fx-text-fill: #757575;
+}
+
+.trend-up {
+    -fx-background-color: #4CAF50;
+    -fx-fill: #4CAF50;
+}
+
+.trend-down {
+    -fx-background-color: #2196F3;
+    -fx-fill: #2196F3;
+}
+
+.spacer {
+    -fx-pref-width: 1;
+    -fx-max-width: infinity;
+    -fx-min-width: 10;
+}
