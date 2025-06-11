@@ -18,9 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
 import org.controlsfx.control.GridView;
 import org.controlsfx.control.PopOver; // Ví dụ sử dụng PopOver từ ControlsFX
@@ -39,6 +37,7 @@ import com.restaurant.restaurant_management_project.model.Order;
 import com.restaurant.restaurant_management_project.dao.OrderDAO;
 import com.restaurant.restaurant_management_project.dao.OrderDetailDAO;
 import javafx.stage.Stage;
+import javafx.scene.Parent;
 
 public class OrderViewController {
 
@@ -71,6 +70,7 @@ public class OrderViewController {
 
     private OrderDAO orderDAO;
     private OrderDetailDAO orderDetailDAO;
+    private Parent orderViewRoot;
 
     @FXML
     public void initialize() {
@@ -94,7 +94,7 @@ public class OrderViewController {
     }
 
     private void initializeGrid() {
-        itemList.setCellFactory(param -> new ItemView(this::onItemClicked));
+        itemList.setCellFactory(param -> new ItemGridCell(this::onItemClicked));
 
         final int SPACING = 15;
         itemList.setCellHeight(300);
@@ -140,20 +140,38 @@ public class OrderViewController {
             RMenuItem menuItem = entry.getKey();
             OrderDetail orderDetail = entry.getValue();
 
-            if (orderDetail.getSoLuong() <= 0) continue; 
+            if (orderDetail.getSoLuong() <= 0) continue;
 
-            HBox itemBox = new HBox(10);
-            itemBox.setAlignment(Pos.CENTER_LEFT);
-            itemBox.setPadding(new Insets(5));
+            GridPane itemGrid = new GridPane();
+            itemGrid.setHgap(10);
+            itemGrid.setPadding(new Insets(5));
+
+            ColumnConstraints col1 = new ColumnConstraints();
+            col1.setPercentWidth(75);
+            ColumnConstraints col2 = new ColumnConstraints();
+            col2.setPercentWidth(25);
+            itemGrid.getColumnConstraints().addAll(col1, col2);
+
+            //add RowContraints
+            RowConstraints rowConstraints = new RowConstraints();
+            rowConstraints.setVgrow(Priority.ALWAYS);
+            itemGrid.getRowConstraints().add(rowConstraints);
 
             Label quantityLabel = new Label(String.valueOf(orderDetail.getSoLuong()));
             quantityLabel.setStyle("-fx-font-weight: bold; -fx-min-width: 20px;");
 
             Label nameLabel = new Label(menuItem.getItemName());
-            HBox.setHgrow(nameLabel, javafx.scene.layout.Priority.ALWAYS); 
+            nameLabel.setWrapText(true);
+            HBox.setHgrow(nameLabel, Priority.ALWAYS);
 
-            Label priceLabel = new Label(currencyFormat.format(menuItem.getItemPrice().doubleValue() * orderDetail.getSoLuong()));
-            priceLabel.setAlignment(Pos.CENTER_RIGHT);
+            // Label priceLabel = new Label(currencyFormat.format(menuItem.getItemPrice().doubleValue() * orderDetail.getSoLuong()));
+            // priceLabel.setAlignment(Pos.CENTER_RIGHT);
+
+//            HBox infoBox = new HBox(10, quantityLabel, nameLabel, priceLabel);
+            HBox infoBox = new HBox(10, quantityLabel, nameLabel);
+            infoBox.setAlignment(Pos.CENTER_LEFT);
+            itemGrid.add(infoBox, 0, 0);
+
 
             Button btnDecrease = new Button("-");
             btnDecrease.setOnAction(e -> {
@@ -174,16 +192,16 @@ public class OrderViewController {
 
             Button btnDelete = new Button("X");
             btnDelete.setOnAction(e -> {
-                orderDetail.setSoLuong(0);
+                currentOrder.remove(menuItem);
                 renderOrderItems();
                 updateCartSummary();
             });
-            
-            HBox buttonBox = new HBox(5, btnDecrease, btnIncrease, btnDelete);
-            buttonBox.setAlignment(Pos.CENTER_LEFT);
 
-            itemBox.getChildren().addAll(quantityLabel, nameLabel, priceLabel, buttonBox);
-            orderItemsVBox.getChildren().add(itemBox);
+            HBox buttonBox = new HBox(5, btnDecrease, btnIncrease, btnDelete);
+            buttonBox.setAlignment(Pos.CENTER_RIGHT);
+
+            itemGrid.add(buttonBox, 1, 0);
+            orderItemsVBox.getChildren().add(itemGrid);
         }
     }
 
@@ -199,8 +217,8 @@ public class OrderViewController {
             }
         }
         lblCartItemCount.setText("(" + totalItems + ")");
-        lblCartTotal.setText(currencyFormat.format(totalPrice));
-        btnThanhToan.setText("Thanh toán " + currencyFormat.format(totalPrice));
+        lblCartTotal.setText("");
+        btnThanhToan.setText("Thanh toán");
     }
 
 
@@ -269,7 +287,85 @@ public class OrderViewController {
 
     @FXML
     private void handleThanhToan() {
-        System.out.println("Tiến hành thanh toán với tổng tiền: " + lblCartTotal.getText());
-        System.out.println("Ghi chú: " + txtGhiChu.getText());
+        if (currentOrder.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Giỏ hàng trống!");
+            alert.showAndWait();
+            return;
+        }
+
+        orderViewRoot = btnThanhToan.getScene().getRoot();
+        Parent invoiceRoot = createInvoiceView();
+        btnThanhToan.getScene().setRoot(invoiceRoot);
+    }
+
+    private Parent createInvoiceView() {
+        BorderPane layout = new BorderPane();
+        layout.setPadding(new Insets(20));
+
+        // Title
+        Label title = new Label("Hóa đơn thanh toán");
+        title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+        BorderPane.setAlignment(title, Pos.CENTER);
+        layout.setTop(title);
+
+        // Bill details
+        VBox invoiceContent = new VBox(10);
+        invoiceContent.setPadding(new Insets(20, 0, 20, 0));
+
+        // Display ordered items
+        VBox billItemsVBox = new VBox(5);
+        billItemsVBox.setStyle("-fx-border-color: lightgrey; -fx-padding: 10;");
+        double totalPrice = 0;
+        for (Map.Entry<RMenuItem, OrderDetail> entry : currentOrder.entrySet()) {
+            RMenuItem menuItem = entry.getKey();
+            OrderDetail orderDetail = entry.getValue();
+            double itemTotal = menuItem.getItemPrice().doubleValue() * orderDetail.getSoLuong();
+            totalPrice += itemTotal;
+            Label itemLabel = new Label(String.format("%d x %s", orderDetail.getSoLuong(), menuItem.getItemName()));
+            Label priceLabel = new Label(currencyFormat.format(itemTotal));
+            HBox itemRow = new HBox(itemLabel, priceLabel);
+            HBox.setHgrow(itemLabel, Priority.ALWAYS);
+            billItemsVBox.getChildren().add(itemRow);
+        }
+
+        // Summary (Subtotal, Total)
+        GridPane summaryGrid = new GridPane();
+        summaryGrid.setHgap(10);
+        summaryGrid.setVgap(5);
+        summaryGrid.add(new Label("Tạm tính:"), 0, 0);
+        Label subtotalLabel = new Label(currencyFormat.format(totalPrice));
+        subtotalLabel.setStyle("-fx-font-weight: bold;");
+        summaryGrid.add(subtotalLabel, 1, 0);
+
+        summaryGrid.add(new Label("Tổng cộng:"), 0, 1);
+        Label totalLabel = new Label(currencyFormat.format(totalPrice));
+        totalLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        summaryGrid.add(totalLabel, 1, 1);
+
+        // Align summary to the right
+        ColumnConstraints col1Constraint = new ColumnConstraints();
+        col1Constraint.setHgrow(Priority.ALWAYS);
+        ColumnConstraints col2Constraint = new ColumnConstraints();
+        summaryGrid.getColumnConstraints().addAll(col1Constraint, col2Constraint);
+
+        invoiceContent.getChildren().addAll(new Label("Chi tiết:"), billItemsVBox, new Separator(), summaryGrid);
+        layout.setCenter(invoiceContent);
+
+        // Bottom buttons
+        Button btnBack = new Button("Quay lại");
+        btnBack.setOnAction(e -> btnBack.getScene().setRoot(orderViewRoot));
+
+        Button btnConfirm = new Button("Xác nhận & In hóa đơn");
+        btnConfirm.setDefaultButton(true);
+        btnConfirm.setOnAction(e -> {
+            handleDoneButton();
+        });
+
+        HBox buttonBar = new HBox(20, btnBack, btnConfirm);
+        buttonBar.setAlignment(Pos.CENTER);
+        layout.setBottom(buttonBar);
+        BorderPane.setMargin(buttonBar, new Insets(20, 0, 0, 0));
+
+        return layout;
     }
 }
