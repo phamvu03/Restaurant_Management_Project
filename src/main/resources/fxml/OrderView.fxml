@@ -25,7 +25,8 @@
          <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Gọi món" VBox.vgrow="ALWAYS">
             <font>
                <Font name="Cambria" size="18.0" />
-            </font></Label>
+            </font>
+         </Label>
          <HBox fx:id="searchContainer" alignment="CENTER_LEFT" spacing="10.0" styleClass="search-container">
             <TextField fx:id="searchField" maxWidth="500.0" minHeight="40.0" promptText="Tìm kiếm" styleClass="search-field" HBox.hgrow="ALWAYS" />
             <Button fx:id="searchBtn" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="clear-button">
@@ -87,18 +88,6 @@
             </VBox>
          </ScrollPane>
          <Separator prefWidth="200.0" />
-
-         <GridPane hgap="10" vgap="5.0">
-            <columnConstraints>
-               <javafx.scene.layout.ColumnConstraints hgrow="SOMETIMES" minWidth="60" />
-               <javafx.scene.layout.ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="60" />
-            </columnConstraints>
-            <rowConstraints>
-               <javafx.scene.layout.RowConstraints minHeight="10" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <Label text="Ghi chú" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <TextField fx:id="txtGhiChu" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-         </GridPane>
 
          <GridPane hgap="10" vgap="5.0">
             <columnConstraints>
