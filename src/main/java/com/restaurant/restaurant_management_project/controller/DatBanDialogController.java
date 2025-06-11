@@ -13,7 +13,6 @@ public class DatBanDialogController {
     @FXML private TextField txtTenKH;
     @FXML private TextField txtSoDT;
     @FXML private Spinner<Integer> spSoLuong;
-    @FXML private DatePicker dpThoiGianDen;
     @FXML private ComboBox<Integer> cbGio;
     @FXML private ComboBox<Integer> cbPhut;
     @FXML private TextArea taGhiChu;
@@ -72,10 +71,6 @@ public class DatBanDialogController {
             errorMessage += "Vui lòng nhập số điện thoại!\n";
         }
 
-        if (dpThoiGianDen.getValue() == null) {
-            errorMessage += "Vui lòng chọn thời gian đến!\n";
-        }
-
         if (cbGio.getValue() == null || cbPhut.getValue() == null) {
             errorMessage += "Vui lòng chọn giờ đến!\n";
         }
@@ -104,12 +99,6 @@ public class DatBanDialogController {
 
     public int getSoLuongNguoi() {
         return spSoLuong.getValue();
-    }
-
-    public LocalDateTime getThoiGianDen() {
-        LocalDate ngay = dpThoiGianDen.getValue();
-        LocalTime gio = LocalTime.of(cbGio.getValue(), cbPhut.getValue());
-        return LocalDateTime.of(ngay, gio);
     }
 
     public String getGhiChu() {

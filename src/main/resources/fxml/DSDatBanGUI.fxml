@@ -14,7 +14,6 @@
             <TableColumn fx:id="colTenKhachHang" text="Tên Khách Hàng" prefWidth="150"/>
             <TableColumn fx:id="colSoDienThoai" text="Số Điện Thoại" prefWidth="120"/>
             <TableColumn fx:id="colThoiGianDat" text="Thời Gian Đặt" prefWidth="150"/>
-            <TableColumn fx:id="colThoiGianDen" text="Thời Gian Đến" prefWidth="150"/>
             <TableColumn fx:id="colSoLuongNguoi" text="Số Lượng Người" prefWidth="120"/>
             <TableColumn fx:id="colGhiChu" text="Ghi Chú" prefWidth="200"/>
         </columns>

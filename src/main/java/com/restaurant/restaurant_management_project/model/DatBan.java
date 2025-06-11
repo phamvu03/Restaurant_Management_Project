@@ -8,20 +8,18 @@ public class DatBan {
     private String tenKhachHang;
     private String soDienThoai;
     private LocalDateTime thoiGianDat;
-    private LocalDateTime thoiGianDen;
     private int soLuongNguoi;
     private String ghiChu;
 
     public DatBan() {}
 
     public DatBan(int maBan, String tenKhachHang, String soDienThoai,
-                  LocalDateTime thoiGianDat, LocalDateTime thoiGianDen,
-                  int soLuongNguoi, String ghiChu) {
+                  LocalDateTime thoiGianDat,int soLuongNguoi,
+                  String ghiChu) {
         this.maBan = maBan;
         this.tenKhachHang = tenKhachHang;
         this.soDienThoai = soDienThoai;
         this.thoiGianDat = thoiGianDat;
-        this.thoiGianDen = thoiGianDen;
         this.soLuongNguoi = soLuongNguoi;
         this.ghiChu = ghiChu;
     }
@@ -65,14 +63,6 @@ public class DatBan {
 
     public void setThoiGianDat(LocalDateTime thoiGianDat) {
         this.thoiGianDat = thoiGianDat;
-    }
-
-    public LocalDateTime getThoiGianDen() {
-        return thoiGianDen;
-    }
-
-    public void setThoiGianDen(LocalDateTime thoiGianDen) {
-        this.thoiGianDen = thoiGianDen;
     }
 
     public int getSoLuongNguoi() {

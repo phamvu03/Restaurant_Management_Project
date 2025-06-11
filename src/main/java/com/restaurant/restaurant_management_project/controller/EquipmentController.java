@@ -37,11 +37,11 @@ public class EquipmentController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    
+
     @FXML
     private TableView<Equipment> equipmentTableId;
-    
-     @FXML
+
+    @FXML
     private TableColumn<Equipment, String> colCondition;
 
     @FXML
@@ -58,16 +58,16 @@ public class EquipmentController implements Initializable {
 
     @FXML
     private TableColumn<Equipment, String>  colType;
-    
+
     @FXML
     private Button addFormBtn;
-    
+
     @FXML
     private Button updateFormBtn;
-    
-     @FXML
+
+    @FXML
     private Button deleteBtn;
-     
+
     @FXML
     private Button refreshBtn;
 
@@ -78,7 +78,7 @@ public class EquipmentController implements Initializable {
     private TextField searchTxt;
 
     private final EquipmentDAO equipDAO = new EquipmentDAO();
-    
+
     private EquipmentController equipmentController;
 
     public void setEquipmentController(EquipmentController controller) {
@@ -87,6 +87,9 @@ public class EquipmentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        // Thêm dòng này để colName tự động fill khoảng trống
+        equipmentTableId.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); //
+
         loadDataFromDatabase();
         addFormBtn.setOnAction(e -> handleAddForm());
         updateFormBtn.setOnAction(e -> handleUpdateForm());
@@ -101,12 +104,12 @@ public class EquipmentController implements Initializable {
                 Logger.getLogger(EquipmentController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-    }    
-    
+    }
+
     public void loadDataFromDatabase(){
         List<Equipment> list = equipDAO.getAllEquipment();
         ObservableList<Equipment> observableList  = FXCollections.observableArrayList(list);
-        
+
         colId.setCellValueFactory(new PropertyValueFactory<>("MaDungCu"));
         colName.setCellValueFactory(new PropertyValueFactory<>("TenDungCu"));
         colType.setCellValueFactory(new PropertyValueFactory<>("Loai"));
@@ -129,17 +132,17 @@ public class EquipmentController implements Initializable {
             };
         });
 
-        
+
         equipmentTableId.setItems(observableList);
     }
     private void handleAddForm(){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddEquipment.fxml"));
             Parent root = loader.load();
-            
+
             AddEquipmentController controller = loader.getController();
             controller.setEquipmentController(this);
-            
+
             Stage stage = new Stage();
             stage.setTitle("Thêm Dụng Cụ");
             stage.setScene(new Scene(root));
@@ -161,7 +164,7 @@ public class EquipmentController implements Initializable {
 
             UpdateEquipmentController controller = loader.getController();
             controller.setEquipment(selected);
-            controller.setEquipmentController(this); 
+            controller.setEquipmentController(this);
 
             Stage stage = new Stage();
             stage.setTitle("Cập nhật Dụng cụ");
@@ -202,7 +205,7 @@ public class EquipmentController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
+
     private void handleSearch() throws SQLException{
         String keyword = searchTxt.getText().trim();
         if (keyword.isEmpty()) {

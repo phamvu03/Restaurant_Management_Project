@@ -19,7 +19,6 @@ public class DSDatBanController {
     @FXML private TableColumn<DatBan, String> colTenKhachHang;
     @FXML private TableColumn<DatBan, String> colSoDienThoai;
     @FXML private TableColumn<DatBan, java.time.LocalDateTime> colThoiGianDat;
-    @FXML private TableColumn<DatBan, java.time.LocalDateTime> colThoiGianDen;
     @FXML private TableColumn<DatBan, Integer> colSoLuongNguoi;
     @FXML private TableColumn<DatBan, String> colGhiChu;
     @FXML private Button btnHuyDatBan;
@@ -44,7 +43,6 @@ public class DSDatBanController {
         colTenKhachHang.setCellValueFactory(new PropertyValueFactory<>("tenKhachHang"));
         colSoDienThoai.setCellValueFactory(new PropertyValueFactory<>("soDienThoai"));
         colThoiGianDat.setCellValueFactory(new PropertyValueFactory<>("thoiGianDat"));
-        colThoiGianDen.setCellValueFactory(new PropertyValueFactory<>("thoiGianDen"));
         colSoLuongNguoi.setCellValueFactory(new PropertyValueFactory<>("soLuongNguoi"));
         colGhiChu.setCellValueFactory(new PropertyValueFactory<>("ghiChu"));
 

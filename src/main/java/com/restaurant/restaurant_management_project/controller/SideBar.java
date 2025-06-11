@@ -168,7 +168,7 @@ public class SideBar {
                 load(loader);
                 break;
             case ("equitmentBtn"):
-                loader.setLocation(getClass().getResource("/fxml/equipmentView.fxml"));
+                loader.setLocation(getClass().getResource("/fxml/EquipmentView.fxml"));
                 load(loader);
                 break;
             case ("benefitBtn"):

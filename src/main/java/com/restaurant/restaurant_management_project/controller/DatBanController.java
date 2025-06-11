@@ -134,7 +134,6 @@ public class DatBanController {
 
                 DatBan datBan = new DatBan(ban.getMaBan(), tenKhachHang, soDienThoai,
                         LocalDateTime.now(),
-                        controller.getThoiGianDen(),
                         soLuongNguoi,
                         ghiChu);
 

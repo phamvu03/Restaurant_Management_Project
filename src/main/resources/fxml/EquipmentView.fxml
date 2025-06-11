@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+
+<AnchorPane
+        id="AnchorPane"
+        styleClass="mainFxmlClass"
+        stylesheets="@../css/equipment.css"
+        xmlns="http://javafx.com/javafx/17.0.12"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.restaurant.restaurant_management_project.controller.EquipmentController"
+>
+    <VBox alignment="CENTER" spacing="20.0"
+          AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <padding>
+            <Insets bottom="20.0" left="30.0" right="30.0" top="30.0" />
+        </padding>
+
+        <HBox alignment="CENTER" prefHeight="62.0">
+            <VBox.margin>
+                <Insets top="10.0" />
+            </VBox.margin>
+            <Label text="Thiết bị nhà hàng">
+                <font>
+                    <Font name="Cambria Bold" size="36.0" />
+                </font>
+            </Label>
+        </HBox>
+
+        <GridPane HBox.hgrow="ALWAYS"> <columnConstraints>
+            <javafx.scene.layout.ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="180" />
+            <javafx.scene.layout.ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" minWidth="200" />
+        </columnConstraints>
+            <rowConstraints> <RowConstraints minHeight="40" prefHeight="40" vgrow="SOMETIMES" />
+            </rowConstraints>
+
+            <HBox prefHeight="40.0" spacing="5.0" GridPane.columnIndex="0" alignment="CENTER_LEFT" prefWidth="740">
+                <Button fx:id="addFormBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="func-btn">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-plus-circle" iconSize="20" />
+                    </graphic>
+                </Button>
+                <Button fx:id="updateFormBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="func-btn">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-wrench" iconSize="20" />
+                    </graphic>
+                </Button>
+                <Button fx:id="deleteBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="func-btn">
+                    <graphic>
+                        <FontIcon iconLiteral="far-trash-alt" iconSize="20" />
+                    </graphic>
+                </Button>
+                <Button fx:id="refreshBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="func-btn">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-redo" iconSize="20" />
+                    </graphic>
+                </Button>
+            </HBox>
+
+            <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="1">
+                <TextField fx:id="searchTxt" prefHeight="40.0" promptText="Type here to search!" styleClass="search-text"
+                           HBox.hgrow="ALWAYS"> <font>
+                    <Font name="Cambria" size="18.0" />
+                </font>
+                    <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </HBox.margin>
+                </TextField>
+                <Button fx:id="searchBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="140.0" styleClass="search-btn" text="Search" textFill="WHITE">
+                    <font>
+                        <Font name="Cambria" size="18.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets right="10.0" />
+                    </HBox.margin>
+                </Button>
+            </HBox>
+        </GridPane>
+
+        <TableView fx:id="equipmentTableId" prefHeight="600.0" styleClass="data-table" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colId" minWidth="40.0" prefWidth="140.0" text="Mã" style="-fx-alignment: CENTER;" />
+                <TableColumn fx:id="colName" minWidth="40.0" prefWidth="576.0" text="Tên dụng cụ" /> <TableColumn fx:id="colType" minWidth="40.0" prefWidth="216.0" text="Loại" style="-fx-alignment: CENTER;" />
+                <TableColumn fx:id="colQuantity" maxWidth="200.0" minWidth="40.0" prefWidth="144.0" text="Số lượng" style="-fx-alignment: CENTER;" />
+                <TableColumn fx:id="colCondition" minWidth="40.0" prefWidth="216.0" text="Tình trạng" style="-fx-alignment: CENTER;" />
+                <TableColumn fx:id="colReportDate" minWidth="40.0" prefWidth="140.0" text="Ngày thống kê" style="-fx-alignment: CENTER;" />
+            </columns>
+            <VBox.margin>
+                <Insets top="10.0" />
+            </VBox.margin>
+        </TableView>
+    </VBox>
+</AnchorPane>
