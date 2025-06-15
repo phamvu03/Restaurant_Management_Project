@@ -9,7 +9,7 @@
 
 <AnchorPane HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.OrderViewController">
    <HBox AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" HBox.hgrow="ALWAYS">
-      <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #f0f0f0;" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+      <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #f0f0f0;" stylesheets="@../css/orderview.css" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
          <padding>
             <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
          </padding>
@@ -18,18 +18,22 @@
                <Font name="Cambria" size="18.0" />
             </font>
          </Label>
-         <HBox fx:id="searchContainer" alignment="CENTER_LEFT" spacing="10.0" styleClass="search-container">
-            <TextField fx:id="searchField" focusTraversable="false" maxWidth="500.0" minHeight="40.0" promptText="Tìm kiếm" styleClass="search-field" HBox.hgrow="ALWAYS" />
-            <Button fx:id="searchBtn" focusTraversable="false" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="clear-button">
-               <graphic>
-                  <FontIcon iconLiteral="fas-search" iconSize="16" styleClass="search-icon" />
-               </graphic>
-            </Button>
-            <Button fx:id="filterBtn" focusTraversable="false" minHeight="30.0" minWidth="30.0" styleClass="search-btn">
-               <graphic>
-                  <FontIcon iconLiteral="fas-filter" iconSize="20" />
-               </graphic>
-            </Button>
+         <HBox fx:id="searchContainer" alignment="CENTER" spacing="60.0" styleClass="search-container">
+            <TextField fx:id="searchField" focusTraversable="false" maxWidth="610.0" minHeight="40.0" prefHeight="40.0" prefWidth="610.0" promptText="Tìm kiếm" styleClass="search-field" HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="85.0" spacing="20.0">
+               <children>
+                  <Button fx:id="searchBtn" alignment="CENTER" focusTraversable="false" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" styleClass="clear-button">
+                     <graphic>
+                        <FontIcon iconLiteral="fas-search" iconSize="16" styleClass="search-icon" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="filterBtn" alignment="CENTER" focusTraversable="false" minHeight="30.0" minWidth="30.0" styleClass="search-btn">
+                     <graphic>
+                        <FontIcon iconLiteral="fas-filter" iconSize="16" />
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
             <padding>
                <Insets bottom="8.0" left="16.0" right="16.0" top="8.0" />
             </padding>
@@ -73,7 +77,7 @@
             <Label fx:id="lblCartItemCount" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="(0)" />
          </HBox>
          <Separator prefWidth="200.0" />
-         <ScrollPane fx:id="orderScrollPane" fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+         <ScrollPane fx:id="orderScrollPane" fitToWidth="true" hbarPolicy="NEVER" maxHeight="350.0" VBox.vgrow="ALWAYS">
             <VBox fx:id="orderItemsVBox" spacing="8.0">
                <opaqueInsets>
                   <Insets />
@@ -98,8 +102,8 @@
                <javafx.scene.layout.RowConstraints minHeight="10" vgrow="SOMETIMES" />
             </rowConstraints>
                <Button focusTraversable="false" mnemonicParsing="false" prefWidth="200" styleClass="funcBtn" stylesheets="@../css/orderview.css" text="Ghi chú" HBox.Hgrow="ALWAYS" />
-               <Button focusTraversable="false" mnemonicParsing="false" prefWidth="200" styleClass="funcBtn" stylesheets="@../css/orderview.css" text="Chuyển bàn" GridPane.columnIndex="1" />
-               <Button focusTraversable="false" mnemonicParsing="false" prefWidth="200" styleClass="funcBtn" stylesheets="@../css/orderview.css" text="Tách bàn" GridPane.rowIndex="1" />
+               <Button disable="true" focusTraversable="false" mnemonicParsing="false" prefWidth="200" styleClass="funcBtn" stylesheets="@../css/orderview.css" text="Chuyển bàn" GridPane.columnIndex="1" />
+               <Button disable="true" focusTraversable="false" mnemonicParsing="false" prefWidth="200" styleClass="funcBtn" stylesheets="@../css/orderview.css" text="Tách bàn" GridPane.rowIndex="1" />
                <Button focusTraversable="false" mnemonicParsing="false" prefWidth="200" styleClass="funcBtn" stylesheets="@../css/orderview.css" text="Tạm tính" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </GridPane>
          <Separator prefWidth="200.0" />

@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Map;
@@ -32,13 +33,13 @@ public class ReceiptPreviewController {
 
     private Parent orderViewRoot;
     private Map<RMenuItem, OrderDetail> currentOrder;
-    private NumberFormat currencyFormat;
+    private DecimalFormat currencyFormat;
     private int currentRow = 0;
 
     public void initializeData(Parent orderViewRoot, Map<RMenuItem, OrderDetail> currentOrder) {
         this.orderViewRoot = orderViewRoot;
         this.currentOrder = currentOrder;
-        this.currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        this.currencyFormat = new DecimalFormat("#,### đ");
         invoiceDetails();
     }
 
