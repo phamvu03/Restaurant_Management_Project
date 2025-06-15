@@ -96,4 +96,28 @@ public class OrderDAO {
             }
         }
     }
+    public boolean updateOrderPaidAt(String orderId, String orderPaidAt){
+        String sql = "UPDATE DonHang SET ThoiGianThanhToan = ? WHERE MaDonHang = ?";
+        Connection connection = null;
+        try{
+            connection = ConnectionPool.getInstance().getConnection();
+
+            try(PreparedStatement stmt = connection.prepareStatement(sql)){
+                stmt.setString(1, orderPaidAt);
+                stmt.setString(2, orderId);
+
+                int rowsUpdated = stmt.executeUpdate();
+                return rowsUpdated > 0;
+            }
+        } catch (SQLException ex) {
+            System.err.println("Lỗi khi xóa đơn hàng: " + ex.getMessage());
+            return false;
+        } finally {
+            try {
+                ConnectionPool.getInstance().releaseConnection(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 }
