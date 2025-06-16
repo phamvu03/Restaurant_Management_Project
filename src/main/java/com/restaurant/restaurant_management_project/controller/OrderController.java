@@ -410,10 +410,22 @@ public class OrderController {
             DatBanDAO datBanDAO = new DatBanDAO();
             List<DatBan> dsDatBan = datBanDAO.getDSDatBan();
             if (dsDatBan.isEmpty()) {
-                System.out.println("Không tìm thấy đặt bàn mặc định");
+                System.out.println("Không tìm thấy đặt bàn mặc định, đang tạo mới...");
+                createDefaultDatBan();
+                dsDatBan = datBanDAO.getDSDatBan();
+                if (dsDatBan.isEmpty()) {
+                    System.out.println("Không thể tạo đặt bàn mặc định");
+                    return;
+                }
+            }
+            
+            // Lấy đặt bàn mới nhất và kiểm tra mã đặt bàn
+            DatBan latestDatBan = dsDatBan.get(0);
+            String maDatBan = latestDatBan.getMaDatBan();
+            if (maDatBan == null || maDatBan.trim().isEmpty()) {
+                System.out.println("Mã đặt bàn không hợp lệ");
                 return;
             }
-            DatBan latestDatBan = dsDatBan.get(0); // Lấy đặt bàn mới nhất
 
             // Lấy nhân viên mặc định
             EmployeeDAO employeeDAO = new EmployeeDAO();
@@ -426,7 +438,7 @@ public class OrderController {
 
             // Tạo đơn hàng mặc định
             Order defaultOrder = new Order();
-            defaultOrder.setMaDatBan(latestDatBan.getMaDatBan());
+            defaultOrder.setMaDatBan(maDatBan); // Sử dụng mã đặt bàn đã kiểm tra
             defaultOrder.setMaNV(defaultEmployee.getMaNV());
             defaultOrder.setThoiGianTao(new java.sql.Date(new java.util.Date().getTime()));
             defaultOrder.setThoiGianThanhToan(null); // Chưa thanh toán
@@ -435,22 +447,38 @@ public class OrderController {
             if (success) {
                 System.out.println("Đã tạo đơn hàng mặc định thành công");
                 
-                // Tạo chi tiết đơn hàng mặc định
-                if (allMenuItems != null && !allMenuItems.isEmpty()) {
-                    RMenuItem defaultMenuItem = allMenuItems.get(0);
-                    OrderDetail orderDetail = new OrderDetail();
-                    orderDetail.setMaDonHang(defaultOrder.getMaDonHang());
-                    orderDetail.setMaMon(defaultMenuItem.getItemId());
-                    orderDetail.setSoLuong(1);
-                    
-                    orderDetailDAO.addOrderDetail(orderDetail);
-                    System.out.println("Đã tạo chi tiết đơn hàng mặc định thành công");
+                // Lấy danh sách đơn hàng và tìm đơn hàng mới nhất bằng Stream
+                List<Order> orders = orderDAO.getAllOrders();
+                String maDonHang = orders.stream()
+                    .max((o1, o2) -> o1.getThoiGianTao().compareTo(o2.getThoiGianTao()))
+                    .map(Order::getMaDonHang)
+                    .orElse(null);
+
+                if (maDonHang != null) {
+                    // Tạo chi tiết đơn hàng mặc định
+                    if (allMenuItems != null && !allMenuItems.isEmpty()) {
+                        RMenuItem defaultMenuItem = allMenuItems.get(0);
+                        OrderDetail orderDetail = new OrderDetail();
+                        orderDetail.setMaDonHang(maDonHang);
+                        orderDetail.setMaMon(defaultMenuItem.getItemId());
+                        orderDetail.setSoLuong(1);
+                        
+                        boolean detailSuccess = orderDetailDAO.addOrderDetail(orderDetail);
+                        if (detailSuccess) {
+                            System.out.println("Đã tạo chi tiết đơn hàng mặc định thành công");
+                        } else {
+                            System.out.println("Không thể tạo chi tiết đơn hàng mặc định");
+                        }
+                    }
+                } else {
+                    System.out.println("Không thể lấy mã đơn hàng vừa tạo");
                 }
             } else {
                 System.out.println("Không thể tạo đơn hàng mặc định");
             }
         } catch (Exception e) {
             System.err.println("Lỗi khi tạo đơn hàng mặc định: " + e.getMessage());
+            e.printStackTrace(); // In stack trace để debug
         }
     }
 }
