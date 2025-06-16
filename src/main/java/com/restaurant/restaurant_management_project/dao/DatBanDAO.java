@@ -11,18 +11,20 @@ import java.util.List;
 
 public class DatBanDAO {
     public boolean themDatBan(DatBan datBan) {
-        String sql = "INSERT INTO DatBan (maBan, tenKhachHang, soDienThoai, thoiGianDat, soLuongNguoi, ghiChu) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO DatBan (MaBan, TenKhach, SoKhach, SDTKhach, Email, ThoiGianDat, TrangThai, GhiChu) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setInt(1, datBan.getMaBan());
+            stmt.setString(1, datBan.getMaBan());
             stmt.setString(2, datBan.getTenKhachHang());
-            stmt.setString(3, datBan.getSoDienThoai());
-            stmt.setTimestamp(4, Timestamp.valueOf(datBan.getThoiGianDat()));
-            stmt.setInt(6, datBan.getSoLuongNguoi());
-            stmt.setString(7, datBan.getGhiChu());
+            stmt.setInt(3, datBan.getSoKhach());
+            stmt.setString(4, datBan.getSoDienThoai());
+            stmt.setString(5, datBan.getEmail());
+            stmt.setTimestamp(6, Timestamp.valueOf(datBan.getThoiGianDat()));
+            stmt.setString(7, datBan.getTrangThai());
+            stmt.setString(8, datBan.getGhiChu());
 
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
@@ -31,7 +33,7 @@ public class DatBanDAO {
 
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    datBan.setMaDatBan(generatedKeys.getInt(1));
+                    datBan.setMaDatBan(generatedKeys.getString(1));
                 }
             }
 
@@ -44,7 +46,7 @@ public class DatBanDAO {
 
     public List<DatBan> getDSDatBan() {
         List<DatBan> ds = new ArrayList<>();
-        String sql = "SELECT * FROM DatBan ORDER BY thoiGianDat DESC";
+        String sql = "SELECT * FROM DatBan ORDER BY ThoiGianDat DESC";
 
         try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -52,13 +54,15 @@ public class DatBanDAO {
 
             while (rs.next()) {
                 DatBan datBan = new DatBan();
-                datBan.setMaDatBan(rs.getInt("maDatBan"));
-                datBan.setMaBan(rs.getInt("maBan"));
-                datBan.setTenKhachHang(rs.getString("tenKhachHang"));
-                datBan.setSoDienThoai(rs.getString("soDienThoai"));
-                datBan.setThoiGianDat(rs.getTimestamp("thoiGianDat").toLocalDateTime());
-                datBan.setSoLuongNguoi(rs.getInt("soLuongNguoi"));
-                datBan.setGhiChu(rs.getString("ghiChu"));
+                datBan.setMaDatBan(rs.getString("MaDatBan"));
+                datBan.setMaBan(rs.getString("MaBan"));
+                datBan.setTenKhachHang(rs.getString("TenKhach"));
+                datBan.setSoKhach(rs.getInt("SoKhach"));
+                datBan.setSoDienThoai(rs.getString("SDTKhach"));
+                datBan.setEmail(rs.getString("Email"));
+                datBan.setThoiGianDat(rs.getTimestamp("ThoiGianDat").toLocalDateTime());
+                datBan.setTrangThai(rs.getString("TrangThai"));
+                datBan.setGhiChu(rs.getString("GhiChu"));
 
                 ds.add(datBan);
             }
@@ -68,13 +72,13 @@ public class DatBanDAO {
         return ds;
     }
 
-    public boolean huyDatBan(int maDatBan) {
-        String sql = "DELETE FROM DatBan WHERE maDatBan = ?";
+    public boolean huyDatBan(String maDatBan) {
+        String sql = "DELETE FROM DatBan WHERE MaDatBan = ?";
 
         try (Connection conn = ConnectionPool.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, maDatBan);
+            stmt.setString(1, maDatBan);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Lỗi khi hủy đặt bàn: " + e.getMessage());
@@ -82,14 +86,57 @@ public class DatBanDAO {
         }
     }
 
+    public boolean capNhatTrangThai(String maDatBan, String trangThai) {
+        String sql = "UPDATE DatBan SET TrangThai = ? WHERE MaDatBan = ?";
+
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, trangThai);
+            stmt.setString(2, maDatBan);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi cập nhật trạng thái: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public DatBan getDatBanById(String maDatBan) {
+        String sql = "SELECT * FROM DatBan WHERE MaDatBan = ?";
+
+        try (Connection conn = ConnectionPool.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, maDatBan);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    DatBan datBan = new DatBan();
+                    datBan.setMaDatBan(rs.getString("MaDatBan"));
+                    datBan.setMaBan(rs.getString("MaBan"));
+                    datBan.setTenKhachHang(rs.getString("TenKhach"));
+                    datBan.setSoKhach(rs.getInt("SoKhach"));
+                    datBan.setSoDienThoai(rs.getString("SDTKhach"));
+                    datBan.setEmail(rs.getString("Email"));
+                    datBan.setThoiGianDat(rs.getTimestamp("ThoiGianDat").toLocalDateTime());
+                    datBan.setTrangThai(rs.getString("TrangThai"));
+                    datBan.setGhiChu(rs.getString("GhiChu"));
+                    return datBan;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<ThongKe> thongKeDatBan(LocalDate from, LocalDate to) {
         List<ThongKe> ds = new ArrayList<>();
-        String sql = "SELECT DATE(thoiGianDat) as ngay, " +
+        String sql = "SELECT CAST(ThoiGianDat AS DATE) as ngay, " +
                 "COUNT(*) as soLuot, " +
-                "SUM(soLuongNguoi) as tongKhach " +
+                "SUM(SoKhach) as tongKhach " +
                 "FROM DatBan " +
-                "WHERE DATE(thoiGianDat) BETWEEN ? AND ? " +
-                "GROUP BY DATE(thoiGianDat) " +
+                "WHERE CAST(ThoiGianDat AS DATE) BETWEEN ? AND ? " +
+                "GROUP BY CAST(ThoiGianDat AS DATE) " +
                 "ORDER BY ngay";
 
         try (Connection conn = ConnectionPool.getInstance().getConnection();

@@ -86,8 +86,12 @@ public class DashBoard {
         Task<Void> loadDataTask = new Task<>() {
             @Override
             protected Void call() throws Exception {
-                LocalDate today = LocalDate.now();
-                LocalDate startOfWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+                LocalDateTime today = LocalDateTime.now();
+                LocalDateTime startOfWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
+                        .withHour(0)
+                        .withMinute(0)
+                        .withSecond(0)
+                        .withNano(0);
                 LocalDateTime cuoiNgay = LocalDateTime.of(
                         LocalDateTime.now().toLocalDate(),
                         LocalTime.of(0, 0, 0)).plusHours(23).plusMinutes(59).plusSeconds(59);
@@ -131,12 +135,14 @@ public class DashBoard {
                 }
                 //Gio dong khach
                 XYChart.Series<String,Integer> data2 = new XYChart.Series<>();
-                khachTheoGio = reportDAO.getThongKeKhachTheoGio(today.minusDays(1),today.minusDays(1));
+                khachTheoGio = reportDAO.getThongKeKhachTheoGio(today.withHour(0)
+                        .withMinute(0)
+                        .withSecond(0),today);
                 for(Map.Entry<Integer, Integer> entry: khachTheoGio.entrySet())
                 {
                     data2.getData().add(new XYChart.Data<>(entry.getKey()+"",entry.getValue()));
                 }
-                populateItemData.addAll( menuItemDao.getPopularMenuItems(10, Date.valueOf(startOfWeek),Date.valueOf(today)));
+                populateItemData.addAll( menuItemDao.getPopularMenuItems(10, startOfWeek,today));
 
                 return null;
             }

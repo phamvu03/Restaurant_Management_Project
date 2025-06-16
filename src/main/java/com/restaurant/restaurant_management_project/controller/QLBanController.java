@@ -15,11 +15,11 @@ import java.util.Optional;
 
 public class QLBanController {
     @FXML private TableView<Ban> banTable;
-    @FXML private TableColumn<Ban, Integer> colMaBan;
-    @FXML private TableColumn<Ban, String> colTenBan;
-    @FXML private TableColumn<Ban, String> colViTri;
+    @FXML private TableColumn<Ban, String> colMaBan; // Sửa từ Integer thành String
+    @FXML private TableColumn<Ban, String> colViTri; // Bỏ colTenBan vì không có trong model
+    @FXML private TableColumn<Ban, Integer> colSoGhe; // Sửa từ colSoCho thành colSoGhe
     @FXML private TableColumn<Ban, String> colTrangThai;
-    @FXML private TableColumn<Ban, Integer> colSoCho;
+    @FXML private TableColumn<Ban, String> colGhiChu; // Thêm cột ghi chú
 
     private BanDAO banDAO = new BanDAO();
     private ObservableList<Ban> banList = FXCollections.observableArrayList();
@@ -37,10 +37,16 @@ public class QLBanController {
 
     private void setupTable() {
         colMaBan.setCellValueFactory(new PropertyValueFactory<>("maBan"));
-        colTenBan.setCellValueFactory(new PropertyValueFactory<>("tenBan"));
         colViTri.setCellValueFactory(new PropertyValueFactory<>("viTri"));
-        colTrangThai.setCellValueFactory(new PropertyValueFactory<>("trangThai"));
-        colSoCho.setCellValueFactory(new PropertyValueFactory<>("soChoNgoi"));
+        colSoGhe.setCellValueFactory(new PropertyValueFactory<>("soGhe"));
+        colGhiChu.setCellValueFactory(new PropertyValueFactory<>("ghiChu"));
+
+        // Cột trạng thái được tính động từ bảng DatBan
+        colTrangThai.setCellValueFactory(cellData -> {
+            Ban ban = cellData.getValue();
+            String trangThai = banDAO.getTrangThaiBan(ban.getMaBan());
+            return new javafx.beans.property.SimpleStringProperty(trangThai);
+        });
 
         banTable.setItems(banList);
     }
@@ -49,7 +55,6 @@ public class QLBanController {
         banList.setAll(banDAO.getDSBan());
     }
 
-    // Trong QLBanController.java
     @FXML
     private void themBan() {
         try {
@@ -57,6 +62,7 @@ public class QLBanController {
             DialogPane dialogPane = loader.load();
 
             BanDialogController controller = loader.getController();
+            controller.setEditMode(false); // Chế độ thêm mới
 
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setDialogPane(dialogPane);
@@ -65,13 +71,17 @@ public class QLBanController {
 
             Optional<ButtonType> result = dialog.showAndWait();
             if (result.isPresent() && result.get().getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                Ban newBan = controller.getBan();
-                if (banDAO.themBan(newBan)) {
-                    loadDSBan();
-                    showAlert(Alert.AlertType.INFORMATION, "Thành công",
-                            "Thêm bàn mới thành công! Mã bàn: " + newBan.getMaBan());
+                if (controller.isValidInput()) {
+                    Ban newBan = controller.getBan();
+                    if (banDAO.themBan(newBan)) {
+                        loadDSBan();
+                        showAlert(Alert.AlertType.INFORMATION, "Thành công",
+                                "Thêm bàn mới thành công! Mã bàn: " + newBan.getMaBan());
+                    } else {
+                        showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể thêm bàn mới");
+                    }
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể thêm bàn mới");
+                    showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Vui lòng kiểm tra lại thông tin");
                 }
             }
         } catch (IOException e) {
@@ -79,6 +89,7 @@ public class QLBanController {
             showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể tải form thêm bàn");
         }
     }
+
     @FXML
     private void suaBan() {
         Ban selected = banTable.getSelectionModel().getSelectedItem();
@@ -92,6 +103,7 @@ public class QLBanController {
             DialogPane dialogPane = loader.load();
 
             BanDialogController controller = loader.getController();
+            controller.setEditMode(true); // Chế độ sửa
             controller.setBan(selected);
 
             Dialog<ButtonType> dialog = new Dialog<>();
@@ -101,10 +113,16 @@ public class QLBanController {
 
             Optional<ButtonType> result = dialog.showAndWait();
             if (result.isPresent() && result.get().getButtonData() == ButtonBar.ButtonData.OK_DONE) {
-                Ban updatedBan = controller.getBan();
-                if (banDAO.suaBan(updatedBan)) {
-                    loadDSBan();
-                    showAlert(Alert.AlertType.INFORMATION, "Thành công", "Cập nhật thông tin bàn thành công!");
+                if (controller.isValidInput()) {
+                    Ban updatedBan = controller.getBan();
+                    if (banDAO.suaBan(updatedBan)) {
+                        loadDSBan();
+                        showAlert(Alert.AlertType.INFORMATION, "Thành công", "Cập nhật thông tin bàn thành công!");
+                    } else {
+                        showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể cập nhật bàn");
+                    }
+                } else {
+                    showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Vui lòng kiểm tra lại thông tin");
                 }
             }
         } catch (IOException e) {
@@ -112,6 +130,7 @@ public class QLBanController {
             showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể tải form sửa bàn");
         }
     }
+
     @FXML
     private void xoaBan() {
         Ban selected = banTable.getSelectionModel().getSelectedItem();
@@ -120,10 +139,18 @@ public class QLBanController {
             return;
         }
 
+        // Kiểm tra trạng thái bàn trước khi xóa
+        String trangThai = banDAO.getTrangThaiBan(selected.getMaBan());
+        if (!"Trống".equals(trangThai)) {
+            showAlert(Alert.AlertType.WARNING, "Cảnh báo", 
+                "Không thể xóa bàn đang được sử dụng hoặc đã đặt!");
+            return;
+        }
+
         Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
         confirmDialog.setTitle("Xác nhận xóa");
         confirmDialog.setHeaderText("Bạn có chắc chắn muốn xóa bàn này?");
-        confirmDialog.setContentText("Bàn " + selected.getTenBan() + " sẽ bị xóa vĩnh viễn.");
+        confirmDialog.setContentText("Bàn " + selected.getMaBan() + " sẽ bị xóa vĩnh viễn.");
 
         Optional<ButtonType> result = confirmDialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -134,6 +161,11 @@ public class QLBanController {
                 showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể xóa bàn");
             }
         }
+    }
+
+    @FXML
+    private void refreshBanList() {
+        loadDSBan();
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
