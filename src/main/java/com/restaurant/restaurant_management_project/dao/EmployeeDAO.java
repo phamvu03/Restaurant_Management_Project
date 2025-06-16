@@ -48,33 +48,29 @@ public class EmployeeDAO {
 
     // Thêm nhân viên
     public boolean addEmployee(Employee emp) {
-        String sql = "INSERT INTO NhanVien (MaNV, TenNV, NgaySinh, SDT, Email, ChucVu, Luong) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        int result = 0;
+        String sql = "INSERT INTO NhanVien ( TenNV, NgaySinh, SDT, Email, ChucVu, Luong) " +
+                "OUTPUT INSERTED.idNV, INSERTED.MaNV "+
+                "VALUES (?, ?, ?, ?, ?, ?)";
+        ResultSet resultSet ;
         Connection connection = null;
+        int result =0;
 
         try {
             connection = ConnectionPool.getInstance().getConnection();
 
-            // Sinh mã tự động từ sequence
-            String newMaNV = getNextSequenceValue("SEQ_NV");
-
-            // Kiểm tra nếu mã đã tồn tại
-            if (isEmployeeExists(newMaNV)) {
-                throw new SQLException("Nhân viên với mã " + newMaNV + " đã tồn tại.");
-            }
-
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-                stmt.setString(1, newMaNV);
-                stmt.setString(2, emp.getTenNV());
-                stmt.setDate(3, Date.valueOf(emp.getNgaySinh()));
-                stmt.setString(4, emp.getSDT());
-                stmt.setString(5, emp.getEmail());
-                stmt.setString(6, emp.getChucVu());
-                stmt.setBigDecimal(7, emp.getLuong());
+                stmt.setString(1, emp.getTenNV());
+                stmt.setDate(2, Date.valueOf(emp.getNgaySinh()));
+                stmt.setString(3, emp.getSDT());
+                stmt.setString(4, emp.getEmail());
+                stmt.setString(5, emp.getChucVu());
+                stmt.setBigDecimal(6, emp.getLuong());
 
-                result = stmt.executeUpdate();
-                if (result > 0) {
-                    emp.setMaNV(newMaNV);
+                resultSet = stmt.executeQuery();
+                if (resultSet.next()) {
+                    String maNV = resultSet.getString("MaNV");
+                   emp.setMaNV(maNV);
+                   result = 1;
                 }
             }
         } catch (SQLException e) {
