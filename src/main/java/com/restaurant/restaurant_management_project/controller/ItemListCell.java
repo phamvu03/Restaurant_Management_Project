@@ -77,7 +77,7 @@ public class ItemListCell extends ListCell<RMenuItem> {
 
         LocalDate today = LocalDate.now();
         LocalDate startOfWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        int salesCount = dao.getFoodSalesQuantity(rMenuItem.getId(), Date.valueOf(startOfWeek), Date.valueOf(today));
+        int salesCount = dao.getFoodSalesQuantity(rMenuItem.getItemId(), Date.valueOf(startOfWeek), Date.valueOf(today));
         sales.setText(String.valueOf(salesCount));
 
     }

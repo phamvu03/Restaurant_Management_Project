@@ -6,8 +6,6 @@ import com.restaurant.restaurant_management_project.model.RMenuItem;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class MenuItemDaoImpl implements MenuItemDao {
     private ConnectionPool connectionPool;
@@ -19,23 +17,6 @@ public class MenuItemDaoImpl implements MenuItemDao {
         }
     }
 
-    public int getNextSequenceValue(String sequenceName) throws SQLException {
-        String sql = "SELECT NEXT VALUE FOR " + sequenceName;
-        Connection conn = null;
-
-        try {
-            conn = connectionPool.getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                return rs.getInt(1);
-            } else {
-                throw new SQLException("Could not retrieve next value from sequence: " + sequenceName);
-            }
-        }finally {
-            connectionPool.releaseConnection(conn);
-        }
-    }
 
     @Override
     public List<RMenuItem> getAll() {
@@ -90,42 +71,45 @@ public class MenuItemDaoImpl implements MenuItemDao {
 
     @Override
     public boolean add(RMenuItem item) {
-        String sql = "INSERT INTO MonAn (MaMon,TenMon,TrangThai,Gia,Nhom,HinhAnh,DonVi,MonAnKem)" +
-                "VALUES (?, ?, ?,?,?,?,?,?);";
-        int result;
+        String sql = "INSERT INTO MonAn (TenMon,TrangThai,Gia,Nhom,HinhAnh,DonVi,MonAnKem) " +
+                "OUTPUT INSERTED.Id, INSERTED.MaMon " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?);";
+        int result = 0;
         Connection conn = null;
-        ResultSet resultSet;
-        try{
+        ResultSet resultSet = null;
+
+        try {
             conn = connectionPool.getConnection();
-            try(PreparedStatement preparedStatement = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
-                String itemId = "MA" + String.format("%03d", this.getNextSequenceValue("MID_seq"));
-                preparedStatement.setString(1,itemId);
-                preparedStatement.setString(2, item.getItemName());
-                preparedStatement.setBoolean(3, item.isItemStatus());
-                preparedStatement.setBigDecimal(4, item.getItemPrice());
-                preparedStatement.setString(5, item.getItemCategory());
-                preparedStatement.setBytes(6, item.getItemImage());
-                preparedStatement.setString(7, item.getItemUnit());
-                if (item.getSideItem() == null)
-                {
-                    preparedStatement.setNull(8, Types.INTEGER);
+            try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+                preparedStatement.setString(1, item.getItemName());
+                preparedStatement.setBoolean(2, item.isItemStatus());
+                preparedStatement.setBigDecimal(3, item.getItemPrice());
+                preparedStatement.setString(4, item.getItemCategory());
+                preparedStatement.setBytes(5, item.getItemImage());
+                preparedStatement.setString(6, item.getItemUnit());
+
+                if (item.getSideItem() == null) {
+                    preparedStatement.setNull(7, Types.INTEGER);
+                } else {
+                    preparedStatement.setInt(7, item.getSideItem());
                 }
-                else preparedStatement.setInt(8, item.getSideItem());
-                result = preparedStatement.executeUpdate();
-                if(result>0)
-                {
-                    resultSet = preparedStatement.getGeneratedKeys();
-                    if(resultSet.next())
-                    {
-                        int id = resultSet.getInt(1);
-                        item.setItemId(itemId);
-                        item.setId(id);
-                    }
+
+                resultSet = preparedStatement.executeQuery();
+
+                if (resultSet.next()) {
+                    int id = resultSet.getInt("Id");
+                    String maMon = resultSet.getString("MaMon");
+                    item.setId(id);
+                    item.setItemId(maMon);
+                    result = 1;
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
+            if (resultSet != null) {
+                try { resultSet.close(); } catch (SQLException e) { }
+            }
             connectionPool.releaseConnection(conn);
         }
         return result > 0;
@@ -179,7 +163,7 @@ public boolean delete(RMenuItem item) {
         exeUpdate(updateStmt, conn);
         //2. Xoa chi tiet don hang
         PreparedStatement dele = conn.prepareStatement(deleteCTDH);
-        dele.setInt(1, item.getId());
+        dele.setString(1, item.getItemId());
         exeUpdate(dele, conn);
         // 2. Xóa món ăn chính
         PreparedStatement deleteStmt = conn.prepareStatement(sqlDelete);
@@ -220,7 +204,7 @@ public boolean delete(RMenuItem item) {
         String sql = "SELECT TOP(?)ma.id, ma.MaMon, ma.TenMon, ma.TrangThai, ma.Gia, ma.Nhom, ma.HinhAnh, ma.DonVi, ma.MonAnKem, " +
                 "SUM(ctdh.SoLuong) AS TotalSold " +
                 "FROM MonAn ma " +
-                "JOIN ChiTietDonHang ctdh ON ma.id = ctdh.MaMon " +
+                "JOIN ChiTietDonHang ctdh ON ma.MaMon = ctdh.MaMon " +
                 "JOIN DonHang dh ON ctdh.MaDonHang = dh.MaDonHang " +
                 "WHERE dh.ThoiGianThanhToan BETWEEN ? AND ? " +
                 "GROUP BY ma.id, ma.MaMon, ma.TenMon, ma.TrangThai, ma.Gia, ma.Nhom, ma.HinhAnh, ma.DonVi, ma.MonAnKem " +
@@ -252,7 +236,7 @@ public boolean delete(RMenuItem item) {
 
         return menuItems;
     }
-    public int getFoodSalesQuantity(int foodId, Date startDate, Date endDate) {
+    public int getFoodSalesQuantity(String maMon, Date startDate, Date endDate) {
         int totalSold = 0;
 
         // SQL Server query to get sales quantity of a specific food item
@@ -265,7 +249,7 @@ public boolean delete(RMenuItem item) {
         {
             conn = connectionPool.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, foodId);
+            pstmt.setString(1, maMon);
             pstmt.setDate(2, new java.sql.Date(startDate.getTime()));
             pstmt.setDate(3, new java.sql.Date(endDate.getTime()));
 

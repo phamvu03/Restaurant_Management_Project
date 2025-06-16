@@ -43,7 +43,7 @@ public class ReportDAO {
                 "    SUM(ma.Gia * ctdh.SoLuong) as DoanhThu " +
                 "FROM DonHang dh " +
                 "JOIN ChiTietDonHang ctdh ON dh.MaDonHang = ctdh.MaDonHang " +
-                "JOIN MonAn ma ON ctdh.MaMon = ma.id " +
+                "JOIN MonAn ma ON ctdh.MaMon = ma.MaMon " +
                 "WHERE dh.ThoiGianThanhToan IS NOT NULL " +
                 "AND dh.ThoiGianThanhToan BETWEEN ? AND ? " +
                 "GROUP BY CAST(dh.ThoiGianThanhToan AS DATE) " +
@@ -97,7 +97,7 @@ public class ReportDAO {
         String sql = "SELECT SUM(ctdh.SoLuong * ma.Gia) AS TongDoanhThu " +
                 "FROM DonHang dh " +
                 "JOIN ChiTietDonHang ctdh ON dh.MaDonHang = ctdh.MaDonHang " +
-                "JOIN MonAn ma ON ctdh.MaMon = ma.id " +
+                "JOIN MonAn ma ON ctdh.MaMon = ma.MaMon " +
                 "WHERE CAST(dh.ThoiGianThanhToan AS DATE) = ? AND dh.ThoiGianThanhToan IS NOT NULL;";
         Connection conn = null;
         PreparedStatement ps = null;
@@ -294,7 +294,7 @@ public class ReportDAO {
                     "    SUM(ma.Gia * ctdh.SoLuong) AS DoanhThu " +
                     "FROM DonHang dh " +
                     "JOIN ChiTietDonHang ctdh ON dh.MaDonHang = ctdh.MaDonHang " +
-                    "JOIN MonAn ma ON ctdh.MaMon = ma.id " +
+                    "JOIN MonAn ma ON ctdh.MaMon = ma.MaMon " +
                     "WHERE dh.ThoiGianThanhToan IS NOT NULL ";
 
             if (fromDate != null) {
@@ -352,7 +352,7 @@ public class ReportDAO {
                     "        ctdh.SoLuong " +
                     "    FROM DonHang dh " +
                     "    JOIN ChiTietDonHang ctdh ON dh.MaDonHang = ctdh.MaDonHang " +
-                    "JOIN MonAn ma ON ctdh.MaMon = ma.id "+
+                    "JOIN MonAn ma ON ctdh.MaMon = ma.MaMon "+
                     "    WHERE dh.ThoiGianThanhToan IS NOT NULL " +
                     "    AND YEAR(dh.ThoiGianThanhToan) = ? " +
                     "    AND MONTH(dh.ThoiGianThanhToan) = ? " +
@@ -401,7 +401,7 @@ public class ReportDAO {
                     "    SUM(ma.Gia * ctdh.SoLuong) AS DoanhThu " +
                     "FROM DonHang dh " +
                     "JOIN ChiTietDonHang ctdh ON dh.MaDonHang = ctdh.MaDonHang " +
-                    "JOIN MonAn ma ON ctdh.MaMon = ma.id "+
+                    "JOIN MonAn ma ON ctdh.MaMon = ma.MaMon "+
                     "WHERE dh.ThoiGianThanhToan IS NOT NULL ";
 
             if (year > 0) {
@@ -438,7 +438,7 @@ public class ReportDAO {
 
         String sql = "SELECT ma.Nhom AS CategoryName, SUM(ctdh.SoLuong) AS TotalQuantitySold " +
                 "FROM MonAn ma " +
-                "JOIN ChiTietDonHang ctdh ON ma.id = ctdh.MaMon " +
+                "JOIN ChiTietDonHang ctdh ON ma.MaMon = ctdh.MaMon " +
                 "GROUP BY ma.Nhom";
         Connection conn = null;
         try{
