@@ -3,81 +3,55 @@ package com.restaurant.restaurant_management_project.model;
 import java.time.LocalDateTime;
 
 public class DatBan {
-    private int maDatBan;
-    private int maBan;
+    private String maDatBan;
+    private String maBan;
     private String tenKhachHang;
+    private int soKhach;
     private String soDienThoai;
+    private String email;
     private LocalDateTime thoiGianDat;
-    private int soLuongNguoi;
+    private String trangThai;
     private String ghiChu;
 
     public DatBan() {}
 
-    public DatBan(int maBan, String tenKhachHang, String soDienThoai,
-                  LocalDateTime thoiGianDat,int soLuongNguoi,
-                  String ghiChu) {
+    // Constructor phù hợp với DatBanController
+    public DatBan(String maBan, String tenKhachHang, String soDienThoai, 
+                  LocalDateTime thoiGianDat, int soKhach, String ghiChu) {
         this.maBan = maBan;
         this.tenKhachHang = tenKhachHang;
         this.soDienThoai = soDienThoai;
         this.thoiGianDat = thoiGianDat;
-        this.soLuongNguoi = soLuongNguoi;
+        this.soKhach = soKhach;
         this.ghiChu = ghiChu;
+        this.trangThai = "Đã đặt"; // Mặc định khi đặt bàn
     }
 
-    // Getters and Setters
-    public int getMaDatBan() {
-        return maDatBan;
-    }
-
-    public void setMaDatBan(int maDatBan) {
-        this.maDatBan = maDatBan;
-    }
-
-    public int getMaBan() {
-        return maBan;
-    }
-
-    public void setMaBan(int maBan) {
-        this.maBan = maBan;
-    }
-
-    public String getTenKhachHang() {
-        return tenKhachHang;
-    }
-
-    public void setTenKhachHang(String tenKhachHang) {
-        this.tenKhachHang = tenKhachHang;
-    }
-
-    public String getSoDienThoai() {
-        return soDienThoai;
-    }
-
-    public void setSoDienThoai(String soDienThoai) {
-        this.soDienThoai = soDienThoai;
-    }
-
-    public LocalDateTime getThoiGianDat() {
-        return thoiGianDat;
-    }
-
-    public void setThoiGianDat(LocalDateTime thoiGianDat) {
-        this.thoiGianDat = thoiGianDat;
-    }
-
-    public int getSoLuongNguoi() {
-        return soLuongNguoi;
-    }
-
-    public void setSoLuongNguoi(int soLuongNguoi) {
-        this.soLuongNguoi = soLuongNguoi;
-    }
-
-    public String getGhiChu() {
-        return ghiChu;
-    }
-
-    public void setGhiChu(String ghiChu) {
-        this.ghiChu = ghiChu;
-    }
+    // Getters and setters...
+    public String getMaDatBan() { return maDatBan; }
+    public void setMaDatBan(String maDatBan) { this.maDatBan = maDatBan; }
+    
+    public String getMaBan() { return maBan; }
+    public void setMaBan(String maBan) { this.maBan = maBan; }
+    
+    public String getTenKhachHang() { return tenKhachHang; }
+    public void setTenKhachHang(String tenKhachHang) { this.tenKhachHang = tenKhachHang; }
+    
+    public int getSoKhach() { return soKhach; }
+    public void setSoKhach(int soKhach) { this.soKhach = soKhach; }
+    
+    public String getSoDienThoai() { return soDienThoai; }
+    public void setSoDienThoai(String soDienThoai) { this.soDienThoai = soDienThoai; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    
+    public LocalDateTime getThoiGianDat() { return thoiGianDat; }
+    public void setThoiGianDat(LocalDateTime thoiGianDat) { this.thoiGianDat = thoiGianDat; }
+    
+    public String getTrangThai() { return trangThai; }
+    public void setTrangThai(String trangThai) { this.trangThai = trangThai; }
+    
+    public String getGhiChu() { return ghiChu; }
+    public void setGhiChu(String ghiChu) { this.ghiChu = ghiChu; }
 }

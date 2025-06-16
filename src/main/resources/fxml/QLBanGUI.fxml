@@ -4,17 +4,18 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.restaurant.restaurant_management_project.controller.QLBanController" spacing="10" styleClass="root">
+      fx:controller="com.restaurant.restaurant_management_project.controller.QLBanController" 
+      spacing="10" styleClass="root">
 
     <Label text="QUẢN LÝ BÀN" styleClass="header-label" />
 
     <TableView fx:id="banTable">
         <columns>
-            <TableColumn fx:id="colMaBan" text="Mã bàn" />
-            <TableColumn fx:id="colTenBan" text="Tên bàn" />
-            <TableColumn fx:id="colViTri" text="Vị trí" />
-            <TableColumn fx:id="colTrangThai" text="Trạng thái" />
-            <TableColumn fx:id="colSoCho" text="Số chỗ" />
+            <TableColumn fx:id="colMaBan" text="Mã bàn" prefWidth="100" />
+            <TableColumn fx:id="colViTri" text="Vị trí" prefWidth="120" />
+            <TableColumn fx:id="colSoGhe" text="Số ghế" prefWidth="80" />
+            <TableColumn fx:id="colTrangThai" text="Trạng thái" prefWidth="100" />
+            <TableColumn fx:id="colGhiChu" text="Ghi chú" prefWidth="200" />
         </columns>
     </TableView>
 
@@ -22,5 +23,6 @@
         <Button text="Thêm bàn" onAction="#themBan" styleClass="btn-primary" />
         <Button text="Sửa bàn" onAction="#suaBan" styleClass="btn-warning" />
         <Button text="Xóa bàn" onAction="#xoaBan" styleClass="btn-danger" />
+        <Button text="Làm mới" onAction="#refreshBanList" styleClass="btn-secondary" />
     </HBox>
 </VBox>

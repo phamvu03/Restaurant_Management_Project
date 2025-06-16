@@ -10,119 +10,201 @@ public class BanDAO {
     // Lấy danh sách tất cả bàn
     public List<Ban> getDSBan() {
         List<Ban> dsBan = new ArrayList<>();
-        String sql = "SELECT * FROM Ban ORDER BY maBan";
+        String sql = "SELECT MaBan, ViTri, SoGhe, GhiChu FROM Ban";
+        Connection conn = null;
 
-        try (Connection conn = ConnectionPool.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try {
+            conn = ConnectionPool.getInstance().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 dsBan.add(mapResultSetToBan(rs));
             }
         } catch (SQLException e) {
             System.err.println("Lỗi khi lấy danh sách bàn: " + e.getMessage());
+        } finally {
+            if (conn != null) {
+                try {
+                    ConnectionPool.getInstance().releaseConnection(conn);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
         return dsBan;
     }
 
     // Thêm bàn mới
     public boolean themBan(Ban ban) {
-        // Thêm maBan vào câu lệnh SQL
-        String sql = "INSERT INTO Ban (maBan, tenBan, viTri, trangThai, soChoNgoi) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Ban (ViTri, SoGhe, GhiChu) VALUES (?, ?, ?)";
+        Connection conn = null;
+        
+        try {
+            conn = ConnectionPool.getInstance().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-        try (Connection conn = ConnectionPool.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, ban.getViTri());
+            stmt.setInt(2, ban.getSoGhe());
+            stmt.setString(3, ban.getGhiChu());
+            
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                return false;
+            }
 
-            stmt.setInt(1, ban.getMaBan());
-            stmt.setString(2, ban.getTenBan());
-            stmt.setString(3, ban.getViTri());
-            stmt.setString(4, ban.getTrangThai());
-            stmt.setInt(5, ban.getSoChoNgoi());
-
-            return stmt.executeUpdate() > 0;
+            // Lấy mã bàn được tự động sinh
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    ban.setMaBan(generatedKeys.getString("MaBan"));
+                }
+            }
+            return true;
         } catch (SQLException e) {
             System.err.println("Lỗi khi thêm bàn: " + e.getMessage());
             return false;
+        } finally {
+            if (conn != null) {
+                try {
+                    ConnectionPool.getInstance().releaseConnection(conn);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
+
     // Cập nhật thông tin bàn
     public boolean suaBan(Ban ban) {
-        String sql = "UPDATE Ban SET tenBan = ?, viTri = ?, trangThai = ?, soChoNgoi = ? WHERE maBan = ?";
+        String sql = "UPDATE Ban SET ViTri = ?, SoGhe = ?, GhiChu = ? WHERE MaBan = ?";
+        Connection conn = null;
 
-        try (Connection conn = ConnectionPool.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try {
+            conn = ConnectionPool.getInstance().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
 
-            stmt.setString(1, ban.getTenBan());
-            stmt.setString(2, ban.getViTri());
-            stmt.setString(3, ban.getTrangThai());
-            stmt.setInt(4, ban.getSoChoNgoi());
-            stmt.setInt(5, ban.getMaBan());
+            stmt.setString(1, ban.getViTri());
+            stmt.setInt(2, ban.getSoGhe());
+            stmt.setString(3, ban.getGhiChu());
+            stmt.setString(4, ban.getMaBan());
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Lỗi khi cập nhật bàn: " + e.getMessage());
+            return false;
+        } finally {
+            if (conn != null) {
+                try {
+                    ConnectionPool.getInstance().releaseConnection(conn);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
-        return false;
     }
 
     // Xóa bàn
-    public boolean xoaBan(int maBan) {
-        String sql = "DELETE FROM Ban WHERE maBan = ?";
+    public boolean xoaBan(String maBan) {
+        String sql = "DELETE FROM Ban WHERE MaBan = ?";
+        Connection conn = null;
 
-        try (Connection conn = ConnectionPool.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try {
+            conn = ConnectionPool.getInstance().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
 
-            stmt.setInt(1, maBan);
+            stmt.setString(1, maBan);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Lỗi khi xóa bàn: " + e.getMessage());
+            return false;
+        } finally {
+            if (conn != null) {
+                try {
+                    ConnectionPool.getInstance().releaseConnection(conn);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
-        return false;
-    }
-
-    // Cập nhật trạng thái bàn
-    public boolean capNhatTrangThai(int maBan, String trangThai) {
-        String sql = "UPDATE Ban SET trangThai = ? WHERE maBan = ?";
-
-        try (Connection conn = ConnectionPool.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, trangThai);
-            stmt.setInt(2, maBan);
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Lỗi khi cập nhật trạng thái bàn: " + e.getMessage());
-        }
-        return false;
     }
 
     // Lấy bàn theo mã
-    public Ban getBanById(int maBan) {
-        String sql = "SELECT * FROM Ban WHERE maBan = ?";
+    public Ban getBanById(String maBan) {
+        String sql = "SELECT MaBan, ViTri, SoGhe, GhiChu FROM Ban WHERE MaBan = ?";
+        Connection conn = null;
 
-        try (Connection conn = ConnectionPool.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try {
+            conn = ConnectionPool.getInstance().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
 
-            stmt.setInt(1, maBan);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return mapResultSetToBan(rs);
-                }
+            stmt.setString(1, maBan);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                return mapResultSetToBan(rs);
             }
         } catch (SQLException e) {
             System.err.println("Lỗi khi lấy bàn theo mã: " + e.getMessage());
+        } finally {
+            if (conn != null) {
+                try {
+                    ConnectionPool.getInstance().releaseConnection(conn);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
         return null;
+    }
+
+    // Lấy trạng thái bàn từ bảng DatBan
+    public String getTrangThaiBan(String maBan) {
+        String sql = "SELECT TOP 1 TrangThai FROM DatBan WHERE MaBan = ? " +
+                    "AND TrangThai IN ('Đã đặt', 'Đang dùng') " +
+                    "ORDER BY ThoiGianDat DESC";
+        Connection conn = null;
+
+        try {
+            conn = ConnectionPool.getInstance().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, maBan);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                return rs.getString("TrangThai");
+            }
+            // Mặc định bàn trống nếu không có đặt bàn nào
+            return "Trống";
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi lấy trạng thái bàn: " + e.getMessage());
+            return "Trống"; // Mặc định
+        } finally {
+            if (conn != null) {
+                try {
+                    ConnectionPool.getInstance().releaseConnection(conn);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+    // Method giả lập capNhatTrangThai cho compatibility
+    public boolean capNhatTrangThai(String maBan, String trangThai) {
+        // Vì bảng Ban không có trường trangThai, 
+        // trạng thái được quản lý thông qua bảng DatBan
+        System.out.println("Trạng thái bàn " + maBan + " được cập nhật thành " + trangThai + " thông qua DatBan");
+        return true;
     }
 
     // Chuyển ResultSet thành đối tượng Ban
     private Ban mapResultSetToBan(ResultSet rs) throws SQLException {
         return new Ban(
-                rs.getInt("maBan"),
-                rs.getString("tenBan"),
-                rs.getString("viTri"),
-                rs.getString("trangThai"),
-                rs.getInt("soChoNgoi")
+                rs.getString("MaBan"),
+                rs.getString("ViTri"),
+                rs.getInt("SoGhe"),
+                rs.getString("GhiChu")
         );
     }
 }

@@ -1,31 +1,188 @@
-<?xml version="1.0" encoding="UTF-8"?>
+// filepath: d:\helll\Restaurant_Management_Project\src\main\java\com\restaurant\restaurant_management_project\controller\DatBanDialogController.java
+package com.restaurant.restaurant_management_project.controller;
 
+import com.restaurant.restaurant_management_project.model.Ban;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
+
+public class DatBanDialogController {
+    @FXML private Label lbBanInfo;
+    @FXML private TextField tfTenKhachHang;
+    @FXML private TextField tfSoDienThoai;
+    @FXML private TextField tfEmail;
+    @FXML private Spinner<Integer> spSoKhach;
+    @FXML private TextArea taGhiChu;
+    @FXML private Button btnDatBan;
+    @FXML private Button btnHuy;
+
+    private Stage dialogStage;
+    private boolean datBanClicked = false;
+    private Ban ban;
+
+    @FXML
+    private void initialize() {
+        // Thiết lập Spinner cho số khách
+        spSoKhach.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 20, 1));
+        spSoKhach.setEditable(true);
+
+        // Validation cho số điện thoại
+        tfSoDienThoai.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                tfSoDienThoai.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+
+        // Validation cho email
+        tfEmail.textProperty().addListener((observable, oldValue, newValue) -> {
+            validateForm();
+        });
+
+        tfTenKhachHang.textProperty().addListener((observable, oldValue, newValue) -> {
+            validateForm();
+        });
+
+        tfSoDienThoai.textProperty().addListener((observable, oldValue, newValue) -> {
+            validateForm();
+        });
+    }
+
+    public void setDialogStage(Stage dialogStage) {
+        this.dialogStage = dialogStage;
+    }
+
+    public void setBan(Ban ban) {
+        this.ban = ban;
+        if (ban != null) {
+            lbBanInfo.setText("Bàn: " + ban.getMaBan() + " - Số ghế: " + ban.getSoGhe());
+            spSoKhach.getValueFactory().setValue(Math.min(ban.getSoGhe(), 1));
+            ((SpinnerValueFactory.IntegerSpinnerValueFactory) spSoKhach.getValueFactory())
+                .setMax(ban.getSoGhe());
+        }
+    }
+
+    @FXML
+    private void handleDatBan() {
+        if (isInputValid()) {
+            datBanClicked = true;
+            dialogStage.close();
+        }
+    }
+
+    @FXML
+    private void handleHuy() {
+        dialogStage.close();
+    }
+
+    private boolean isInputValid() {
+        String errorMessage = "";
+
+        if (tfTenKhachHang.getText() == null || tfTenKhachHang.getText().trim().isEmpty()) {
+            errorMessage += "Tên khách hàng không được để trống!\n";
+        }
+
+        if (tfSoDienThoai.getText() == null || tfSoDienThoai.getText().trim().isEmpty()) {
+            errorMessage += "Số điện thoại không được để trống!\n";
+        } else if (tfSoDienThoai.getText().length() < 10) {
+            errorMessage += "Số điện thoại phải có ít nhất 10 chữ số!\n";
+        }
+
+        if (tfEmail.getText() != null && !tfEmail.getText().trim().isEmpty()) {
+            if (!isValidEmail(tfEmail.getText())) {
+                errorMessage += "Email không hợp lệ!\n";
+            }
+        }
+
+        if (spSoKhach.getValue() <= 0) {
+            errorMessage += "Số khách phải lớn hơn 0!\n";
+        }
+
+        if (errorMessage.length() == 0) {
+            return true;
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Thông tin không hợp lệ");
+            alert.setHeaderText("Vui lòng kiểm tra lại thông tin");
+            alert.setContentText(errorMessage);
+            alert.showAndWait();
+            return false;
+        }
+    }
+
+    private boolean isValidEmail(String email) {
+        return email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
+    }
+
+    private void validateForm() {
+        boolean isValid = tfTenKhachHang.getText() != null && !tfTenKhachHang.getText().trim().isEmpty() &&
+                         tfSoDienThoai.getText() != null && tfSoDienThoai.getText().length() >= 10;
+        btnDatBan.setDisable(!isValid);
+    }
+
+    // Getters
+    public boolean isDatBanClicked() {
+        return datBanClicked;
+    }
+
+    public String getTenKhachHang() {
+        return tfTenKhachHang.getText();
+    }
+
+    public String getSoDienThoai() {
+        return tfSoDienThoai.getText();
+    }
+
+    public String getEmail() {
+        return tfEmail.getText();
+    }
+
+    public int getSoKhach() {
+        return spSoKhach.getValue();
+    }
+
+    public String getGhiChu() {
+        return taGhiChu.getText();
+    }
+}<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<DialogPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+<DialogPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" 
             fx:controller="com.restaurant.restaurant_management_project.controller.BanDialogController">
     <content>
-        <GridPane hgap="10" vgap="10">
-            <Label text="Mã bàn:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-            <TextField fx:id="txtMaBan" GridPane.rowIndex="0" GridPane.columnIndex="1" disable="true"/>
-
-            <Label text="Tên bàn:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <TextField fx:id="txtTenBan" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-
-            <Label text="Vị trí:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            <ComboBox fx:id="cbViTri" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-
-            <Label text="Số chỗ:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-            <Spinner fx:id="spSoCho" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
-
-            <Label text="Trạng thái:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-            <ComboBox fx:id="cbTrangThai" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
-        </GridPane>
+        <VBox spacing="10" prefWidth="350">
+            <padding>
+                <Insets top="10" bottom="10" left="10" right="10"/>
+            </padding>
+            
+            <GridPane hgap="10" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="100"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                </columnConstraints>
+                
+                <Label text="Mã bàn:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <TextField fx:id="txtMaBan" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                
+                <Label text="Vị trí:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <ComboBox fx:id="cbViTri" GridPane.columnIndex="1" GridPane.rowIndex="1" 
+                         maxWidth="Infinity"/>
+                
+                <Label text="Số ghế:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <Spinner fx:id="spSoGhe" GridPane.columnIndex="1" GridPane.rowIndex="2" 
+                        maxWidth="Infinity"/>
+                
+                <Label text="Ghi chú:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <TextArea fx:id="taGhiChu" GridPane.columnIndex="1" GridPane.rowIndex="3" 
+                         prefRowCount="3" wrapText="true"/>
+            </GridPane>
+        </VBox>
     </content>
-
+    
     <buttonTypes>
+        <ButtonType text="Cập nhật" buttonData="OK_DONE"/>
         <ButtonType text="Hủy" buttonData="CANCEL_CLOSE"/>
-        <ButtonType text="Lưu" buttonData="OK_DONE"/>
     </buttonTypes>
 </DialogPane>

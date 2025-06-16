@@ -1,43 +1,29 @@
 package com.restaurant.restaurant_management_project.model;
 
 public class Ban {
-    private int maBan;
-    private String tenBan;
+    private String maBan;
     private String viTri;
-    private String trangThai;
-    private int soChoNgoi;
+    private int soGhe;
+    private String ghiChu;
 
     // Constructor mặc định
     public Ban() {}
 
-    // Constructor đầy đủ
-    public Ban(int maBan, String tenBan, String viTri, String trangThai, int soChoNgoi) {
+    public Ban(String maBan, String viTri, int soGhe, String ghiChu) {
         this.maBan = maBan;
-        this.tenBan = tenBan;
         this.viTri = viTri;
-        this.trangThai = trangThai;
-        this.soChoNgoi = soChoNgoi;
+        this.soGhe = soGhe;
+        this.ghiChu = ghiChu;
     }
 
-    // Getter và Setter cho maBan
-    public int getMaBan() {
+    public String getMaBan() {
         return maBan;
     }
 
-    public void setMaBan(int maBan) {
+    public void setMaBan(String maBan) {
         this.maBan = maBan;
     }
 
-    // Getter và Setter cho tenBan
-    public String getTenBan() {
-        return tenBan;
-    }
-
-    public void setTenBan(String tenBan) {
-        this.tenBan = tenBan;
-    }
-
-    // Getter và Setter cho viTri
     public String getViTri() {
         return viTri;
     }
@@ -46,33 +32,29 @@ public class Ban {
         this.viTri = viTri;
     }
 
-    // Getter và Setter cho trangThai
-    public String getTrangThai() {
-        return trangThai;
+    public int getSoGhe() {
+        return soGhe;
     }
 
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
+    public void setSoGhe(int soGhe) {
+        this.soGhe = soGhe;
     }
 
-    // Getter và Setter cho soChoNgoi
-    public int getSoChoNgoi() {
-        return soChoNgoi;
+    public String getGhiChu() {
+        return ghiChu;
     }
 
-    public void setSoChoNgoi(int soChoNgoi) {
-        this.soChoNgoi = soChoNgoi;
+    public void setGhiChu(String ghiChu) {
+        this.ghiChu = ghiChu;
     }
 
-    // (Tùy chọn) Ghi đè toString() để in thông tin bàn
     @Override
     public String toString() {
         return "Ban{" +
-                "maBan=" + maBan +
-                ", tenBan='" + tenBan + '\'' +
+                "maBan='" + maBan + '\'' +
                 ", viTri='" + viTri + '\'' +
-                ", trangThai='" + trangThai + '\'' +
-                ", soChoNgoi=" + soChoNgoi +
+                ", soGhe=" + soGhe +
+                ", ghiChu='" + ghiChu + '\'' +
                 '}';
     }
 }
