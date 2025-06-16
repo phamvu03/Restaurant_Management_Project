@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OrderManagementController implements Initializable {
     @FXML
@@ -52,6 +54,8 @@ public class OrderManagementController implements Initializable {
     private TableColumn<OrderView, BigDecimal> doanhThuColumn;
     @FXML
     private Button btnXoaDonHang;
+    @FXML
+    private Button viewDetailsButton;
 
     private OrderDAO orderDAO;
     private OrderDetailDAO orderDetailDAO;
@@ -69,6 +73,11 @@ public class OrderManagementController implements Initializable {
 
         setupTableColumns();
         loadOrderData();
+        
+        // Add listener to enable/disable view details button based on selection
+        ordersTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            viewDetailsButton.setDisable(newSelection == null);
+        });
     }
 
     /**
@@ -212,6 +221,66 @@ public class OrderManagementController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Lỗi Giao Diện", "Không thể mở cửa sổ thêm đơn hàng.");
+        }
+    }
+
+    @FXML
+    void handleViewDetails(ActionEvent event) {
+        OrderView selectedOrder = ordersTableView.getSelectionModel().getSelectedItem();
+        if (selectedOrder == null) {
+            showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Vui lòng chọn đơn hàng cần xem chi tiết!");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/OrderDetailsView.fxml"));
+            Parent orderDetailsRoot = loader.load();
+
+            OrderDetailsController orderDetailsController = loader.getController();
+            
+            // Get the full order details using stream
+            Order order = orderDAO.getAllOrders().stream()
+                .filter(o -> o.getMaDonHang().equals(selectedOrder.getMaDonHang()))
+                .findFirst()
+                .orElse(null);
+
+            if (order == null) {
+                showAlert(Alert.AlertType.ERROR, "Lỗi", "Không tìm thấy thông tin đơn hàng!");
+                return;
+            }
+
+            // Get order details using stream
+            List<OrderDetail> orderDetails = orderDetailDAO.getAllEquipment().stream()
+                .filter(detail -> detail.getMaDonHang().equals(selectedOrder.getMaDonHang()))
+                .collect(Collectors.toList());
+
+            // Get all menu items
+            List<RMenuItem> allMenuItems = menuItemDAO.getAll();
+
+            // Create a map of menu items and order details using stream
+            Map<RMenuItem, OrderDetail> orderDetailsMap = orderDetails.stream()
+                .collect(Collectors.toMap(
+                    detail -> allMenuItems.stream()
+                        .filter(item -> item.getItemId().equals(detail.getMaMon()))
+                        .findFirst()
+                        .orElse(null),
+                    detail -> detail,
+                    (existing, replacement) -> existing
+                ));
+            
+            orderDetailsController.initializeData(order, orderDetailsMap);
+
+            Scene newScene = new Scene(orderDetailsRoot, 600, 800);
+            Stage modalStage = new Stage();
+            modalStage.setTitle("Chi tiết đơn hàng - " + selectedOrder.getMaDonHang());
+            modalStage.setScene(newScene);
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.initOwner(viewDetailsButton.getScene().getWindow());
+            modalStage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể tải chi tiết đơn hàng. Lỗi: " + e.getMessage());
         }
     }
 
