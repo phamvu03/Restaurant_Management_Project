@@ -28,7 +28,7 @@ import com.restaurant.restaurant_management_project.dao.OrderDetailDAO;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 
-public class OrderViewController {
+public class OrderController {
 
     @FXML
     private GridView<RMenuItem> itemList;

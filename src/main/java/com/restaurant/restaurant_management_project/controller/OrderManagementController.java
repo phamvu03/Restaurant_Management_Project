@@ -32,8 +32,6 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class OrderManagementController implements Initializable {
-
-    // FXML Components
     @FXML
     private DatePicker datePickerFilter;
     @FXML
@@ -51,22 +49,18 @@ public class OrderManagementController implements Initializable {
     @FXML
     private TableColumn<OrderView, BigDecimal> doanhThuColumn;
 
-    // DAOs
     private OrderDAO orderDAO;
     private OrderDetailDAO orderDetailDAO;
     private MenuItemDaoImpl menuItemDAO;
 
-    // Data list for the table
     private ObservableList<OrderView> orderViewList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Khởi tạo các đối tượng DAO
         this.orderDAO = new OrderDAO();
         this.orderDetailDAO = new OrderDetailDAO();
         this.menuItemDAO = new MenuItemDaoImpl();
 
-        // Thiết lập các cột của TableView để chúng biết lấy dữ liệu từ thuộc tính nào của OrderView
         setupTableColumns();
         loadOrderData();
     }
@@ -188,14 +182,12 @@ public class OrderManagementController implements Initializable {
     @FXML
     void handleAddNewOrder(ActionEvent event) {
         try {
-            // Tạo một cửa sổ (Stage) mới cho việc thêm đơn hàng
-            // THAY ĐƯỜNG DẪN ĐÚNG
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/your/project/path/AddOrder.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddOrder.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Thêm Đơn Hàng Mới");
-            stage.setScene(new Scene(root));
-
+            Scene newScene = new Scene( root, 800, 800);
+            stage.setScene(newScene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
             loadOrderData();
