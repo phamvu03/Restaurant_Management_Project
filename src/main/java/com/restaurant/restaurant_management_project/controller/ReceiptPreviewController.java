@@ -1,5 +1,8 @@
 package com.restaurant.restaurant_management_project.controller;
 
+import com.restaurant.restaurant_management_project.dao.OrderDAO;
+import com.restaurant.restaurant_management_project.dao.OrderDetailDAO;
+import com.restaurant.restaurant_management_project.model.Order;
 import com.restaurant.restaurant_management_project.model.OrderDetail;
 import com.restaurant.restaurant_management_project.model.RMenuItem;
 import javafx.fxml.FXML;
@@ -13,6 +16,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Map;
+import java.sql.Date;
 
 public class ReceiptPreviewController {
 
@@ -80,13 +84,7 @@ public class ReceiptPreviewController {
 
     @FXML
     private void handleConfirmAndPrint() {
-        // Đây là nơi bạn sẽ thêm logic xử lý khi nhấn "Xác nhận & In hóa đơn"
-        // Ví dụ: Lưu hóa đơn vào DB, gọi hàm in, reset giỏ hàng, vv.
         System.out.println("Xác nhận và in hóa đơn...");
-
-        // Gọi hàm handleDoneButton() của bạn ở đây
-        // Lưu ý: handleDoneButton() có thể cần được truyền vào hoặc truy cập thông qua một callback/service
-        // Hiện tại, tôi sẽ mô phỏng nó.
         handleDoneButton();
 
         // Sau khi hoàn tất, bạn có thể quay lại màn hình chính hoặc màn hình đặt hàng trống
@@ -94,19 +92,52 @@ public class ReceiptPreviewController {
     }
 
     private void handleDoneButton() {
-//         Logic của bạn từ hàm handleDoneButton() gốc
-//         currentOrder.clear(); // Xóa giỏ hàng
-//         renderOrderItems(); // Cập nhật UI giỏ hàng
-//         updateCartSummary(); // Cập nhật tổng tiền
+        try {
+            // Create new order
+            Order newOrder = new Order();
+            newOrder.setThoiGianTao(new java.sql.Date(new java.util.Date().getTime()));
+            newOrder.setThoiGianThanhToan(new java.sql.Date(new java.util.Date().getTime()));
+            newOrder.setMaNV(null);
+            newOrder.setMaDatBan(null);
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Hóa đơn đã được xác nhận và sẵn sàng để in!");
-        alert.showAndWait();
+            // Save order to database
+            OrderDAO orderDAO = new OrderDAO();
+            boolean orderSaved = orderDAO.addOrder(newOrder);
 
-        // Sau khi xử lý, có thể quay lại trang đặt hàng hoặc trang chủ
-        if (orderViewRoot != null) {
-            invoiceLayout.getScene().setRoot(orderViewRoot);
-            // Có thể cần truyền thông tin về việc giỏ hàng đã được xóa về Controller cũ để nó cập nhật UI
-            // Ví dụ: EventBus hoặc callback
+            if (orderSaved) {
+                // Save order details
+                OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+                for (OrderDetail detail : currentOrder.values()) {
+                    detail.setMaDonHang(newOrder.getMaDonHang());
+                    orderDetailDAO.addOrderDetail(detail);
+                }
+
+                // Show success message
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Thành công");
+                alert.setHeaderText(null);
+                alert.setContentText("Thanh toán thành công!");
+                alert.showAndWait();
+
+                // Clear current order and return to container screen
+                currentOrder.clear();
+                if (orderViewRoot != null) {
+                    Stage currentStage = (Stage) invoiceLayout.getScene().getWindow();
+                    currentStage.close();
+                }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Lỗi");
+                alert.setHeaderText(null);
+                alert.setContentText("Không thể lưu thông tin đơn hàng!");
+                alert.showAndWait();
+            }
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Có lỗi xảy ra: " + e.getMessage());
+            alert.showAndWait();
         }
     }
 }

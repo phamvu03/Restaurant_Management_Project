@@ -119,4 +119,25 @@ public class OrderDetailDAO {
             }
         }
     }
+
+    public boolean deleteOrderDetails(String maDonHang) {
+        String sql = "DELETE FROM ChiTietDonHang WHERE MaDonHang = ?";
+        Connection connection = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, maDonHang);
+                return stmt.executeUpdate() > 0;
+            }
+        } catch (SQLException ex) {
+            System.err.println("Lỗi khi xóa chi tiết đơn hàng: " + ex.getMessage());
+            return false;
+        } finally {
+            try {
+                ConnectionPool.getInstance().releaseConnection(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(OrderDetailDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 }

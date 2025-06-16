@@ -14,6 +14,7 @@ import org.controlsfx.control.GridView;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,8 +28,13 @@ import com.restaurant.restaurant_management_project.dao.OrderDAO;
 import com.restaurant.restaurant_management_project.dao.OrderDetailDAO;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
+import com.restaurant.restaurant_management_project.dao.DatBanDAO;
+import com.restaurant.restaurant_management_project.model.DatBan;
+import java.time.LocalDateTime;
+import com.restaurant.restaurant_management_project.dao.EmployeeDAO;
+import com.restaurant.restaurant_management_project.model.Employee;
 
-public class OrderViewController {
+public class OrderController {
 
     @FXML
     private GridView<RMenuItem> itemList;
@@ -75,6 +81,11 @@ public class OrderViewController {
 
         orderDAO = new OrderDAO();
         orderDetailDAO = new OrderDetailDAO();
+        
+        // Tạo dữ liệu mặc định
+        createDefaultEmployee();
+        createDefaultDatBan();
+        createDefaultOrder();
     }
 
     MenuItemDaoImpl dao = new MenuItemDaoImpl();
@@ -87,15 +98,16 @@ public class OrderViewController {
         itemList.setCellFactory(param -> new ItemGridCell(this::onItemClicked));
 
         final int SPACING = 15;
-        itemList.setCellHeight(300);
+        final double SCALE_RATIO = 0.8;
+        itemList.setCellHeight(300 * SCALE_RATIO);
         itemList.setHorizontalCellSpacing(SPACING);
         itemList.setVerticalCellSpacing(SPACING);
 
-        // Logic to have up to 5 columns
+        // Logic to have up to 6 columns with scale ratio
         itemList.widthProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal.doubleValue() > 0) {
-                int columns = (int) (newVal.doubleValue() / (200 + SPACING));
-                if (columns > 5) columns = 5;
+                int columns = (int) (newVal.doubleValue() / ((200 * SCALE_RATIO) + SPACING));
+                if (columns > 6) columns = 6;
                 if (columns < 1) columns = 1;
                 // Adjust cell width based on number of columns
                 double cellWidth = (newVal.doubleValue() - (columns - 1) * SPACING) / columns;
@@ -344,6 +356,129 @@ public class OrderViewController {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR, "Không thể tải hóa đơn. Lỗi: " + e.getMessage());
             alert.showAndWait();
+        }
+    }
+
+    private void createDefaultEmployee() {
+        try {
+            EmployeeDAO employeeDAO = new EmployeeDAO();
+            Employee defaultEmployee = new Employee();
+            defaultEmployee.setTenNV("Nhân viên mặc định");
+            defaultEmployee.setNgaySinh(LocalDate.now());
+            defaultEmployee.setSDT("0123456789");
+            defaultEmployee.setEmail("default@restaurant.com");
+            defaultEmployee.setChucVu("Nhân viên");
+            defaultEmployee.setLuong(new java.math.BigDecimal("5000000"));
+
+            boolean success = employeeDAO.addEmployee(defaultEmployee);
+            if (success) {
+                System.out.println("Đã tạo nhân viên mặc định thành công");
+            } else {
+                System.out.println("Không thể tạo nhân viên mặc định");
+            }
+        } catch (Exception e) {
+            System.err.println("Lỗi khi tạo nhân viên mặc định: " + e.getMessage());
+        }
+    }
+
+    private void createDefaultDatBan() {
+        try {
+            DatBanDAO datBanDAO = new DatBanDAO();
+            DatBan defaultDatBan = new DatBan();
+            defaultDatBan.setMaBan("BA0001"); // Mã bàn mặc định
+            defaultDatBan.setTenKhachHang("Khách lẻ");
+            defaultDatBan.setSoKhach(1);
+            defaultDatBan.setSoDienThoai("0123456789");
+            defaultDatBan.setThoiGianDat(LocalDateTime.now());
+            defaultDatBan.setTrangThai("Đã đặt");
+            defaultDatBan.setGhiChu("Đặt bàn mặc định cho khách lẻ");
+            
+            boolean success = datBanDAO.themDatBan(defaultDatBan);
+            if (success) {
+                System.out.println("Đã tạo đặt bàn mặc định thành công");
+            } else {
+                System.out.println("Không thể tạo đặt bàn mặc định");
+            }
+        } catch (Exception e) {
+            System.err.println("Lỗi khi tạo đặt bàn mặc định: " + e.getMessage());
+        }
+    }
+
+    private void createDefaultOrder() {
+        try {
+            // Lấy đặt bàn mặc định mới nhất
+            DatBanDAO datBanDAO = new DatBanDAO();
+            List<DatBan> dsDatBan = datBanDAO.getDSDatBan();
+            if (dsDatBan.isEmpty()) {
+                System.out.println("Không tìm thấy đặt bàn mặc định, đang tạo mới...");
+                createDefaultDatBan();
+                dsDatBan = datBanDAO.getDSDatBan();
+                if (dsDatBan.isEmpty()) {
+                    System.out.println("Không thể tạo đặt bàn mặc định");
+                    return;
+                }
+            }
+            
+            // Lấy đặt bàn mới nhất và kiểm tra mã đặt bàn
+            DatBan latestDatBan = dsDatBan.get(0);
+            String maDatBan = latestDatBan.getMaDatBan();
+            if (maDatBan == null || maDatBan.trim().isEmpty()) {
+                System.out.println("Mã đặt bàn không hợp lệ");
+                return;
+            }
+
+            // Lấy nhân viên mặc định
+            EmployeeDAO employeeDAO = new EmployeeDAO();
+            List<Employee> dsNhanVien = employeeDAO.getAllEmployee();
+            if (dsNhanVien.isEmpty()) {
+                System.out.println("Không tìm thấy nhân viên mặc định");
+                return;
+            }
+            Employee defaultEmployee = dsNhanVien.get(0);
+
+            // Tạo đơn hàng mặc định
+            Order defaultOrder = new Order();
+            defaultOrder.setMaDatBan(maDatBan); // Sử dụng mã đặt bàn đã kiểm tra
+            defaultOrder.setMaNV(defaultEmployee.getMaNV());
+            defaultOrder.setThoiGianTao(new java.sql.Date(new java.util.Date().getTime()));
+            defaultOrder.setThoiGianThanhToan(null); // Chưa thanh toán
+
+            boolean success = orderDAO.addOrder(defaultOrder);
+            if (success) {
+                System.out.println("Đã tạo đơn hàng mặc định thành công");
+                
+                // Lấy danh sách đơn hàng và tìm đơn hàng mới nhất bằng Stream
+                List<Order> orders = orderDAO.getAllOrders();
+                String maDonHang = orders.stream()
+                    .max((o1, o2) -> o1.getThoiGianTao().compareTo(o2.getThoiGianTao()))
+                    .map(Order::getMaDonHang)
+                    .orElse(null);
+
+                if (maDonHang != null) {
+                    // Tạo chi tiết đơn hàng mặc định
+                    if (allMenuItems != null && !allMenuItems.isEmpty()) {
+                        RMenuItem defaultMenuItem = allMenuItems.get(0);
+                        OrderDetail orderDetail = new OrderDetail();
+                        orderDetail.setMaDonHang(maDonHang);
+                        orderDetail.setMaMon(defaultMenuItem.getItemId());
+                        orderDetail.setSoLuong(1);
+                        
+                        boolean detailSuccess = orderDetailDAO.addOrderDetail(orderDetail);
+                        if (detailSuccess) {
+                            System.out.println("Đã tạo chi tiết đơn hàng mặc định thành công");
+                        } else {
+                            System.out.println("Không thể tạo chi tiết đơn hàng mặc định");
+                        }
+                    }
+                } else {
+                    System.out.println("Không thể lấy mã đơn hàng vừa tạo");
+                }
+            } else {
+                System.out.println("Không thể tạo đơn hàng mặc định");
+            }
+        } catch (Exception e) {
+            System.err.println("Lỗi khi tạo đơn hàng mặc định: " + e.getMessage());
+            e.printStackTrace(); // In stack trace để debug
         }
     }
 }

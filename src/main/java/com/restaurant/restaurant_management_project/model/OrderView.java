@@ -8,14 +8,16 @@ public class OrderView {
     private String maDonHang;
     private String maDatBan;
     private String maNV;
+    private String tenNV;
     private Date thoiGianTao;
     private Date thoiGianThanhToan;
     private BigDecimal revenue;
 
-    public OrderView(Order order, BigDecimal revenue) {
+    public OrderView(Order order, BigDecimal revenue, String tenNV) {
         this.maDonHang = order.getMaDonHang();
         this.maDatBan = order.getMaDatBan();
         this.maNV = order.getMaNV();
+        this.tenNV = tenNV;
         this.thoiGianTao = order.getThoiGianTao();
         this.thoiGianThanhToan = order.getThoiGianThanhToan();
         this.revenue = revenue;
@@ -31,6 +33,10 @@ public class OrderView {
 
     public String getMaNV() {
         return maNV;
+    }
+
+    public String getTenNV() {
+        return tenNV;
     }
 
     public Date getThoiGianTao() {

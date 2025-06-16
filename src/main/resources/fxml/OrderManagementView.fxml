@@ -6,39 +6,56 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.OrderManagementController">
-    <top>
-        <HBox alignment="CENTER_LEFT" fillHeight="true" spacing="15.0" BorderPane.alignment="CENTER" VBox.Vgrow="ALWAYS">
+<AnchorPane HBox.Hgrow="ALWAYS" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.OrderManagementController">
+    <VBox alignment="TOP_CENTER" fillWidth="true" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Label text="Quản lý hóa đơn">
+         <font>
+            <Font name="Cambria Bold" size="24.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="40.0" />
+         </VBox.margin>
+      </Label>
+        <HBox alignment="CENTER" fillHeight="true" spacing="15.0" HBox.Hgrow="ALWAYS">
             <padding>
                 <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
             </padding>
             <children>
                 <Label text="Tìm theo ngày:">
                     <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font name="Cambria" size="16.0" />
                     </font>
                 </Label>
                 <DatePicker fx:id="datePickerFilter" promptText="Chọn ngày" />
-                <Button fx:id="searchButton" mnemonicParsing="false" onAction="#handleSearch" text="Tìm kiếm" />
-                <Button fx:id="sortButton" mnemonicParsing="false" onAction="#handleSortByRevenue" text="Sắp xếp theo Doanh thu (tăng dần)" />
+                <Button fx:id="searchButton" mnemonicParsing="false" onAction="#handleSearch" text="Tìm kiếm">
+               <font>
+                  <Font name="SansSerif Regular" size="14.0" />
+               </font></Button>
+                <Button fx:id="sortButton" mnemonicParsing="false" onAction="#handleSortByRevenue" text="Sắp xếp theo Doanh thu (tăng dần)">
+               <font>
+                  <Font name="SansSerif Regular" size="14.0" />
+               </font></Button>
 
                 <HBox HBox.hgrow="ALWAYS" />
 
                 <Button fx:id="addOrderButton" mnemonicParsing="false" onAction="#handleAddNewOrder" style="-fx-background-color: #4CAF50;" text="Thêm mới Đơn hàng" textFill="WHITE">
                     <font>
-                        <Font name="System Bold" size="12.0" />
+                        <Font name="SansSerif Bold" size="14.0" />
+                    </font>
+                </Button>
+                <Button fx:id="viewDetailsButton" mnemonicParsing="false" onAction="#handleViewDetails" style="-fx-background-color: #2196F3;" text="Xem chi tiết" textFill="WHITE">
+                    <font>
+                        <Font name="SansSerif Bold" size="14.0" />
                     </font>
                 </Button>
                 <Button fx:id="deleteOrderButton" mnemonicParsing="false" onAction="#handleDeleteOrder" style="-fx-background-color: #f44336;" text="Xóa Đơn hàng" textFill="WHITE">
                     <font>
-                        <Font name="System Bold" size="12.0" />
+                        <Font name="SansSerif Bold" size="14.0" />
                     </font>
                 </Button>
             </children>
         </HBox>
-    </top>
-    <center>
-        <TableView fx:id="ordersTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <TableView fx:id="ordersTableView" focusTraversable="false" HBox.Hgrow="ALWAYS" VBox.vgrow="ALWAYS">
             <columns>
                 <TableColumn fx:id="maDonHangColumn" prefWidth="120.0" text="Mã Đơn Hàng">
                     <cellValueFactory>
@@ -65,7 +82,6 @@
                         <PropertyValueFactory property="thoiGianThanhToan" />
                     </cellValueFactory>
                 </TableColumn>
-
                 <TableColumn fx:id="doanhThuColumn" prefWidth="150.0" text="Doanh Thu (VND)">
                     <cellValueFactory>
                         <PropertyValueFactory property="revenue" />
@@ -76,8 +92,8 @@
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
             </columnResizePolicy>
         </TableView>
-    </center>
-   <padding>
-      <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
-   </padding>
-</BorderPane>
+        <padding>
+            <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+        </padding>
+    </VBox>
+</AnchorPane>

@@ -3,10 +3,12 @@ package com.restaurant.restaurant_management_project.controller;
 import com.restaurant.restaurant_management_project.dao.MenuItemDaoImpl;
 import com.restaurant.restaurant_management_project.dao.OrderDAO;
 import com.restaurant.restaurant_management_project.dao.OrderDetailDAO;
+import com.restaurant.restaurant_management_project.dao.EmployeeDAO;
 import com.restaurant.restaurant_management_project.model.Order;
 import com.restaurant.restaurant_management_project.model.OrderDetail;
 import com.restaurant.restaurant_management_project.model.OrderView;
 import com.restaurant.restaurant_management_project.model.RMenuItem;
+import com.restaurant.restaurant_management_project.model.Employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,10 +32,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OrderManagementController implements Initializable {
-
-    // FXML Components
     @FXML
     private DatePicker datePickerFilter;
     @FXML
@@ -50,25 +52,32 @@ public class OrderManagementController implements Initializable {
     private TableColumn<OrderView, Date> thoiGianThanhToanColumn;
     @FXML
     private TableColumn<OrderView, BigDecimal> doanhThuColumn;
+    @FXML
+    private Button btnXoaDonHang;
+    @FXML
+    private Button viewDetailsButton;
 
-    // DAOs
     private OrderDAO orderDAO;
     private OrderDetailDAO orderDetailDAO;
     private MenuItemDaoImpl menuItemDAO;
+    private EmployeeDAO employeeDAO;
 
-    // Data list for the table
     private ObservableList<OrderView> orderViewList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Khởi tạo các đối tượng DAO
         this.orderDAO = new OrderDAO();
         this.orderDetailDAO = new OrderDetailDAO();
         this.menuItemDAO = new MenuItemDaoImpl();
+        this.employeeDAO = new EmployeeDAO();
 
-        // Thiết lập các cột của TableView để chúng biết lấy dữ liệu từ thuộc tính nào của OrderView
         setupTableColumns();
         loadOrderData();
+        
+        // Add listener to enable/disable view details button based on selection
+        ordersTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            viewDetailsButton.setDisable(newSelection == null);
+        });
     }
 
     /**
@@ -77,10 +86,18 @@ public class OrderManagementController implements Initializable {
     private void setupTableColumns() {
         maDonHangColumn.setCellValueFactory(new PropertyValueFactory<>("maDonHang"));
         maDatBanColumn.setCellValueFactory(new PropertyValueFactory<>("maDatBan"));
-        maNVColumn.setCellValueFactory(new PropertyValueFactory<>("maNV"));
+        maNVColumn.setCellValueFactory(new PropertyValueFactory<>("tenNV"));
+        
+        // Căn giữa cho cột thời gian
         thoiGianTaoColumn.setCellValueFactory(new PropertyValueFactory<>("thoiGianTao"));
+        thoiGianTaoColumn.setStyle("-fx-alignment: CENTER;");
+        
         thoiGianThanhToanColumn.setCellValueFactory(new PropertyValueFactory<>("thoiGianThanhToan"));
+        thoiGianThanhToanColumn.setStyle("-fx-alignment: CENTER;");
+        
+        // Căn phải cho cột doanh thu
         doanhThuColumn.setCellValueFactory(new PropertyValueFactory<>("revenue"));
+        doanhThuColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
     }
 
     /**
@@ -89,10 +106,16 @@ public class OrderManagementController implements Initializable {
     private void loadOrderData() {
         orderViewList.clear(); // Xóa dữ liệu cũ
         List<Order> ordersFromDb = orderDAO.getAllOrders();
+        List<Employee> employees = employeeDAO.getAllEmployee();
 
         for (Order order : ordersFromDb) {
             BigDecimal revenue = calculateRevenueForOrder(order.getMaDonHang());
-            orderViewList.add(new OrderView(order, revenue));
+            String tenNV = employees.stream()
+                    .filter(emp -> emp.getMaNV().equals(order.getMaNV()))
+                    .findFirst()
+                    .map(Employee::getTenNV)
+                    .orElse("Không xác định");
+            orderViewList.add(new OrderView(order, revenue, tenNV));
         }
 
         ordersTableView.setItems(orderViewList);
@@ -151,36 +174,33 @@ public class OrderManagementController implements Initializable {
     @FXML
     void handleDeleteOrder(ActionEvent event) {
         OrderView selectedOrder = ordersTableView.getSelectionModel().getSelectedItem();
-
         if (selectedOrder == null) {
-            showAlert(Alert.AlertType.WARNING, "Chưa chọn đơn hàng", "Vui lòng chọn một đơn hàng để xóa.");
+            showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Vui lòng chọn đơn hàng cần xóa!");
             return;
         }
 
-        // Tạo hộp thoại xác nhận trước khi xóa
-        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationAlert.setTitle("Xác nhận xóa");
-        confirmationAlert.setHeaderText("Bạn có chắc chắn muốn xóa đơn hàng: " + selectedOrder.getMaDonHang() + "?");
-        confirmationAlert.setContentText("Hành động này không thể hoàn tác. Tất cả chi tiết liên quan đến đơn hàng cũng sẽ bị xóa.");
+        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmDialog.setTitle("Xác nhận xóa");
+        confirmDialog.setHeaderText("Xác nhận xóa đơn hàng");
+        confirmDialog.setContentText("Bạn có chắc chắn muốn xóa đơn hàng " + selectedOrder.getMaDonHang() + "?");
 
-        Optional<ButtonType> result = confirmationAlert.showAndWait();
-
+        Optional<ButtonType> result = confirmDialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            String orderId = selectedOrder.getMaDonHang();
-
-            // Xóa tất cả chi tiết đơn hàng trước (quan trọng để không vi phạm ràng buộc khóa ngoại)
-            // LƯU Ý: Bạn cần thêm phương thức deleteAllDetailsForOrder vào OrderDetailDAO
-            // boolean detailsDeleted = orderDetailDAO.deleteAllDetailsForOrder(orderId);
-
-            // Sau đó, xóa đơn hàng chính
-            boolean orderDeleted = orderDAO.deleteOrder(orderId);
-
-            if (orderDeleted) {
-                showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã xóa đơn hàng thành công.");
-                // Tải lại dữ liệu để cập nhật bảng
-                loadOrderData();
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể xóa đơn hàng. Vui lòng thử lại.");
+            try {
+                // Xóa chi tiết đơn hàng trước
+                if (orderDetailDAO.deleteOrderDetails(selectedOrder.getMaDonHang())) {
+                    // Sau đó xóa đơn hàng
+                    if (orderDAO.deleteOrder(selectedOrder.getMaDonHang())) {
+                        showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã xóa đơn hàng thành công!");
+                        loadOrderData(); // Tải lại dữ liệu
+                    } else {
+                        showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể xóa đơn hàng!");
+                    }
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể xóa chi tiết đơn hàng!");
+                }
+            } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, "Lỗi", "Có lỗi xảy ra khi xóa đơn hàng: " + e.getMessage());
             }
         }
     }
@@ -188,14 +208,12 @@ public class OrderManagementController implements Initializable {
     @FXML
     void handleAddNewOrder(ActionEvent event) {
         try {
-            // Tạo một cửa sổ (Stage) mới cho việc thêm đơn hàng
-            // THAY ĐƯỜNG DẪN ĐÚNG
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/your/project/path/AddOrder.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddOrderView.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Thêm Đơn Hàng Mới");
-            stage.setScene(new Scene(root));
-
+            Scene newScene = new Scene( root, 600, 600);
+            stage.setScene(newScene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
             loadOrderData();
@@ -203,6 +221,66 @@ public class OrderManagementController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Lỗi Giao Diện", "Không thể mở cửa sổ thêm đơn hàng.");
+        }
+    }
+
+    @FXML
+    void handleViewDetails(ActionEvent event) {
+        OrderView selectedOrder = ordersTableView.getSelectionModel().getSelectedItem();
+        if (selectedOrder == null) {
+            showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Vui lòng chọn đơn hàng cần xem chi tiết!");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/OrderDetailsView.fxml"));
+            Parent orderDetailsRoot = loader.load();
+
+            OrderDetailsController orderDetailsController = loader.getController();
+            
+            // Get the full order details using stream
+            Order order = orderDAO.getAllOrders().stream()
+                .filter(o -> o.getMaDonHang().equals(selectedOrder.getMaDonHang()))
+                .findFirst()
+                .orElse(null);
+
+            if (order == null) {
+                showAlert(Alert.AlertType.ERROR, "Lỗi", "Không tìm thấy thông tin đơn hàng!");
+                return;
+            }
+
+            // Get order details using stream
+            List<OrderDetail> orderDetails = orderDetailDAO.getAllEquipment().stream()
+                .filter(detail -> detail.getMaDonHang().equals(selectedOrder.getMaDonHang()))
+                .collect(Collectors.toList());
+
+            // Get all menu items
+            List<RMenuItem> allMenuItems = menuItemDAO.getAll();
+
+            // Create a map of menu items and order details using stream
+            Map<RMenuItem, OrderDetail> orderDetailsMap = orderDetails.stream()
+                .collect(Collectors.toMap(
+                    detail -> allMenuItems.stream()
+                        .filter(item -> item.getItemId().equals(detail.getMaMon()))
+                        .findFirst()
+                        .orElse(null),
+                    detail -> detail,
+                    (existing, replacement) -> existing
+                ));
+            
+            orderDetailsController.initializeData(order, orderDetailsMap);
+
+            Scene newScene = new Scene(orderDetailsRoot, 600, 800);
+            Stage modalStage = new Stage();
+            modalStage.setTitle("Chi tiết đơn hàng - " + selectedOrder.getMaDonHang());
+            modalStage.setScene(newScene);
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.initOwner(viewDetailsButton.getScene().getWindow());
+            modalStage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể tải chi tiết đơn hàng. Lỗi: " + e.getMessage());
         }
     }
 
