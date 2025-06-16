@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.restaurant.restaurant_management_project.controller.AddOrderController"
+      spacing="15" alignment="CENTER">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Thêm Đơn Hàng Mới" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+    
+    <GridPane vgap="10" hgap="10">
+        <Label text="Tên Khách:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="tenKhachField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        
+        <Label text="Số Khách:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="soKhachField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        
+        <Label text="Số Điện Thoại:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <TextField fx:id="sdtField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        
+        <Label text="Thời Gian Tạo:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <Label fx:id="thoiGianTaoLabel" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        
+        <Label text="Bàn:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <ComboBox fx:id="banComboBox" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+    </GridPane>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Hủy" onAction="#handleCancel" style="-fx-background-color: #f44336; -fx-text-fill: white;"/>
+        <Button text="Lưu" onAction="#handleSave" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+    </HBox>
+</VBox> 

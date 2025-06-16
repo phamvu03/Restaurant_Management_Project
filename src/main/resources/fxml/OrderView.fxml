@@ -7,7 +7,7 @@
 <?import org.controlsfx.control.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<AnchorPane HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.OrderViewController">
+<AnchorPane HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.restaurant_management_project.controller.OrderController">
    <HBox AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" HBox.hgrow="ALWAYS">
       <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #f0f0f0;" stylesheets="@../css/orderview.css" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
          <padding>

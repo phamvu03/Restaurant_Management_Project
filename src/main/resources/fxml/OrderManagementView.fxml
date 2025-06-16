@@ -38,7 +38,7 @@
         </HBox>
     </top>
     <center>
-        <TableView fx:id="ordersTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <TableView fx:id="ordersTableView" focusTraversable="false" HBox.Hgrow="ALWAYS" BorderPane.alignment="CENTER">
             <columns>
                 <TableColumn fx:id="maDonHangColumn" prefWidth="120.0" text="Mã Đơn Hàng">
                     <cellValueFactory>
@@ -65,7 +65,6 @@
                         <PropertyValueFactory property="thoiGianThanhToan" />
                     </cellValueFactory>
                 </TableColumn>
-
                 <TableColumn fx:id="doanhThuColumn" prefWidth="150.0" text="Doanh Thu (VND)">
                     <cellValueFactory>
                         <PropertyValueFactory property="revenue" />
