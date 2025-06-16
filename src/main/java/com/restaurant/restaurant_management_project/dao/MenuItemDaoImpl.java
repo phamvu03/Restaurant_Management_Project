@@ -4,6 +4,7 @@ import com.restaurant.restaurant_management_project.database.ConnectionPool;
 import com.restaurant.restaurant_management_project.model.RMenuItem;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -198,10 +199,12 @@ public boolean delete(RMenuItem item) {
             throw new RuntimeException(e);
         }
     }
-    public List<RMenuItem> getPopularMenuItems(int limit, java.util.Date startDate, java.util.Date endDate) {
+    public List<RMenuItem> getPopularMenuItems(int limit, LocalDateTime startDate, LocalDateTime endDate) {
         List<RMenuItem> menuItems = new ArrayList<>();
         Connection conn = null;
-        String sql = "SELECT TOP(?)ma.id, ma.MaMon, ma.TenMon, ma.TrangThai, ma.Gia, ma.Nhom, ma.HinhAnh, ma.DonVi, ma.MonAnKem, " +
+        PreparedStatement pstmt = null;
+
+        String sql = "SELECT TOP(?) ma.id, ma.MaMon, ma.TenMon, ma.TrangThai, ma.Gia, ma.Nhom, ma.HinhAnh, ma.DonVi, ma.MonAnKem, " +
                 "SUM(ctdh.SoLuong) AS TotalSold " +
                 "FROM MonAn ma " +
                 "JOIN ChiTietDonHang ctdh ON ma.MaMon = ctdh.MaMon " +
@@ -212,14 +215,14 @@ public boolean delete(RMenuItem item) {
 
         try {
             conn = connectionPool.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt = conn.prepareStatement(sql);
 
-            // Set date range parameters
-            java.sql.Date sqlStartDate = new java.sql.Date(startDate.getTime());
-            java.sql.Date sqlEndDate = new java.sql.Date(endDate.getTime());
+            // Set parameters
             pstmt.setInt(1, limit);
-            pstmt.setDate(2, sqlStartDate);
-            pstmt.setDate(3, sqlEndDate);
+
+
+            pstmt.setTimestamp(2, Timestamp.valueOf(startDate));
+            pstmt.setTimestamp(3, Timestamp.valueOf(endDate));
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
@@ -229,9 +232,20 @@ public boolean delete(RMenuItem item) {
             }
 
         } catch (SQLException e) {
+            System.err.println("Error getting popular menu items: " + e.getMessage());
             e.printStackTrace();
-        }finally {
-            connectionPool.releaseConnection(conn);
+        } finally {
+            // Close resources properly
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                connectionPool.releaseConnection(conn);
+            }
         }
 
         return menuItems;

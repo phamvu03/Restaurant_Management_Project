@@ -92,7 +92,7 @@ public class ReportDAO {
         }
         return result;
     }
-    public BigDecimal getBenefitByDate(LocalDate ngay) {
+    public BigDecimal getBenefitByDate(LocalDateTime ngay) {
         BigDecimal tongDoanhThu = new BigDecimal(0);
         String sql = "SELECT SUM(ctdh.SoLuong * ma.Gia) AS TongDoanhThu " +
                 "FROM DonHang dh " +
@@ -106,7 +106,7 @@ public class ReportDAO {
         try {
             conn = connectionPool.getConnection();
             ps = conn.prepareStatement(sql);
-            ps.setDate(1, java.sql.Date.valueOf(ngay));
+            ps.setDate(1, Date.valueOf(ngay.toLocalDate()));
             rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -134,7 +134,7 @@ public class ReportDAO {
         }
         return tongDoanhThu;
     }
-    public int getOderByDate(LocalDate ngay) {
+    public int getOderByDate(LocalDateTime ngay) {
         int orderNum = 0;
         String sql = "SELECT COUNT(MaDonHang) AS SoLuongDonHang " +
                 "FROM DonHang " +
@@ -147,7 +147,7 @@ public class ReportDAO {
         try {
             conn = connectionPool.getConnection();
             ps = conn.prepareStatement(sql);
-            ps.setDate(1, java.sql.Date.valueOf(ngay));
+            ps.setDate(1, Date.valueOf(ngay.toLocalDate()));
             rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -280,7 +280,7 @@ public class ReportDAO {
         }
         return tableNum;
     }
-    public Map<String, BigDecimal> getDoanhThuTheoThu(LocalDate fromDate, LocalDate toDate) throws SQLException {
+    public Map<String, BigDecimal> getDoanhThuTheoThu(LocalDateTime fromDate, LocalDateTime toDate) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -312,11 +312,11 @@ public class ReportDAO {
 
             int paramIndex = 1;
             if (fromDate != null) {
-                ps.setDate(paramIndex++, Date.valueOf(fromDate));
+                ps.setTimestamp(paramIndex++, java.sql.Timestamp.valueOf(fromDate));
             }
 
             if (toDate != null) {
-                ps.setDate(paramIndex, Date.valueOf(toDate));
+                ps.setTimestamp(paramIndex++, java.sql.Timestamp.valueOf(toDate));
             }
 
             rs = ps.executeQuery();
@@ -461,7 +461,7 @@ public class ReportDAO {
 
         return salesMap;
     }
-    public Map<Integer, Integer> getThongKeKhachTheoGio(LocalDate fromDate, LocalDate toDate) throws SQLException {
+    public Map<Integer, Integer> getThongKeKhachTheoGio(LocalDateTime fromDate, LocalDateTime toDate) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -481,8 +481,8 @@ public class ReportDAO {
                     "ORDER BY Gio";
 
             ps = conn.prepareStatement(sql);
-            ps.setDate(1, Date.valueOf(fromDate));
-            ps.setDate(2, Date.valueOf(toDate));
+            ps.setTimestamp( 1, java.sql.Timestamp.valueOf(fromDate));
+            ps.setTimestamp( 2, java.sql.Timestamp.valueOf(toDate));
 
             rs = ps.executeQuery();
 
