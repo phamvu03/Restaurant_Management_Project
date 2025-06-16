@@ -3,10 +3,12 @@ package com.restaurant.restaurant_management_project.controller;
 import com.restaurant.restaurant_management_project.dao.MenuItemDaoImpl;
 import com.restaurant.restaurant_management_project.dao.OrderDAO;
 import com.restaurant.restaurant_management_project.dao.OrderDetailDAO;
+import com.restaurant.restaurant_management_project.dao.EmployeeDAO;
 import com.restaurant.restaurant_management_project.model.Order;
 import com.restaurant.restaurant_management_project.model.OrderDetail;
 import com.restaurant.restaurant_management_project.model.OrderView;
 import com.restaurant.restaurant_management_project.model.RMenuItem;
+import com.restaurant.restaurant_management_project.model.Employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -48,10 +50,13 @@ public class OrderManagementController implements Initializable {
     private TableColumn<OrderView, Date> thoiGianThanhToanColumn;
     @FXML
     private TableColumn<OrderView, BigDecimal> doanhThuColumn;
+    @FXML
+    private Button btnXoaDonHang;
 
     private OrderDAO orderDAO;
     private OrderDetailDAO orderDetailDAO;
     private MenuItemDaoImpl menuItemDAO;
+    private EmployeeDAO employeeDAO;
 
     private ObservableList<OrderView> orderViewList = FXCollections.observableArrayList();
 
@@ -60,6 +65,7 @@ public class OrderManagementController implements Initializable {
         this.orderDAO = new OrderDAO();
         this.orderDetailDAO = new OrderDetailDAO();
         this.menuItemDAO = new MenuItemDaoImpl();
+        this.employeeDAO = new EmployeeDAO();
 
         setupTableColumns();
         loadOrderData();
@@ -71,10 +77,18 @@ public class OrderManagementController implements Initializable {
     private void setupTableColumns() {
         maDonHangColumn.setCellValueFactory(new PropertyValueFactory<>("maDonHang"));
         maDatBanColumn.setCellValueFactory(new PropertyValueFactory<>("maDatBan"));
-        maNVColumn.setCellValueFactory(new PropertyValueFactory<>("maNV"));
+        maNVColumn.setCellValueFactory(new PropertyValueFactory<>("tenNV"));
+        
+        // Căn giữa cho cột thời gian
         thoiGianTaoColumn.setCellValueFactory(new PropertyValueFactory<>("thoiGianTao"));
+        thoiGianTaoColumn.setStyle("-fx-alignment: CENTER;");
+        
         thoiGianThanhToanColumn.setCellValueFactory(new PropertyValueFactory<>("thoiGianThanhToan"));
+        thoiGianThanhToanColumn.setStyle("-fx-alignment: CENTER;");
+        
+        // Căn phải cho cột doanh thu
         doanhThuColumn.setCellValueFactory(new PropertyValueFactory<>("revenue"));
+        doanhThuColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
     }
 
     /**
@@ -83,10 +97,16 @@ public class OrderManagementController implements Initializable {
     private void loadOrderData() {
         orderViewList.clear(); // Xóa dữ liệu cũ
         List<Order> ordersFromDb = orderDAO.getAllOrders();
+        List<Employee> employees = employeeDAO.getAllEmployee();
 
         for (Order order : ordersFromDb) {
             BigDecimal revenue = calculateRevenueForOrder(order.getMaDonHang());
-            orderViewList.add(new OrderView(order, revenue));
+            String tenNV = employees.stream()
+                    .filter(emp -> emp.getMaNV().equals(order.getMaNV()))
+                    .findFirst()
+                    .map(Employee::getTenNV)
+                    .orElse("Không xác định");
+            orderViewList.add(new OrderView(order, revenue, tenNV));
         }
 
         ordersTableView.setItems(orderViewList);
@@ -145,36 +165,33 @@ public class OrderManagementController implements Initializable {
     @FXML
     void handleDeleteOrder(ActionEvent event) {
         OrderView selectedOrder = ordersTableView.getSelectionModel().getSelectedItem();
-
         if (selectedOrder == null) {
-            showAlert(Alert.AlertType.WARNING, "Chưa chọn đơn hàng", "Vui lòng chọn một đơn hàng để xóa.");
+            showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Vui lòng chọn đơn hàng cần xóa!");
             return;
         }
 
-        // Tạo hộp thoại xác nhận trước khi xóa
-        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationAlert.setTitle("Xác nhận xóa");
-        confirmationAlert.setHeaderText("Bạn có chắc chắn muốn xóa đơn hàng: " + selectedOrder.getMaDonHang() + "?");
-        confirmationAlert.setContentText("Hành động này không thể hoàn tác. Tất cả chi tiết liên quan đến đơn hàng cũng sẽ bị xóa.");
+        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmDialog.setTitle("Xác nhận xóa");
+        confirmDialog.setHeaderText("Xác nhận xóa đơn hàng");
+        confirmDialog.setContentText("Bạn có chắc chắn muốn xóa đơn hàng " + selectedOrder.getMaDonHang() + "?");
 
-        Optional<ButtonType> result = confirmationAlert.showAndWait();
-
+        Optional<ButtonType> result = confirmDialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            String orderId = selectedOrder.getMaDonHang();
-
-            // Xóa tất cả chi tiết đơn hàng trước (quan trọng để không vi phạm ràng buộc khóa ngoại)
-            // LƯU Ý: Bạn cần thêm phương thức deleteAllDetailsForOrder vào OrderDetailDAO
-            // boolean detailsDeleted = orderDetailDAO.deleteAllDetailsForOrder(orderId);
-
-            // Sau đó, xóa đơn hàng chính
-            boolean orderDeleted = orderDAO.deleteOrder(orderId);
-
-            if (orderDeleted) {
-                showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã xóa đơn hàng thành công.");
-                // Tải lại dữ liệu để cập nhật bảng
-                loadOrderData();
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể xóa đơn hàng. Vui lòng thử lại.");
+            try {
+                // Xóa chi tiết đơn hàng trước
+                if (orderDetailDAO.deleteOrderDetails(selectedOrder.getMaDonHang())) {
+                    // Sau đó xóa đơn hàng
+                    if (orderDAO.deleteOrder(selectedOrder.getMaDonHang())) {
+                        showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã xóa đơn hàng thành công!");
+                        loadOrderData(); // Tải lại dữ liệu
+                    } else {
+                        showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể xóa đơn hàng!");
+                    }
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể xóa chi tiết đơn hàng!");
+                }
+            } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, "Lỗi", "Có lỗi xảy ra khi xóa đơn hàng: " + e.getMessage());
             }
         }
     }
@@ -182,11 +199,11 @@ public class OrderManagementController implements Initializable {
     @FXML
     void handleAddNewOrder(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddOrder.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddOrderView.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Thêm Đơn Hàng Mới");
-            Scene newScene = new Scene( root, 800, 800);
+            Scene newScene = new Scene( root, 600, 600);
             stage.setScene(newScene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();

@@ -72,18 +72,15 @@ public class OrderDAO {
             }
         }
     }
-    public boolean deleteOrder(String orderId){
+    public boolean deleteOrder(String maDonHang) {
         String sql = "DELETE FROM DonHang WHERE MaDonHang = ?";
         Connection connection = null;
-        try{
+        try {
             connection = ConnectionPool.getInstance().getConnection();
-            
-            try(PreparedStatement stmt = connection.prepareStatement(sql)){
-                stmt.setString(1, orderId);
-
-                int rowsDeleted = stmt.executeUpdate();
-                return rowsDeleted > 0;
-            } 
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, maDonHang);
+                return stmt.executeUpdate() > 0;
+            }
         } catch (SQLException ex) {
             System.err.println("Lỗi khi xóa đơn hàng: " + ex.getMessage());
             return false;

@@ -87,18 +87,19 @@ public class OrderController {
         itemList.setCellFactory(param -> new ItemGridCell(this::onItemClicked));
 
         final int SPACING = 15;
-        itemList.setCellHeight(300);
+        final double SCALE_RATIO = 0.8;
+        itemList.setCellHeight(300 * SCALE_RATIO);
         itemList.setHorizontalCellSpacing(SPACING);
         itemList.setVerticalCellSpacing(SPACING);
 
-        // Logic to have up to 5 columns
+        // Logic to have up to 6 columns with scale ratio
         itemList.widthProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal.doubleValue() > 0) {
-                int columns = (int) (newVal.doubleValue() / (200 + SPACING));
-                if (columns > 5) columns = 5;
+                int columns = (int) (newVal.doubleValue() / ((200 * SCALE_RATIO) + SPACING));
+                if (columns > 6) columns = 6;
                 if (columns < 1) columns = 1;
-                // Adjust cell width based on number of columns
-                double cellWidth = (newVal.doubleValue() - (columns - 1) * SPACING) / columns;
+                // Adjust cell width based on number of columns and scale ratio
+                double cellWidth = ((newVal.doubleValue() - (columns - 1) * SPACING) / columns) * SCALE_RATIO;
                 itemList.setCellWidth(cellWidth);
             }
         });

@@ -16,7 +16,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/fxml/container.fxml"));
 //        Scene scene = new Scene(fxmlLoader.load());
-        Scene scene = new Scene(fxmlLoader.load(), 1600, 900);
+        Scene scene = new Scene(fxmlLoader.load(), 1500, 800);
 
         stage.setTitle("Restaurant Management");
         stage.setScene(scene);
