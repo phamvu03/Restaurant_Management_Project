@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * @author admin
  */
 public class OrderDAO {
-    public List<Order> getAllOrder(){
+    public List<Order> getAllOrders(){
         List<Order> orders = new ArrayList<>();
         String sql = "SELECT * FROM DonHang";
         Connection connection = null;
@@ -47,17 +47,16 @@ public class OrderDAO {
         return orders;
     }
     public boolean addOrder(Order order){
-        String sql = "INSERT INTO DonHang (MaDonHang, MaDatBan, MaNV, ThoiGianTao, "
+        String sql = "INSERT INTO DonHang (MaDatBan, MaNV, ThoiGianTao, "
                 + "ThoiGianThanhToan) VALUES (?,?,?,?,?)";
         Connection connection = null;
         try{
             connection = ConnectionPool.getInstance().getConnection();
             try(PreparedStatement stmt = connection.prepareStatement(sql)){
-                stmt.setString(1, order.getMaDonHang());
-                stmt.setString(2, order.getMaDatBan());
-                stmt.setString(3, order.getMaNV());
+                stmt.setString(1, order.getMaDatBan());
+                stmt.setString(2, order.getMaNV());
+                stmt.setDate(3, order.getThoiGianTao());
                 stmt.setDate(4, order.getThoiGianTao());
-                stmt.setDate(5, order.getThoiGianTao());
 
                 int rowsInserted = stmt.executeUpdate();
                 return rowsInserted > 0;

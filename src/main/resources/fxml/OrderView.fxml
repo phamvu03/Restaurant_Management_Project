@@ -27,7 +27,7 @@
                         <FontIcon iconLiteral="fas-search" iconSize="16" styleClass="search-icon" />
                      </graphic>
                   </Button>
-                  <Button fx:id="filterBtn" alignment="CENTER" focusTraversable="false" minHeight="30.0" minWidth="30.0" styleClass="search-btn">
+                  <Button fx:id="filterBtn" alignment="CENTER" focusTraversable="false" minHeight="30.0" minWidth="30.0" onAction="#handleFilter" styleClass="search-btn">
                      <graphic>
                         <FontIcon iconLiteral="fas-filter" iconSize="16" />
                      </graphic>
@@ -104,7 +104,7 @@
                <Button focusTraversable="false" mnemonicParsing="false" prefWidth="200" styleClass="funcBtn" stylesheets="@../css/orderview.css" text="Ghi chú" HBox.Hgrow="ALWAYS" />
                <Button disable="true" focusTraversable="false" mnemonicParsing="false" prefWidth="200" styleClass="funcBtn" stylesheets="@../css/orderview.css" text="Chuyển bàn" GridPane.columnIndex="1" />
                <Button disable="true" focusTraversable="false" mnemonicParsing="false" prefWidth="200" styleClass="funcBtn" stylesheets="@../css/orderview.css" text="Tách bàn" GridPane.rowIndex="1" />
-               <Button focusTraversable="false" mnemonicParsing="false" prefWidth="200" styleClass="funcBtn" stylesheets="@../css/orderview.css" text="Tạm tính" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               <Button focusTraversable="false" mnemonicParsing="false" onAction="#handleThanhToan" prefWidth="200" styleClass="funcBtn" stylesheets="@../css/orderview.css" text="Tạm tính" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </GridPane>
          <Separator prefWidth="200.0" />
          <Button fx:id="btnThanhToan" focusTraversable="false" onAction="#handleThanhToan" prefHeight="40.0" prefWidth="350.0" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;" text="Thanh toán" />

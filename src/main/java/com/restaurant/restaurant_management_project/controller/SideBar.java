@@ -179,6 +179,10 @@ public class SideBar {
                 loader.setLocation(getClass().getResource("/fxml/OrderView.fxml"));
                 load(loader);
                 break;
+            case("orderMnBtn"):
+                loader.setLocation(getClass().getResource("/fxml/OrderManagermentView.fxml"));
+                load(loader);
+                break;
         }
     }
     private void load( FXMLLoader loader)

@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javafx.geometry.Insets;
 import com.restaurant.restaurant_management_project.model.OrderDetail;
@@ -46,6 +47,9 @@ public class OrderViewController {
 
     @FXML
     private Label lblItemName;
+
+    @FXML
+    private Button filterBtn;
 
     private final DecimalFormat currencyFormat = new DecimalFormat("#,### đ");
 
@@ -257,15 +261,60 @@ public class OrderViewController {
     }
 
     @FXML
-    private void addDiscount() {
-        //TODO
-        System.out.println("Thêm chiết khấu");
-    }
+    private void handleFilter() {
+        // Create a dialog for filter options
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Lọc món ăn");
+        dialog.setHeaderText("Chọn tiêu chí lọc");
 
-    @FXML
-    private void addServiceFee() {
-        //TODO
-        System.out.println("Thêm phí dịch vụ");
+        // Create filter options
+        VBox content = new VBox(10);
+        content.setPadding(new Insets(10));
+
+        // Price range filter
+        HBox priceBox = new HBox(10);
+        TextField minPrice = new TextField();
+        TextField maxPrice = new TextField();
+        minPrice.setPromptText("Giá tối thiểu");
+        maxPrice.setPromptText("Giá tối đa");
+        priceBox.getChildren().addAll(new Label("Khoảng giá:"), minPrice, new Label("-"), maxPrice);
+
+        // Category filter
+        ComboBox<String> categoryCombo = new ComboBox<>();
+        categoryCombo.setPromptText("Chọn loại món");
+        categoryCombo.getItems().addAll("Tất cả", "Món chính", "Món phụ", "Đồ uống", "Tráng miệng");
+
+        content.getChildren().addAll(priceBox, categoryCombo);
+
+        dialog.getDialogPane().setContent(content);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.APPLY, ButtonType.CANCEL);
+
+        dialog.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.APPLY) {
+                // Apply filters
+                List<RMenuItem> filteredItems = allMenuItems.stream()
+                    .filter(item -> {
+                        boolean priceMatch = true;
+                        if (!minPrice.getText().isEmpty()) {
+                            priceMatch = priceMatch && item.getItemPrice().doubleValue() >= Double.parseDouble(minPrice.getText());
+                        }
+                        if (!maxPrice.getText().isEmpty()) {
+                            priceMatch = priceMatch && item.getItemPrice().doubleValue() <= Double.parseDouble(maxPrice.getText());
+                        }
+
+                        boolean categoryMatch = true;
+                        if (categoryCombo.getValue() != null && !categoryCombo.getValue().equals("Tất cả")) {
+                            categoryMatch = item.getItemCategory().equals(categoryCombo.getValue());
+                        }
+
+                        return priceMatch && categoryMatch;
+                    })
+                    .collect(Collectors.toList());
+
+                // Update the grid with filtered items
+                itemList.setItems(FXCollections.observableArrayList(filteredItems));
+            }
+        });
     }
 
     @FXML
