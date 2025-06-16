@@ -48,7 +48,7 @@ public class OrderDAO {
     }
     public boolean addOrder(Order order){
         String sql = "INSERT INTO DonHang (MaDatBan, MaNV, ThoiGianTao, "
-                + "ThoiGianThanhToan) VALUES (?,?,?,?,?)";
+                + "ThoiGianThanhToan) VALUES (?,?,?,?)";
         Connection connection = null;
         try{
             connection = ConnectionPool.getInstance().getConnection();

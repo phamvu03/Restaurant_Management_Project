@@ -43,6 +43,11 @@
                         <Font name="SansSerif Bold" size="14.0" />
                     </font>
                 </Button>
+                <Button fx:id="viewDetailsButton" mnemonicParsing="false" onAction="#handleViewDetails" style="-fx-background-color: #2196F3;" text="Xem chi tiết" textFill="WHITE">
+                    <font>
+                        <Font name="SansSerif Bold" size="14.0" />
+                    </font>
+                </Button>
                 <Button fx:id="deleteOrderButton" mnemonicParsing="false" onAction="#handleDeleteOrder" style="-fx-background-color: #f44336;" text="Xóa Đơn hàng" textFill="WHITE">
                     <font>
                         <Font name="SansSerif Bold" size="14.0" />
