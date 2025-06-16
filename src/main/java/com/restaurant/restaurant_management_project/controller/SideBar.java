@@ -180,7 +180,7 @@ public class SideBar {
                 load(loader);
                 break;
             case("orderMnBtn"):
-                loader.setLocation(getClass().getResource("/fxml/OrderManagermentView.fxml"));
+                loader.setLocation(getClass().getResource("/fxml/OrderManagementView.fxml"));
                 load(loader);
                 break;
         }
